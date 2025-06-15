@@ -1131,14 +1131,14 @@ document.addEventListener('DOMContentLoaded', function() {
         return false;
     });
     
-    // // 2. 키보드 단축키 방지
-    // document.addEventListener('keydown', function(e) {
-    //     // F12 방지
-    //     if (e.key === 'F12' || e.keyCode === 123) {
-    //         e.preventDefault();
-    //         e.stopPropagation();
-    //         return false;
-    //     }
+    // 2. 키보드 단축키 방지
+    document.addEventListener('keydown', function(e) {
+        // F12 방지
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
         
         // Ctrl + Shift + I (개발자도구) 방지
         if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
