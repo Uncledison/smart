@@ -615,6 +615,199 @@
             background: #0056b3;
         }
     </style>
+
+<!-- claim-check.html의 </head> 태그 직전에 추가하세요 -->
+<script type="module">
+    // Firebase 설정
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+    import { 
+        getAuth, 
+        onAuthStateChanged,
+        setPersistence,
+        browserSessionPersistence
+    } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+    import { 
+        getFirestore, 
+        doc, 
+        getDoc 
+    } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+
+    // Firebase 설정
+    const firebaseConfig = {
+        apiKey: "AIzaSyBbDLYn9SRGXjvUh_SFrlUBX4wYBcdln9k",
+        authDomain: "smart-eac10.firebaseapp.com",
+        projectId: "smart-eac10",
+        storageBucket: "smart-eac10.firebasestorage.app",
+        messagingSenderId: "989426802509",
+        appId: "1:989426802509:web:c0c70a856810f8b9ac2104",
+        measurementId: "G-LT29P3YTT2"
+    };
+
+    // Firebase 초기화
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // 세션 지속성 설정 - 브라우저 종료 시 로그아웃
+    setPersistence(auth, browserSessionPersistence)
+      .then(() => {
+        console.log('세션 설정: 브라우저 종료 시 자동 로그아웃');
+      })
+      .catch((error) => {
+        console.error('세션 설정 오류:', error);
+      });
+
+    // 로딩 오버레이 생성
+    function createLoadingOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'auth-loading-overlay';
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        `;
+        
+        overlay.innerHTML = `
+            <div style="text-align: center;">
+                <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                <h2 style="color: #667eea; margin-bottom: 10px;">AI Worker</h2>
+                <p style="color: #666; font-size: 16px;">인증 확인 중...</p>
+            </div>
+            <style>
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+        `;
+        
+        document.body.appendChild(overlay);
+    }
+
+    // 오버레이 제거
+    function removeLoadingOverlay() {
+        const overlay = document.getElementById('auth-loading-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
+    }
+
+    // 로그인 페이지로 리다이렉트
+    function redirectToLogin() {
+        window.location.href = '/login.html';
+    }
+
+    // 사용자 승인 상태 확인
+    async function checkUserApproval(user) {
+        try {
+            const userDoc = doc(db, 'users', user.uid);
+            const userSnapshot = await getDoc(userDoc);
+            
+            if (userSnapshot.exists()) {
+                const userData = userSnapshot.data();
+                return userData.status === 'approved';
+            }
+            return false;
+        } catch (error) {
+            console.error('사용자 승인 상태 확인 오류:', error);
+            return false;
+        }
+    }
+
+    // 승인 대기 페이지 표시
+    function showPendingApproval() {
+        document.body.innerHTML = `
+            <div style="
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                color: white;
+                text-align: center;
+                padding: 2rem;
+            ">
+                <div style="
+                    background: white;
+                    color: #333;
+                    padding: 3rem;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+                    max-width: 500px;
+                ">
+                    <h1 style="color: #667eea; margin-bottom: 1rem;">AI Worker</h1>
+                    <h2 style="margin-bottom: 1.5rem;">승인 대기 중</h2>
+                    <p style="margin-bottom: 2rem; line-height: 1.6;">
+                        베타 테스트 신청이 접수되었습니다.<br>
+                        관리자 승인 후 서비스를 이용하실 수 있습니다.<br><br>
+                        승인 완료 시 이메일로 알림을 드릴 예정입니다.
+                    </p>
+                    <button onclick="window.location.href='/login.html'" style="
+                        background: #667eea;
+                        color: white;
+                        border: none;
+                        padding: 12px 24px;
+                        border-radius: 8px;
+                        font-size: 16px;
+                        cursor: pointer;
+                        transition: background 0.3s;
+                    ">
+                        로그인 페이지로
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // 인증 상태 확인
+    function initializeAuth() {
+        // 로딩 오버레이 표시
+        createLoadingOverlay();
+        
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // 로그인된 사용자
+                console.log('로그인된 사용자:', user);
+                
+                // 승인 상태 확인
+                const isApproved = await checkUserApproval(user);
+                
+                if (isApproved) {
+                    // 승인된 사용자 - 서비스 이용 허용
+                    console.log('승인된 사용자 - 청구항 점검기 접근 허용');
+                    removeLoadingOverlay();
+                } else {
+                    // 승인되지 않은 사용자
+                    console.log('승인되지 않은 사용자');
+                    showPendingApproval();
+                }
+            } else {
+                // 로그인되지 않은 사용자
+                console.log('로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트');
+                redirectToLogin();
+            }
+        });
+    }
+
+    // DOM 로드 완료 후 인증 확인 시작
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeAuth);
+    } else {
+        initializeAuth();
+    }
+</script>
+    
 </head>
 <body>
     <div class="header">
