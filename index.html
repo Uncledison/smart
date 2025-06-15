@@ -813,7 +813,10 @@
     
 </head>
 <body>
-    <!-- 상단 헤더 버튼 영역 -->
+
+<!-- index.html의 <body> 태그 바로 다음에 추가하세요 -->
+
+<!-- 상단 헤더 버튼 영역 -->
 <div class="header-controls">
     <div class="header-buttons">
         <button id="toggleInputBtn" class="header-btn">접기</button>
@@ -859,12 +862,12 @@
 }
 
 .logout-btn {
-    background: rgba(220, 53, 69, 0.9);
+    background: rgba(102, 126, 234, 0.9);
     color: white;
 }
 
 .logout-btn:hover {
-    background: rgba(220, 53, 69, 1);
+    background: rgba(102, 126, 234, 1);
 }
 
 /* 입력 섹션이 접힌 상태일 때 */
@@ -892,25 +895,66 @@
 document.addEventListener('DOMContentLoaded', function() {
     const toggleInputBtn = document.getElementById('toggleInputBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const inputSection = document.getElementById('inputSection');
     
-    // 접기/펼치기 버튼 기능
-    if (toggleInputBtn && inputSection) {
+    // 접기/펼치기 버튼 기능 (스마트 보정서 구조에 맞춤)
+    if (toggleInputBtn) {
         toggleInputBtn.addEventListener('click', function() {
-            const isCollapsed = inputSection.classList.contains('collapsed');
+            // 기존 접기 버튼과 동일한 기능 실행
+            const existingCollapseBtn = document.getElementById('collapseBtn');
+            const inputSection = document.getElementById('inputSection');
+            const inputContent = document.getElementById('inputContent');
             
-            if (isCollapsed) {
-                // 펼치기
-                inputSection.classList.remove('collapsed');
-                document.body.classList.remove('input-collapsed');
-                toggleInputBtn.textContent = '접기';
+            if (inputContent && inputSection) {
+                const isCollapsed = inputContent.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    // 펼치기
+                    inputContent.classList.remove('collapsed');
+                    inputSection.classList.remove('collapsed');
+                    toggleInputBtn.textContent = '접기';
+                    if (existingCollapseBtn) {
+                        existingCollapseBtn.textContent = '접기';
+                    }
+                } else {
+                    // 접기
+                    inputContent.classList.add('collapsed');
+                    inputSection.classList.add('collapsed');
+                    toggleInputBtn.textContent = '열기';
+                    if (existingCollapseBtn) {
+                        existingCollapseBtn.textContent = '펼치기';
+                    }
+                }
             } else {
-                // 접기
-                inputSection.classList.add('collapsed');
-                document.body.classList.add('input-collapsed');
-                toggleInputBtn.textContent = '열기';
+                // 대체 방법: 기존 접기 버튼 클릭 시뮬레이션
+                if (existingCollapseBtn) {
+                    existingCollapseBtn.click();
+                    // 버튼 텍스트 동기화
+                    setTimeout(() => {
+                        const currentText = existingCollapseBtn.textContent;
+                        if (currentText === '접기') {
+                            toggleInputBtn.textContent = '접기';
+                        } else {
+                            toggleInputBtn.textContent = '열기';
+                        }
+                    }, 100);
+                }
             }
         });
+        
+        // 기존 접기 버튼과 동기화
+        const existingCollapseBtn = document.getElementById('collapseBtn');
+        if (existingCollapseBtn) {
+            existingCollapseBtn.addEventListener('click', function() {
+                setTimeout(() => {
+                    const currentText = existingCollapseBtn.textContent;
+                    if (currentText === '접기') {
+                        toggleInputBtn.textContent = '접기';
+                    } else {
+                        toggleInputBtn.textContent = '열기';
+                    }
+                }, 100);
+            });
+        }
     }
     
     // 로그아웃 버튼 기능
@@ -936,6 +980,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+    
     <div class="app-container">
         <!-- 상단 헤더 - 중앙 정렬 -->
         <header class="app-header">
