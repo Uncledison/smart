@@ -827,7 +827,7 @@
 <!-- 상단 헤더 버튼 스타일 (CSS) -->
 <style>
 .header-controls {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
     z-index: 1000;
@@ -837,7 +837,7 @@
 
 .header-buttons {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     align-items: center;
 }
 
@@ -862,17 +862,64 @@
 }
 
 .logout-btn {
-    background: rgba(102, 126, 234, 0.9);
+    background: rgba(52, 58, 64, 0.9);
     color: white;
 }
 
 .logout-btn:hover {
-    background: rgba(102, 126, 234, 1);
+    background: rgba(52, 58, 64, 1);
 }
 
-/* 입력 섹션이 접힌 상태일 때 */
-.input-collapsed .header-controls {
-    top: 20px;
+/* 스마트 보정서 제목과 버튼들이 같은 줄에 오도록 조정 */
+h1 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* 파일 업로드와 비교 테이블 생성 버튼 스타일 개선 */
+#fileBtn, #generateBtn {
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    min-width: auto !important;
+    width: auto !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+}
+
+/* 입력 영역 우측 버튼들을 텍스트 영역과 세로 정렬 */
+.input-section {
+    position: relative;
+}
+
+.input-section .right-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+    gap: 10px;
+    padding-top: 0;
+}
+
+/* 텍스트 영역과 버튼들의 상단 정렬 */
+.input-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.input-content textarea {
+    flex: 1;
+}
+
+.input-content .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 140px;
+    align-self: flex-start;
 }
 
 /* 반응형 디자인 */
@@ -885,6 +932,11 @@
     .header-btn {
         padding: 6px 12px;
         font-size: 13px;
+    }
+    
+    h1 {
+        margin: 15px 0;
+        font-size: 1.5rem;
     }
 }
 </style>
