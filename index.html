@@ -594,6 +594,8 @@
     import { 
         getAuth, 
         onAuthStateChanged 
+        setPersistence,
+        browserSessionPersistence  // 이 2줄만 추가
     } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
     import { 
         getFirestore, 
@@ -612,13 +614,22 @@
         measurementId: "G-LT29P3YTT2"
     };
 
-    // Firebase 초기화
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-
-    // 로딩 오버레이 생성
-    function createLoadingOverlay() {
+        // Firebase 초기화
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        
+        // 세션 지속성 설정 - 브라우저 종료 시 로그아웃
+        setPersistence(auth, browserSessionPersistence)
+          .then(() => {
+            console.log('세션 설정: 브라우저 종료 시 자동 로그아웃');
+          })
+          .catch((error) => {
+            console.error('세션 설정 오류:', error);
+          });
+        
+        // 로딩 오버레이 생성
+        function createLoadingOverlay() {    
         const overlay = document.createElement('div');
         overlay.id = 'auth-loading-overlay';
         overlay.style.cssText = `
