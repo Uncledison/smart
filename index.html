@@ -813,6 +813,129 @@
     
 </head>
 <body>
+    <!-- 상단 헤더 버튼 영역 -->
+<div class="header-controls">
+    <div class="header-buttons">
+        <button id="toggleInputBtn" class="header-btn">접기</button>
+        <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
+    </div>
+</div>
+
+<!-- 상단 헤더 버튼 스타일 (CSS) -->
+<style>
+.header-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+}
+
+.header-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.header-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+}
+
+.header-btn:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-1px);
+}
+
+.logout-btn {
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+}
+
+.logout-btn:hover {
+    background: rgba(220, 53, 69, 1);
+}
+
+/* 입력 섹션이 접힌 상태일 때 */
+.input-collapsed .header-controls {
+    top: 20px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .header-controls {
+        top: 10px;
+        right: 10px;
+    }
+    
+    .header-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+</style>
+
+<!-- 상단 헤더 버튼 JavaScript 기능 -->
+<script>
+// 페이지 로드 후 버튼 이벤트 설정
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleInputBtn = document.getElementById('toggleInputBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const inputSection = document.getElementById('inputSection');
+    
+    // 접기/펼치기 버튼 기능
+    if (toggleInputBtn && inputSection) {
+        toggleInputBtn.addEventListener('click', function() {
+            const isCollapsed = inputSection.classList.contains('collapsed');
+            
+            if (isCollapsed) {
+                // 펼치기
+                inputSection.classList.remove('collapsed');
+                document.body.classList.remove('input-collapsed');
+                toggleInputBtn.textContent = '접기';
+            } else {
+                // 접기
+                inputSection.classList.add('collapsed');
+                document.body.classList.add('input-collapsed');
+                toggleInputBtn.textContent = '열기';
+            }
+        });
+    }
+    
+    // 로그아웃 버튼 기능
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('로그아웃 하시겠습니까?')) {
+                // Firebase 로그아웃
+                if (typeof auth !== 'undefined') {
+                    auth.signOut().then(() => {
+                        console.log('로그아웃 완료');
+                        window.location.href = '/login.html';
+                    }).catch((error) => {
+                        console.error('로그아웃 오류:', error);
+                        // 오류가 있어도 로그인 페이지로 이동
+                        window.location.href = '/login.html';
+                    });
+                } else {
+                    // auth 객체가 없는 경우 바로 로그인 페이지로 이동
+                    window.location.href = '/login.html';
+                }
+            }
+        });
+    }
+});
+</script>
     <div class="app-container">
         <!-- 상단 헤더 - 중앙 정렬 -->
         <header class="app-header">
