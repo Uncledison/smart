@@ -213,7 +213,7 @@
             position: relative;
             display: flex;
             gap: 30px;
-            align-items: center;
+            align-items: flex-start;
         }
         
         .input-text-area {
@@ -223,11 +223,8 @@
         
         .input-buttons-area {
             flex: 0 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            min-width: 160px;
-            max-width: 160px;
+            min-width: 200px;
+            max-width: 200px;
             position: relative;
         }
 
@@ -258,10 +255,31 @@
             font-style: normal;
         }
         
+        /* 🔥 핵심 수정: 버튼을 2줄로 배치 */
         .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 12px;
+            width: 100%;
+        }
+
+        /* 첫 번째 줄: 파일 업로드, 초기화 */
+        .button-row-1 {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+        }
+
+        /* 두 번째 줄: 청구항 점검 */
+        .button-row-2 {
+            display: flex;
+            width: 100%;
+        }
+
+        /* 세 번째 줄: 보정서 저장, 다운로드 */
+        .button-row-3 {
+            display: flex;
+            gap: 8px;
             width: 100%;
         }
         
@@ -275,6 +293,7 @@
             transition: all 0.3s ease;
             white-space: nowrap;
             text-align: center;
+            flex: 1;
         }
 
         button:hover {
@@ -435,6 +454,7 @@
             font-size: 11px !important;
             border-radius: 8px !important;
             backdrop-filter: blur(10px);
+            flex: none !important;
         }
 
         .panel-title button:hover {
@@ -795,15 +815,17 @@
                 max-width: none;
             }
 
-            .action-buttons {
+            .button-row-1,
+            .button-row-3 {
                 flex-direction: row;
-                gap: 12px;
+                gap: 8px;
                 justify-content: center;
             }
 
-            .action-buttons button {
+            .button-row-1 button,
+            .button-row-3 button {
                 flex: 1;
-                min-width: 0;
+                min-width: 120px;
             }
         }
 
@@ -844,59 +866,63 @@
                 max-width: none;
             }
             
-            .action-buttons {
+            .button-row-1,
+            .button-row-2,
+            .button-row-3 {
                 flex-direction: column;
-                min-width: auto;
-            }
-
-            .action-buttons button {
-                flex: none;
-                min-width: 120px;
-            }
-            
-            .results-horizontal-layout {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .results-left-panel {
-                border-right: none;
-                border-bottom: 2px solid #e5e7eb;
-                padding-right: 0;
-                padding-bottom: 20px;
-                margin-bottom: 20px;
-            }
-            
-            .results-right-panel {
-                padding-left: 0;
-                padding-top: 0;
-            }
-
-            .upper-section {
-                padding: 20px 15px;
-            }
-
-            .claim-display,
-            .result-section {
-                padding: 20px 15px;
-            }
-
-            .step-guide-top {
-                padding: 8px 12px;
-                font-size: 11px;
                 gap: 8px;
             }
 
-            .step-number {
-                width: 18px;
-                height: 18px;
-                font-size: 9px;
-            }
-        }
-    </style>
+            .button-row-1 button,
+        .button-row-2 button,
+           .button-row-3 button {
+               flex: none;
+               min-width: 120px;
+           }
+           
+           .results-horizontal-layout {
+               flex-direction: column;
+               height: auto;
+           }
+           
+           .results-left-panel {
+               border-right: none;
+               border-bottom: 2px solid #e5e7eb;
+               padding-right: 0;
+               padding-bottom: 20px;
+               margin-bottom: 20px;
+           }
+           
+           .results-right-panel {
+               padding-left: 0;
+               padding-top: 0;
+           }
 
-    <!-- Firebase 인증 스크립트 -->
-    <script type="module">
+           .upper-section {
+               padding: 20px 15px;
+           }
+
+           .claim-display,
+           .result-section {
+               padding: 20px 15px;
+           }
+
+           .step-guide-top {
+               padding: 8px 12px;
+               font-size: 11px;
+               gap: 8px;
+           }
+
+           .step-number {
+               width: 18px;
+               height: 18px;
+               font-size: 9px;
+           }
+       }
+   </style>
+
+   <!-- Firebase 인증 스크립트 -->
+   <script type="module">
        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
        import { 
            getAuth, 
@@ -1129,11 +1155,23 @@
                                <div class="input-buttons-area">
                                    <div class="action-buttons">
                                        <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
-                                       <button id="file-upload-button" class="secondary">📎 파일 업로드</button>
-                                       <button id="clear-button" class="secondary">초기화</button>
-                                       <button id="check-button">청구항 점검</button>
-                                       <button id="save-to-amendment-button" class="secondary">📝 보정서로 저장</button>
-                                       <button id="download-button" class="download-button">💾 다운로드</button>
+                                       
+                                       <!-- 첫 번째 줄: 파일 업로드, 초기화 -->
+                                       <div class="button-row-1">
+                                           <button id="file-upload-button" class="secondary">📎 파일 업로드</button>
+                                           <button id="clear-button" class="secondary">초기화</button>
+                                       </div>
+                                       
+                                       <!-- 두 번째 줄: 청구항 점검 -->
+                                       <div class="button-row-2">
+                                           <button id="check-button">청구항 점검</button>
+                                       </div>
+                                       
+                                       <!-- 세 번째 줄: 보정서 저장, 다운로드 -->
+                                       <div class="button-row-3">
+                                           <button id="save-to-amendment-button" class="secondary">📝 보정서로 저장</button>
+                                           <button id="download-button" class="download-button">💾 다운로드</button>
+                                       </div>
                                    </div>
                                </div>
                            </div>
