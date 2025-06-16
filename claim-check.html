@@ -21,15 +21,25 @@
             position: relative;
         }
 
-        /* 🔥 여기에 추가! 전체 스크롤바 숨김 */
+        /* 🔥 전체 페이지 스크롤바만 숨김 (내부 커스텀 스크롤바는 유지) */
 body::-webkit-scrollbar,
-html::-webkit-scrollbar {
-    display: none;
+html::-webkit-scrollbar,
+.app-container::-webkit-scrollbar,
+.main-wrapper::-webkit-scrollbar,
+.container::-webkit-scrollbar,
+.content-panel::-webkit-scrollbar,
+.scrollable-section::-webkit-scrollbar {
+    display: none !important;
 }
 
-body, html {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+body, html,
+.app-container,
+.main-wrapper,
+.container,
+.content-panel,
+.scrollable-section {
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important; /* IE and Edge */
 }
         
         /* 배경 플로우 화살표 */
@@ -794,7 +804,6 @@ body, html {
         }
 
         /* 커스텀 스크롤바 */
-        .scrollable-section::-webkit-scrollbar,
         .category-content::-webkit-scrollbar,
         .results-right-panel::-webkit-scrollbar {
             width: 8px;
@@ -821,7 +830,6 @@ body, html {
         }
 
         /* Firefox 스크롤바 */
-        .scrollable-section,
         .category-content,
         .results-right-panel {
             scrollbar-width: thin;
