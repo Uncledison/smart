@@ -8,7 +8,6 @@
         const claimDisplay = document.getElementById('claim-display');
         const resultSection = document.getElementById('result-section');
         const resultCategories = document.getElementById('result-categories');
-        const claimTreeContainer = document.getElementById('claim-tree-container');
                
         // 전역 변수
         let claims = [];
@@ -117,9 +116,6 @@
             
             // 점검 결과 표시 (카테고리별로 구분)
             displayResultsByCategory();
-            
-            // 청구항 종속 관계 트리 생성
-            createClaimTree(claims);
             
             // 문서 클릭 이벤트 - 원본 용어 하이라이트 제거
             document.addEventListener('click', (e) => {
@@ -2043,100 +2039,6 @@ if (saveToAmendmentButton) {
             displayResultsByCategory();
         }
         
-        // 청구항 종속 관계 트리 생성 함수 (수정됨)
-        function createClaimTree(claims) {
-            claimTreeContainer.innerHTML = '';
-            
-            // 독립항 먼저 표시
-            const independentClaims = claims.filter(claim => claim.citations.length === 0);
-            
-            independentClaims.forEach(indClaim => {
-                const claimNode = document.createElement('div');
-                claimNode.className = 'claim-node independent-claim';
-                claimNode.setAttribute('data-claim', indClaim.number);
-                claimNode.setAttribute('data-expanded', 'false');
-                
-                const toggleIcon = document.createElement('span');
-                toggleIcon.className = 'toggle-icon';
-                
-                claimNode.appendChild(toggleIcon);
-                claimNode.appendChild(document.createTextNode(`청구항 ${indClaim.number}`));
-                
-                claimTreeContainer.appendChild(claimNode);
-                
-                // 종속항 생성
-                createDependentClaims(indClaim.number, claimNode, claims, 1);
-            });
-            
-            // 토글 기능 추가 (수정됨)
-            document.querySelectorAll('.claim-node').forEach(node => {
-                node.addEventListener('click', (e) => {
-                    // 현재 확장 상태 확인 (data-expanded 속성 사용)
-                    const isExpanded = node.getAttribute('data-expanded') === 'true';
-                    
-                    // 직계 자식 종속항만 선택 (:scope > 사용)
-                    const children = node.querySelectorAll(':scope > .dependent-claim');
-                    
-                    if (!isExpanded) {
-                        // 확장: 종속항 표시
-                        children.forEach(child => {
-                            child.style.display = 'block';
-                        });
-                        node.setAttribute('data-expanded', 'true');
-                    } else {
-                        // 접기: 종속항 숨김
-                        children.forEach(child => {
-                            child.style.display = 'none';
-                            
-                            // 하위 종속항들도 모두 접기
-                            const subNodes = child.querySelectorAll('.dependent-claim');
-                            subNodes.forEach(subNode => {
-                                subNode.style.display = 'none';
-                            });
-                            
-                            // 하위 노드의 확장 상태도 리셋
-                            if (child.classList.contains('claim-node')) {
-                                child.setAttribute('data-expanded', 'false');
-                            }
-                        });
-                        node.setAttribute('data-expanded', 'false');
-                    }
-                    
-                    // 확장 클래스 토글 (아이콘 변경용)
-                    node.classList.toggle('expanded', !isExpanded);
-                    
-                    // 이벤트 버블링 방지
-                    e.stopPropagation();
-                });
-            });
-        }
-        
-        // 종속항 트리 노드 생성
-        function createDependentClaims(parentClaimNumber, parentNode, claims, level) {
-            const directDependents = claims.filter(claim => 
-                claim.citations.includes(parentClaimNumber) && claim.number !== parentClaimNumber
-            );
-            
-            directDependents.forEach(depClaim => {
-                const depNode = document.createElement('div');
-                const levelClass = `level-${level}`;
-                const firstLevelClass = level === 1 ? ' first-level' : '';
-                depNode.className = `claim-node dependent-claim ${levelClass}${firstLevelClass}`;
-                depNode.setAttribute('data-claim', depClaim.number);
-                depNode.setAttribute('data-expanded', 'false');
-                
-                const toggleIcon = document.createElement('span');
-                toggleIcon.className = 'toggle-icon';
-                
-                depNode.appendChild(toggleIcon);
-                depNode.appendChild(document.createTextNode(`청구항 ${depClaim.number}`));
-                
-                parentNode.appendChild(depNode);
-                
-                // 재귀적으로 하위 종속항 생성
-                createDependentClaims(depClaim.number, depNode, claims, level + 1);
-            });
-        }
         
  // 페이지 로드 시 URL 파라미터 확인 및 처리 (최종 통합 버전)
 window.addEventListener('DOMContentLoaded', () => {
