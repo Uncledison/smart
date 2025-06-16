@@ -150,7 +150,7 @@
             overflow: hidden;
         }
         
-        /* 상단 입력 영역 - 슬림하게 수정 */
+        /* 상단 입력 영역 - 접기/펼치기 기능 추가 */
         .upper-section {
             background: white;
             padding: 20px 30px;
@@ -158,6 +158,10 @@
             transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             flex-shrink: 0;
+        }
+
+        .upper-section.collapsed {
+            padding: 12px 30px;
         }
 
         /* 단계별 가이드를 상단으로 이동 */
@@ -175,6 +179,11 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            transition: all 0.3s ease;
+        }
+
+        .step-guide-top.collapsed {
+            display: none;
         }
 
         .step-item {
@@ -198,6 +207,11 @@
         
         .input-section {
             margin-bottom: 0;
+            transition: all 0.3s ease;
+        }
+
+        .input-section.collapsed {
+            display: none;
         }
         
         .input-section h2 {
@@ -260,6 +274,21 @@
             justify-content: center;
             gap: 12px;
             flex-wrap: wrap;
+        }
+
+        /* 접힌 상태에서만 보이는 메인 버튼들 */
+        .collapsed-main-buttons {
+            display: none;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .collapsed-main-buttons.show {
+            display: flex;
         }
         
         button {
@@ -387,6 +416,11 @@
             gap: 25px;
             height: calc(100vh - 240px);
             min-height: 400px;
+        }
+
+        /* 접힌 상태일 때 높이 조정 */
+        .upper-section.collapsed ~ .scrollable-section .results-horizontal-layout {
+            height: calc(100vh - 180px);
         }
         
         .results-left-panel {
@@ -796,7 +830,8 @@
                 justify-content: center;
             }
 
-            .main-buttons {
+            .main-buttons,
+            .collapsed-main-buttons {
                 justify-content: center;
             }
         }
@@ -839,61 +874,91 @@
                 min-width: auto;
             }
 
-            .main-buttons {
+            .main-buttons,
+            .collapsed-main-buttons {
                 flex-direction: column;
                 align-items: center;
                 gap: 8px;
             }
 
-            .main-buttons button {
+            .main-buttons button,
+            .collapsed-main-buttons button {
                 width: 100%;
                 max-width: 300px;
-            }
-            
-            .results-horizontal-layout {
-                flex-direction: column;
-                height: auto;
-            }
-            
-            .results-left-panel {
-                border-right: none;
-                border-bottom: 2px solid #e5e7eb;
-                padding-right: 0;
-                padding-bottom: 20px;
-                margin-bottom: 20px;
-            }
-            
-            .results-right-panel {
-                padding-left: 0;
-                padding-top: 0;
-            }
+           }
+           
+           .results-horizontal-layout {
+               flex-direction: column;
+               height: auto;
+           }
+           
+           .results-left-panel {
+               border-right: none;
+               border-bottom: 2px solid #e5e7eb;
+               padding-right: 0;
+               padding-bottom: 20px;
+               margin-bottom: 20px;
+           }
+           
+           .results-right-panel {
+               padding-left: 0;
+               padding-top: 0;
+           }
 
-            .upper-section {
-                padding: 15px;
-            }
+           .upper-section {
+               padding: 15px;
+           }
 
-            .claim-display,
-            .result-section {
-                padding: 20px 15px;
-            }
+           .claim-display,
+           .result-section {
+               padding: 20px 15px;
+           }
 
-            .step-guide-top {
-                padding: 8px 12px;
-                font-size: 11px;
-                gap: 8px;
-            }
+           .step-guide-top {
+               padding: 8px 12px;
+               font-size: 11px;
+               gap: 8px;
+           }
 
-            .step-number {
-                width: 18px;
-                height: 18px;
-                font-size: 9px;
-            }
-        }
-    </style>
+           .step-number {
+               width: 18px;
+               height: 18px;
+               font-size: 9px;
+           }
+       }
 
-    <!-- Firebase 인증 스크립트 -->
-    <script type="module">
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+       /* 보안 방지 스타일 */
+       * {
+           -webkit-user-select: none !important;
+           -moz-user-select: none !important;
+           -ms-user-select: none !important;
+           user-select: none !important;
+       }
+       
+       input, textarea {
+           -webkit-user-select: text !important;
+           -moz-user-select: text !important;
+           -ms-user-select: text !important;
+           user-select: text !important;
+       }
+       
+       @media print {
+           * { display: none !important; }
+           body::before {
+               content: "SMARTPAT 인쇄가 제한되어 있습니다.";
+               display: block !important;
+               font-size: 24px;
+               text-align: center;
+               margin-top: 50px;
+               color: #1E3A8A;
+               font-weight: bold;
+           }
+       }
+   </style>
+
+   <!-- Firebase 인증 스크립트 -->
+   <script type="module">
+       import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
        import { 
            getAuth, 
            onAuthStateChanged,
@@ -1088,6 +1153,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
            
            <!-- 헤더 컨트롤 버튼들 -->
            <div class="header-controls">
+               <button id="toggleInputBtn" class="header-btn">접기</button>
                <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
            </div>
        </header>
@@ -1095,10 +1161,10 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
        <div class="main-wrapper">
            <div class="container">
                <div class="content-panel">
-                   <!-- 상단 입력 영역 - 슬림하게 수정 -->
-                   <div class="upper-section">
+                   <!-- 상단 입력 영역 - 접기/펼치기 기능 추가 -->
+                   <div class="upper-section" id="upperSection">
                        <!-- 단계별 가이드를 상단으로 이동 -->
-                       <div class="step-guide-top">
+                       <div class="step-guide-top" id="stepGuide">
                            <div class="step-item">
                                <div class="step-number">1</div>
                                <span>파일 업로드</span>
@@ -1115,7 +1181,7 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
                            </div>
                        </div>
 
-                       <div class="input-section">
+                       <div class="input-section" id="inputSection">
                            <h2>청구항 입력</h2>
                            
                            <!-- 🔥 새로운 레이아웃: 입력창 + 사이드 버튼 -->
@@ -1139,6 +1205,13 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
                                <button id="download-button" class="download-button">💾 다운로드</button>
                            </div>
                        </div>
+                   </div>
+
+                   <!-- 접힌 상태에서만 보이는 메인 버튼들 -->
+                   <div class="collapsed-main-buttons" id="collapsedMainButtons">
+                       <button id="check-button-collapsed">청구항 점검</button>
+                       <button id="save-to-amendment-button-collapsed">📝 보정서로 저장</button>
+                       <button id="download-button-collapsed" class="download-button">💾 다운로드</button>
                    </div>
                    
                    <!-- 스크롤 가능한 영역 -->
@@ -1186,10 +1259,60 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
    <script src="patent-claim-checker.js"></script>
 
-   <!-- 로그아웃 버튼 기능 -->
+   <!-- 접기/펼치기 및 로그아웃 버튼 기능 -->
    <script>
    document.addEventListener('DOMContentLoaded', function() {
+       const toggleInputBtn = document.getElementById('toggleInputBtn');
        const logoutBtn = document.getElementById('logoutBtn');
+       
+       // 접기/펼치기 버튼 기능
+       if (toggleInputBtn) {
+           toggleInputBtn.addEventListener('click', function() {
+               const upperSection = document.getElementById('upperSection');
+               const inputSection = document.getElementById('inputSection');
+               const stepGuide = document.getElementById('stepGuide');
+               const collapsedMainButtons = document.getElementById('collapsedMainButtons');
+               
+               if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+                   const isCollapsed = upperSection.classList.contains('collapsed');
+                   
+                   if (isCollapsed) {
+                       // 펼치기
+                       upperSection.classList.remove('collapsed');
+                       inputSection.classList.remove('collapsed');
+                       stepGuide.classList.remove('collapsed');
+                       collapsedMainButtons.classList.remove('show');
+                       toggleInputBtn.textContent = '접기';
+                   } else {
+                       // 접기
+                       upperSection.classList.add('collapsed');
+                       inputSection.classList.add('collapsed');
+                       stepGuide.classList.add('collapsed');
+                       collapsedMainButtons.classList.add('show');
+                       toggleInputBtn.textContent = '펼치기';
+                   }
+               }
+           });
+       }
+
+       // 접힌 상태 버튼들과 원본 버튼들 동기화
+       const syncButtons = [
+           ['check-button', 'check-button-collapsed'],
+           ['save-to-amendment-button', 'save-to-amendment-button-collapsed'],
+           ['download-button', 'download-button-collapsed']
+       ];
+
+       syncButtons.forEach(([originalId, collapsedId]) => {
+           const originalBtn = document.getElementById(originalId);
+           const collapsedBtn = document.getElementById(collapsedId);
+           
+           if (originalBtn && collapsedBtn) {
+               // 접힌 버튼 클릭 시 원본 버튼 클릭 이벤트 발생
+               collapsedBtn.addEventListener('click', function() {
+                   originalBtn.click();
+               });
+           }
+       });
        
        // 로그아웃 버튼 기능
        if (logoutBtn) {
@@ -1210,6 +1333,111 @@ import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebas
            });
        }
    });
+   </script>
+
+   <!-- 보안 스크립트 -->
+   <script>
+   (function() {
+       'use strict';
+       
+       // 우클릭 방지
+       document.addEventListener('contextmenu', function(e) {
+           e.preventDefault();
+           e.stopPropagation();
+           return false;
+       });
+       
+       // 키보드 단축키 방지
+       document.addEventListener('keydown', function(e) {
+           // F12 방지
+           if (e.key === 'F12' || e.keyCode === 123) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + I (개발자도구) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + J (콘솔) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + C (요소 검사) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + U (소스보기) 방지
+           if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + S (저장) 방지
+           if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+       });
+       
+       // 텍스트 선택 방지 (입력 요소 제외)
+       document.addEventListener('selectstart', function(e) {
+           if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+               return true;
+           }
+           e.preventDefault();
+           return false;
+       });
+       
+       // 드래그 방지
+       document.addEventListener('dragstart', function(e) {
+           e.preventDefault();
+           return false;
+       });
+       
+       // 개발자도구 감지
+       let devtools = { opened: false, orientation: null };
+       const threshold = 160;
+       
+       function detectDevTools() {
+           if (window.outerHeight - window.innerHeight > threshold || 
+               window.outerWidth - window.innerWidth > threshold) {
+               if (!devtools.opened) {
+                   devtools.opened = true;
+                   console.clear();
+                   console.log('%cSMARTPAT 개발자도구 사용이 제한되어 있습니다.', 
+                       'color: #1E3A8A; font-size: 20px; font-weight: bold;');
+               }
+           } else {
+               devtools.opened = false;
+           }
+       }
+       
+       setInterval(detectDevTools, 500);
+       
+       // 콘솔 차단
+       console.log = console.error = console.warn = function() { return; };
+       
+       // 디버거 차단
+       setInterval(function() { debugger; }, 1000);
+       
+       // iframe 차단
+       if (window.self !== window.top) {
+           window.top.location = window.self.location;
+       }
+   })();
    </script>
 </body>
 </html>
