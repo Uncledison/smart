@@ -16,7 +16,7 @@
             background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
             color: #333;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden !important;  /* ← !important 추가 */
             font-size: 13px;
             position: relative;
         }
@@ -41,7 +41,30 @@ body, html,
     scrollbar-width: none !important; /* Firefox */
     -ms-overflow-style: none !important; /* IE and Edge */
 }
-        
+    /* 🔥 여기에 바로 아래 코드를 추가하세요! */
+/* 전체 페이지 스크롤 완전 차단 */
+html {
+    overflow: hidden !important;
+}
+
+.app-container,
+.main-wrapper,
+.container,
+.content-panel {
+    overflow: hidden !important;
+}
+
+/* 스크롤 가능한 영역만 예외 처리 */
+.scrollable-section {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.category-content,
+.results-right-panel {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}    
         /* 배경 플로우 화살표 */
         body::before {
             content: '';
@@ -1512,5 +1535,31 @@ body, html,
        }
    })();
    </script>
+<script>
+// 전체 페이지 스크롤 방지
+document.addEventListener('wheel', function(e) {
+    // 특정 영역에서만 스크롤 허용
+    const allowedElements = [
+        '.category-content',
+        '.results-right-panel',
+        '.scrollable-section'
+    ];
+    
+    let isAllowed = false;
+    for (let selector of allowedElements) {
+        if (e.target.closest(selector)) {
+            isAllowed = true;
+            break;
+        }
+    }
+    
+    // 허용된 영역이 아니면 스크롤 차단
+    if (!isAllowed) {
+        e.preventDefault();
+    }
+}, { passive: false });
+</script>
+
+    
 </body>
 </html>
