@@ -48,80 +48,7 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             overflow: hidden;
         }
-        
-        .left-panel {
-            width: 230px;
-            border-right: 1px solid #ddd;
-            background-color: #f9f9f9;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        
-        .dependency-title {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            padding-bottom: 5px;
-            border-bottom: 1px solid #ddd;
-            color: #333;
-            flex-shrink: 0;
-        }
-        
-        .claim-tree-container {
-            flex: 1;
-            overflow-y: auto;
-        }
-        
-        .claim-node {
-            padding: 5px;
-            margin-bottom: 3px;
-            cursor: pointer;
-            font-size: 13px;
-            position: relative;
-        }
-        
-        .claim-node:hover {
-            background-color: #f0f0f0;
-        }
-        
-        .independent-claim {
-            font-weight: bold;
-            background-color: #f0f0f0;
-            color: #000000;
-        }
-        
-        .dependent-claim.level-1 {
-            color: #585858;
-        }
-        
-        .dependent-claim.level-2,
-        .dependent-claim.level-3,
-        .dependent-claim.level-4,
-        .dependent-claim.level-5 {
-            color: #BDBDBD;
-        }
-        
-        .dependent-claim {
-            padding-left: 15px;
-            display: none;
-        }
-        
-        .dependent-claim.first-level {
-            display: block;
-        }
-        
-        .claim-node.expanded .toggle-icon:before {
-            content: "▼";
-        }
-        
-        .claim-node .toggle-icon:before {
-            content: "▶";
-            font-size: 10px;
-            margin-right: 5px;
-            color: #888;
-        }
+    
         
         .content-panel {
             flex: 1;
@@ -815,13 +742,7 @@
     </div>
     
     <div class="container">
-        <div class="left-panel">
-            <div class="dependency-title">청구항 트리</div>
-            <div class="claim-tree-container" id="claim-tree-container">
-                <!-- 청구항 트리가 여기에 표시됩니다 -->
-            </div>
-        </div>
-        
+    
         <div class="content-panel">
             <!-- 상단 고정 영역 -->
             <div class="upper-section">
