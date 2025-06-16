@@ -477,15 +477,15 @@ html {
             height: 100%;
         }
         
-        .results-right-panel {
+         .results-right-panel {
             flex: 1;
             padding-left: 20px;
-            padding-right: 0px !important;  /* ← !important 추가 */
+            padding-right: 15px;  /* ← 원래대로 복구 */
             padding-bottom: 20px;
-            overflow-y: auto !important;
+            overflow-y: hidden !important;  /* ← auto에서 hidden으로 변경 */
             overflow-x: hidden !important;
-            margin-right: 0px !important;  /* ← 이것도 추가 */
-            box-sizing: border-box !important;  /* ← 이것도 추가 */
+            display: flex;  /* ← 추가 */
+            flex-direction: column;  /* ← 추가 */
         }
         
         .panel-title {
@@ -521,6 +521,14 @@ html {
             background: rgba(255, 255, 255, 0.3) !important;
             transform: translateY(-1px) !important;
         }
+
+            /* 오른쪽 패널 내부 스크롤 영역 */
+            #claim-display-right {
+                flex: 1;
+                overflow-y: auto !important;
+                overflow-x: hidden !important;
+                padding-right: 8px;  /* 스크롤바와 내용 간격 */
+            }
         
         .category-content {
             flex: 1;
