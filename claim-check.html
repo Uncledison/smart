@@ -1006,6 +1006,17 @@
             background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
             box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
         }
+        
+    /* 🔥 여기에 추가! 전체 스크롤바 숨김 */
+    body::-webkit-scrollbar,
+    html::-webkit-scrollbar {
+        display: none;
+    }
+
+    body, html {
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+    }
    </style>
 
    <!-- Firebase 인증 스크립트 -->
