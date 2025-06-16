@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMARTPAT - 베타 테스트 신청</title>    
+    <title>SMARTPAT 베타 테스트 신청</title>
     <style>
         * {
             margin: 0;
@@ -12,326 +12,629 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
             min-height: 100vh;
             padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 배경 장식 요소 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            overflow: hidden;
+            position: relative;
+            z-index: 10;
         }
 
+        /* 헤더 */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem;
             text-align: center;
+            margin-bottom: 2rem;
         }
 
-        .header h1 {
-            font-size: 2rem;
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 500;
             margin-bottom: 0.5rem;
         }
 
-        .header p {
-            opacity: 0.9;
-            font-size: 1.1rem;
+        .description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            line-height: 1.6;
         }
 
+        /* 신청서 폼 */
         .form-container {
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 
+                0 25px 50px rgba(30, 58, 138, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1E3A8A;
+            margin-bottom: 1.5rem;
+            text-align: center;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
         }
 
-        .form-group label {
+        .form-label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            color: #333;
+            color: #374151;
+            font-size: 0.95rem;
         }
 
         .required {
-            color: #e74c3c;
+            color: #dc2626;
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
             font-size: 1rem;
-            transition: border-color 0.3s;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: #ffffff;
         }
 
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
         }
 
-        .form-group textarea {
+        .form-textarea {
             resize: vertical;
             min-height: 100px;
         }
 
-        .phone-verification {
-            display: flex;
-            gap: 1rem;
-            align-items: end;
-        }
-
-        .phone-input {
-            flex: 1;
-        }
-
-        .verify-btn {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 8px;
+        .form-select {
             cursor: pointer;
-            white-space: nowrap;
-            transition: background 0.3s;
         }
 
-        .verify-btn:hover:not(:disabled) {
-            background: #5a6fd8;
-        }
-
-        .verify-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
-        .verification-code {
-            display: none;
+        /* 체크박스 스타일 */
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
             margin-top: 1rem;
         }
 
-        .code-input-group {
-            display: flex;
-            gap: 1rem;
-            align-items: end;
+        .checkbox-input {
+            width: 18px;
+            height: 18px;
+            accent-color: #3B82F6;
+            margin-top: 2px;
         }
 
-        .submit-btn {
-            width: 100%;
-            background: #667eea;
-            color: white;
+        .checkbox-label {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #4B5563;
+        }
+
+        .checkbox-label a {
+            color: #3B82F6;
+            text-decoration: none;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        /* 버튼 스타일 */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.875rem 1.5rem;
             border: none;
-            padding: 1rem;
-            border-radius: 8px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
-            margin-top: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
-        .submit-btn:hover:not(:disabled) {
-            background: #5a6fd8;
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
         }
 
-        .submit-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        .btn:hover::before {
+            left: 100%;
         }
 
-        .info-box {
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: 0 8px 8px 0;
+        .btn-primary {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
         }
 
-        .info-box h3 {
-            color: #667eea;
-            margin-bottom: 0.5rem;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
         }
 
-        .info-box p {
-            color: #666;
-            line-height: 1.5;
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
+        .btn-secondary {
+            background: #ffffff;
+            color: #6B7280;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-secondary:hover {
+            background: #f9fafb;
+            border-color: #d1d5db;
+            transform: translateY(-1px);
+        }
+
+        /* 로딩 및 메시지 */
         .loading {
             display: none;
             text-align: center;
-            color: #667eea;
             margin-top: 1rem;
+            color: #6B7280;
+            font-weight: 500;
         }
 
-        .error-message {
-            background: #fee;
-            color: #c33;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-top: 1rem;
-            display: none;
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e5e7eb;
+            border-top: 2px solid #3B82F6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .success-message {
-            background: #e8f5e8;
-            color: #2d5a2d;
-            padding: 1rem;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: #0369a1;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
             margin-top: 1rem;
             display: none;
+            border-left: 4px solid #0369a1;
+            font-weight: 500;
         }
 
-        .countdown {
-            color: #667eea;
-            font-weight: 600;
+        .error-message {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #dc2626;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            display: none;
+            border-left: 4px solid #dc2626;
+            font-weight: 500;
         }
 
-         /* ✨ 여기에 SMARTPAT 스타일 추가 ✨ */
-        .app-title {
-            font-family: 'Arial', 'Helvetica', sans-serif;
+        /* 반응형 디자인 */
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .form-container {
+                padding: 2rem 1.5rem;
+                border-radius: 20px;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* 모달 스타일 */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideIn 0.3s ease;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.3rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content {
+            padding: 2rem;
+            line-height: 1.6;
+            color: #374151;
+        }
+
+        .modal-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-section h4 {
             color: #1E3A8A;
-            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
 
-        .app-subtitle {
-            font-size: 16px;
-            color: #6B7280;
-            margin-top: 8px;
-            font-weight: 400;
+        .modal-section p {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
         }
 
-        .app-title::before {
-            content: "⚡ ";
-            margin-right: 8px;
+        .modal-section ul {
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-section li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .modal-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .modal-btn-secondary {
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e5e7eb;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translate(-50%, -60%);
+            }
+            to { 
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        /* 개인정보 링크 스타일 */
+        .privacy-link {
             color: #3B82F6;
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .privacy-link:hover {
+            color: #1E3A8A;
+        }
+
+        /* 접근성 */
+        .btn:focus {
+            outline: 2px solid #3B82F6;
+            outline-offset: 2px;
+        }
+
+        .form-input:invalid {
+            border-color: #e5e7eb;
+        }
+
+        .form-input:invalid:focus {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- 헤더 -->
         <div class="header">
-            <h1>SMARTPAT</h1>
-            <p>스마트 보정 플랫폼 베타 테스트 신청</p>
+            <div class="logo">SMARTPAT</div>
+            <div class="subtitle">베타 테스트 신청</div>
         </div>
 
+        <!-- 신청서 폼 -->
         <div class="form-container">
-            <div class="info-box">
-                <h3>베타 테스트 안내</h3>
-                <p>SMARTPAT은 특허 보정서 작성을 돕는 전문 도구입니다. 현재 변리사 전용 베타 테스트를 진행하고 있으며, 신청서 검토 후 승인된 분들께만 서비스를 제공합니다.</p>
-            </div>
-
+            <h2 class="form-title">변리사 정보 입력</h2>
+            
             <form id="applicationForm">
                 <div class="form-group">
-                    <label for="realName">성명 <span class="required">*</span></label>
-                    <input type="text" id="realName" name="realName" required placeholder="실명을 입력해주세요">
+                    <label for="realName" class="form-label">성명 <span class="required">*</span></label>
+                    <input type="text" id="realName" name="realName" class="form-input" required 
+                           placeholder="홍길동">
                 </div>
 
                 <div class="form-group">
-                    <label for="patentOffice">소속 특허사무소 <span class="required">*</span></label>
-                    <input type="text" id="patentOffice" name="patentOffice" required placeholder="예: 김앤장 특허법인">
-                </div>
-
-                <div class="form-group">
-                    <label for="position">직책/직급 <span class="required">*</span></label>
-                    <select id="position" name="position" required>
+                    <label for="position" class="form-label">직책 <span class="required">*</span></label>
+                    <select id="position" name="position" class="form-select" required>
                         <option value="">선택해주세요</option>
-                        <option value="대표변리사">대표변리사</option>
                         <option value="파트너변리사">파트너변리사</option>
+                        <option value="대표변리사">대표변리사</option>
                         <option value="변리사">변리사</option>
                     </select>
                 </div>
 
                 <div class="form-group">
-                    <label for="experience">특허 업무 경력 <span class="required">*</span></label>
-                    <select id="experience" name="experience" required>
-                        <option value="">선택해주세요</option>
-                        <option value="1년 미만">1년 미만</option>
-                        <option value="1-3년">1-3년</option>
-                        <option value="3-5년">3-5년</option>
-                        <option value="5-10년">5-10년</option>
-                        <option value="10년 이상">10년 이상</option>
-                    </select>
+                    <label for="company" class="form-label">소속 기관 <span class="required">*</span></label>
+                    <input type="text" id="company" name="company" class="form-input" required 
+                           placeholder="김앤장특허법인">
                 </div>
 
                 <div class="form-group">
-                    <label for="specialField">전문 분야 (복수 선택 가능)</label>
-                    <input type="text" id="specialField" name="specialField" placeholder="예: 전기전자, 반도체, 통신, 기계, 화학, 바이오, 의약, 소프트웨어, AI/ML 등">
+                    <label for="specialField" class="form-label">전문 분야</label>
+                    <input type="text" id="specialField" name="specialField" class="form-input" 
+                           placeholder="전기전자, 반도체, 통신, 기계, 화학, 바이오, 의약, 소프트웨어, AI/ML 등">
                 </div>
 
                 <div class="form-group">
-                    <label for="phoneNumber">휴대폰 번호 <span class="required">*</span></label>
-                    <div class="phone-verification">
-                        <div class="phone-input">
-                            <input type="tel" id="phoneNumber" name="phoneNumber" required placeholder="010-0000-0000" maxlength="13">
-                        </div>
-                        <button type="button" class="verify-btn" id="sendVerificationBtn">인증번호 전송</button>
-                    </div>
-                    
-                    <div class="verification-code" id="verificationSection">
-                        <label for="verificationCode">인증번호 <span class="required">*</span></label>
-                        <div class="code-input-group">
-                            <div class="phone-input">
-                                <input type="text" id="verificationCode" name="verificationCode" placeholder="6자리 인증번호" maxlength="6">
-                            </div>
-                            <button type="button" class="verify-btn" id="verifyCodeBtn">확인</button>
-                        </div>
-                        <p style="margin-top: 0.5rem; color: #666; font-size: 0.9rem;">
-                            <span id="countdown"></span>
-                        </p>
-                    </div>
+                    <label for="phone" class="form-label">연락처 <span class="required">*</span></label>
+                    <input type="tel" id="phone" name="phone" class="form-input" required 
+                           placeholder="010-0000-0000">
                 </div>
 
                 <div class="form-group">
-                    <label for="purpose">베타 테스트 참여 목적 <span class="required">*</span></label>
-                    <textarea id="purpose" name="purpose" required placeholder="SMARTPAT을 어떤 용도로 사용하실 예정인지, 기대하시는 점은 무엇인지 자세히 작성해주세요."></textarea>
+                    <label for="motivation" class="form-label">베타 테스트 참여 이유 <span class="required">*</span></label>
+                    <textarea id="motivation" name="motivation" class="form-textarea" required
+                              placeholder="SMARTPAT 베타 테스트에 참여하고 싶은 이유나 기대하는 점을 자유롭게 작성해주세요."></textarea>
                 </div>
 
                 <div class="form-group">
-                    <label for="referrer">추천인 (선택사항)</label>
-                    <input type="text" id="referrer" name="referrer" placeholder="추천해주신 분의 성함이나 소속을 입력해주세요">
+                    <label for="referrer" class="form-label">추천인 (선택사항)</label>
+                    <input type="text" id="referrer" name="referrer" class="form-input" 
+                           placeholder="추천해주신 분의 성함이나 소속을 입력해주세요">
                 </div>
 
-                <button type="submit" class="submit-btn" id="submitBtn" disabled>
-                    베타 테스트 신청하기
-                </button>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="agreement" name="agreement" class="checkbox-input" required>
+                    <label for="agreement" class="checkbox-label">
+                        <span class="privacy-link" onclick="showPrivacyModal()">개인정보 수집 및 이용</span>에 동의합니다. <span class="required">*</span>
+                    </label>
+                </div>
 
-                <div class="loading" id="loading">처리 중...</div>
-                <div class="error-message" id="errorMessage"></div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="goBack()">
+                        돌아가기
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        신청서 제출
+                    </button>
+                </div>
+
+                <div class="loading" id="loading">신청서 제출 중</div>
                 <div class="success-message" id="successMessage"></div>
+                <div class="error-message" id="errorMessage"></div>
             </form>
+        </div>
+    </div>
+
+    <!-- 개인정보처리방침 모달 -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">개인정보 수집 및 이용 동의</h3>
+                <button class="modal-close" onclick="closePrivacyModal()">&times;</button>
+            </div>
+            <div class="modal-content">
+                <div class="modal-section">
+                    <h4>1. 개인정보 수집 목적</h4>
+                    <p>SMARTPAT 베타 테스트 참여자 관리 및 서비스 제공</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>2. 수집하는 개인정보 항목</h4>
+                    <ul>
+                        <li>필수항목: 성명, 직책, 소속기관, 업무경력, 연락처</li>
+                        <li>선택항목: 전문분야, 참여동기, 추천인</li>
+                        <li>자동수집: 이메일 주소(Google 로그인), 서비스 이용기록</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>3. 개인정보 보유 및 이용기간</h4>
+                    <p>베타 테스트 기간 중 + 종료 후 1년간 보관 후 파기</p>
+                    <p>단, 서비스 정식 출시 시 별도 동의를 통해 지속 이용 가능</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>4. 개인정보 제3자 제공</h4>
+                    <p>수집된 개인정보는 원칙적으로 제3자에게 제공하지 않습니다.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>5. 개인정보 처리위탁</h4>
+                    <p>서비스 운영을 위해 다음 업체에 개인정보 처리를 위탁합니다:</p>
+                    <ul>
+                        <li>Google Firebase: 사용자 인증 및 데이터 저장</li>
+                        <li>Netlify: 웹사이트 호스팅</li>
+                    </ul>
+                </div>
+
+                <div class="modal-section">
+                    <h4>6. 정보주체의 권리</h4>
+                    <p>개인정보 열람, 정정·삭제, 처리정지 요구권을 행사할 수 있으며, 고객센터를 통해 신청 가능합니다.</p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>7. 개인정보보호 책임자</h4>
+                    <p>문의사항이 있으시면 아래로 연락해주세요:</p>
+                    <p>이메일: privacy@smartpat.co.kr</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="closePrivacyModal()">닫기</button>
+                <button class="modal-btn modal-btn-primary" onclick="agreeAndClose()">동의하고 닫기</button>
+            </div>
         </div>
     </div>
 
     <!-- Firebase SDK -->
     <script type="module">
-        // Firebase 설정
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
-        import { 
-            getAuth, 
-            onAuthStateChanged, 
-            setPersistence,
-            browserSessionPersistence  // 이 줄 추가
-        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
-        import { 
-            getFirestore, 
-            doc, 
-            setDoc, 
-            getDoc 
-        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
 
         // Firebase 설정
         const firebaseConfig = {
@@ -348,51 +651,99 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        
-        // 세션 지속성 설정 - 브라우저 종료 시 로그아웃
-        setPersistence(auth, browserSessionPersistence)
-          .then(() => {
-            console.log('세션 설정: 브라우저 종료 시 자동 로그아웃');
-          })
-          .catch((error) => {
-            console.error('세션 설정 오류:', error);
-          });    
 
-        // 전역 변수
-        let currentUser = null;
-        let isPhoneVerified = false;
-        let verificationId = null;
-        let countdownTimer = null;
-
-        // DOM 요소
+        // UI 요소
         const form = document.getElementById('applicationForm');
-        const phoneInput = document.getElementById('phoneNumber');
-        const sendVerificationBtn = document.getElementById('sendVerificationBtn');
-        const verificationSection = document.getElementById('verificationSection');
-        const verificationCodeInput = document.getElementById('verificationCode');
-        const verifyCodeBtn = document.getElementById('verifyCodeBtn');
-        const submitBtn = document.getElementById('submitBtn');
         const loading = document.getElementById('loading');
-        const errorMessage = document.getElementById('errorMessage');
         const successMessage = document.getElementById('successMessage');
-        const countdown = document.getElementById('countdown');
+        const errorMessage = document.getElementById('errorMessage');
 
-        // 유틸리티 함수
+        let currentUser = null;
+
+        // 인증 상태 확인
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                console.log('SMARTPAT 사용자 확인됨:', user);
+                
+                // 이미 신청서를 제출했는지 확인
+                try {
+                    const userDoc = await getDoc(doc(db, 'users', user.uid));
+                    if (userDoc.exists() && userDoc.data().realName) {
+                        // 이미 신청서를 제출한 경우 로그인 페이지로
+                        console.log('이미 신청서 제출 완료');
+                        window.location.href = '/login.html';
+                    }
+                } catch (error) {
+                    console.error('사용자 정보 확인 오류:', error);
+                }
+            } else {
+                console.log('사용자 인증 필요');
+                window.location.href = '/login.html';
+            }
+        });
+
+        // 폼 제출 처리
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!currentUser) {
+                showError('로그인이 필요합니다.');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const formData = new FormData(form);
+                const applicationData = {
+                    // 기본 정보
+                    uid: currentUser.uid,
+                    email: currentUser.email,
+                    displayName: currentUser.displayName,
+                    
+                    // 신청서 정보 (기존 필드명과 호환)
+                    realName: formData.get('realName'),
+                    patentOffice: formData.get('company'), // company → patentOffice 매핑
+                    position: formData.get('position'),
+                    experience: formData.get('experience'),
+                    specialField: formData.get('specialField') || '',
+                    phoneNumber: formData.get('phone'), // phone → phoneNumber 매핑
+                    purpose: formData.get('motivation'), // motivation → purpose 매핑
+                    referrer: formData.get('referrer') || '',
+                    
+                    // 메타 정보
+                    status: 'pending',
+                    submittedAt: serverTimestamp(),
+                    updatedAt: serverTimestamp(),
+                    phoneVerified: false // 핸드폰 인증 제거했으므로 false
+                };
+
+                // Firestore에 저장
+                await setDoc(doc(db, 'users', currentUser.uid), applicationData, { merge: true });
+
+                showSuccess(`${applicationData.realName}님의 베타 테스트 신청이 접수되었습니다! 검토 후 연락드리겠습니다.`);
+                
+                // 3초 후 로그인 페이지로 이동
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 3000);
+
+            } catch (error) {
+                console.error('신청서 제출 오류:', error);
+                showError('신청서 제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+            }
+        });
+
+        // 유틸리티 함수들
         function showLoading() {
             loading.style.display = 'block';
-            errorMessage.style.display = 'none';
             successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
         }
 
         function hideLoading() {
             loading.style.display = 'none';
-        }
-
-        function showError(message) {
-            hideLoading();
-            errorMessage.textContent = message;
-            errorMessage.style.display = 'block';
-            successMessage.style.display = 'none';
         }
 
         function showSuccess(message) {
@@ -402,198 +753,45 @@
             errorMessage.style.display = 'none';
         }
 
-        // 휴대폰 번호 포맷팅
-        function formatPhoneNumber(value) {
-            const numbers = value.replace(/[^\d]/g, '');
-            if (numbers.length <= 3) {
-                return numbers;
-            } else if (numbers.length <= 7) {
-                return `${numbers.slice(0, 3)}-${numbers.slice(3)}`;
-            } else {
-                return `${numbers.slice(0, 3)}-${numbers.slice(3, 7)}-${numbers.slice(7, 11)}`;
-            }
+        function showError(message) {
+            hideLoading();
+            errorMessage.textContent = message;
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
         }
 
-        // 카운트다운 시작
-        function startCountdown(seconds) {
-            let timeLeft = seconds;
-            countdown.textContent = `${timeLeft}초 후 재전송 가능`;
-            
-            countdownTimer = setInterval(() => {
-                timeLeft--;
-                if (timeLeft > 0) {
-                    countdown.textContent = `${timeLeft}초 후 재전송 가능`;
-                } else {
-                    clearInterval(countdownTimer);
-                    countdown.textContent = '';
-                    sendVerificationBtn.disabled = false;
-                    sendVerificationBtn.textContent = '재전송';
-                }
-            }, 1000);
-        }
+        // 전역 함수들
+        window.goBack = function() {
+            window.location.href = '/login.html';
+        };
 
-        // 인증번호 전송 (시뮬레이션)
-        async function sendVerificationCode() {
-            const phoneNumber = phoneInput.value.replace(/[^\d]/g, '');
-            
-            if (phoneNumber.length !== 11) {
-                showError('올바른 휴대폰 번호를 입력해주세요.');
-                return;
+        // 개인정보처리방침 모달 관련 함수들
+        window.showPrivacyModal = function() {
+            document.getElementById('privacyModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // 스크롤 방지
+        };
+
+        window.closePrivacyModal = function() {
+            document.getElementById('privacyModal').style.display = 'none';
+            document.body.style.overflow = 'auto'; // 스크롤 복원
+        };
+
+        window.agreeAndClose = function() {
+            document.getElementById('agreement').checked = true; // 체크박스 자동 체크
+            closePrivacyModal();
+        };
+
+        // 모달 외부 클릭 시 닫기
+        document.getElementById('privacyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePrivacyModal();
             }
-
-            showLoading();
-            
-            try {
-                // 실제 SMS 전송 대신 시뮬레이션
-                // 실제 구현 시 Firebase Phone Auth 또는 SMS API 사용
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                // 개발용 고정 인증번호 (실제로는 랜덤 생성)
-                verificationId = '123456';
-                
-                hideLoading();
-                verificationSection.style.display = 'block';
-                sendVerificationBtn.disabled = true;
-                sendVerificationBtn.textContent = '전송됨';
-                
-                startCountdown(180); // 3분
-                showSuccess('인증번호가 전송되었습니다. (개발용: 123456)');
-                
-            } catch (error) {
-                console.error('인증번호 전송 오류:', error);
-                showError('인증번호 전송에 실패했습니다. 다시 시도해주세요.');
-            }
-        }
-
-        // 인증번호 확인
-        async function verifyCode() {
-            const code = verificationCodeInput.value;
-            
-            if (code.length !== 6) {
-                showError('6자리 인증번호를 입력해주세요.');
-                return;
-            }
-
-            showLoading();
-            
-            try {
-                // 실제 인증 확인 대신 시뮬레이션
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                if (code === verificationId) {
-                    isPhoneVerified = true;
-                    hideLoading();
-                    showSuccess('휴대폰 인증이 완료되었습니다.');
-                    verifyCodeBtn.disabled = true;
-                    verifyCodeBtn.textContent = '인증완료';
-                    verificationCodeInput.disabled = true;
-                    clearInterval(countdownTimer);
-                    countdown.textContent = '인증 완료';
-                    updateSubmitButton();
-                } else {
-                    showError('인증번호가 일치하지 않습니다.');
-                }
-                
-            } catch (error) {
-                console.error('인증번호 확인 오류:', error);
-                showError('인증번호 확인에 실패했습니다. 다시 시도해주세요.');
-            }
-        }
-
-        // 제출 버튼 상태 업데이트
-        function updateSubmitButton() {
-            const form = document.getElementById('applicationForm');
-            const formData = new FormData(form);
-            
-            const required = ['realName', 'patentOffice', 'position', 'experience', 'phoneNumber', 'purpose'];
-            const isFormValid = required.every(field => formData.get(field)) && isPhoneVerified;
-            
-            submitBtn.disabled = !isFormValid;
-        }
-
-        // 신청서 제출
-        async function submitApplication(event) {
-            event.preventDefault();
-            
-            if (!isPhoneVerified) {
-                showError('휴대폰 인증을 완료해주세요.');
-                return;
-            }
-
-            showLoading();
-            
-            try {
-                const formData = new FormData(form);
-                const applicationData = {
-                    // 기본 정보
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    googleDisplayName: currentUser.displayName,
-                    
-                    // 신청서 정보
-                    realName: formData.get('realName'),
-                    patentOffice: formData.get('patentOffice'),
-                    position: formData.get('position'),
-                    experience: formData.get('experience'),
-                    specialField: formData.get('specialField') || '',
-                    phoneNumber: formData.get('phoneNumber'),
-                    purpose: formData.get('purpose'),
-                    referrer: formData.get('referrer') || '',
-                    
-                    // 메타 정보
-                    status: 'pending',
-                    applicationDate: new Date(),
-                    phoneVerified: true,
-                    lastLoginAt: new Date()
-                };
-
-                // Firestore에 저장
-                await setDoc(doc(db, 'users', currentUser.uid), applicationData);
-                
-                hideLoading();
-                showSuccess('베타 테스트 신청이 완료되었습니다! 검토 후 연락드리겠습니다.');
-                
-                // 3초 후 대기 페이지로 이동
-                setTimeout(() => {
-                    window.location.href = '/';
-                }, 3000);
-                
-            } catch (error) {
-                console.error('신청서 제출 오류:', error);
-                showError('신청서 제출에 실패했습니다. 다시 시도해주세요.');
-            }
-        }
-
-        // 이벤트 리스너
-        phoneInput.addEventListener('input', (e) => {
-            e.target.value = formatPhoneNumber(e.target.value);
-            updateSubmitButton();
         });
 
-        sendVerificationBtn.addEventListener('click', sendVerificationCode);
-        verifyCodeBtn.addEventListener('click', verifyCode);
-        form.addEventListener('submit', submitApplication);
-        form.addEventListener('input', updateSubmitButton);
-
-        // 인증 상태 확인
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                currentUser = user;
-                console.log('로그인된 사용자:', user);
-                
-                // 이미 신청서를 제출했는지 확인
-                try {
-                    const userDoc = await getDoc(doc(db, 'users', user.uid));
-                    if (userDoc.exists() && userDoc.data().realName) {
-                        // 이미 신청서를 제출한 경우
-                        window.location.href = '/';
-                    }
-                } catch (error) {
-                    console.error('사용자 정보 확인 오류:', error);
-                }
-            } else {
-                // 로그인되지 않은 경우 로그인 페이지로 리다이렉트
-                window.location.href = '/login.html';
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePrivacyModal();
             }
         });
     </script>
