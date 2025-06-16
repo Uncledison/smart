@@ -21,27 +21,29 @@
             position: relative;
         }
 
-        /* 배경 장식 */
+        /* 배경 플로우 화살표 */
         body::before {
             content: '';
             position: absolute;
-            top: 20%;
-            right: -5%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 1;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 600px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 10 L50 160 M35 145 L50 160 L65 145' stroke='rgba(255,255,255,0.08)' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ctext x='50' y='180' text-anchor='middle' fill='rgba(255,255,255,0.1)' font-size='8' font-family='system-ui'%3E업로드 → 테이블 → 편집%3C/text%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+            z-index: 2;
+            pointer-events: none;
         }
 
         body::after {
             content: '';
             position: absolute;
-            bottom: -20%;
+            bottom: -30%;
             left: -10%;
             width: 500px;
             height: 500px;
-            background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
             border-radius: 50%;
             z-index: 1;
         }
@@ -56,28 +58,74 @@
             z-index: 10;
         }
 
-        /* 상단 헤더 */
-        .header {
+        /* 상단 헤더 - index.html과 동일하게 */
+        .app-header {
             background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
             color: white;
-            padding: 20px 30px;
+            padding: 18px 30px;
+            position: relative;
             box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
-            flex-shrink: 0;
-        }
-        
-        .header h1 {
-            font-size: 26px;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .platform-subtitle {
+        .app-branding {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .app-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+        
+        .app-subtitle {
             font-size: 14px;
             color: rgba(255, 255, 255, 0.85);
-            text-align: center;
             font-weight: 500;
+            margin: 0;
+        }
+
+        /* 헤더 컨트롤 버튼들 */
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logout-btn {
+            background: rgba(107, 114, 128, 0.8);
+            border-color: rgba(107, 114, 128, 0.8);
+        }
+
+        .logout-btn:hover {
+            background: rgba(107, 114, 128, 1);
+            border-color: rgba(107, 114, 128, 1);
         }
         
         .main-wrapper {
@@ -102,15 +150,50 @@
             overflow: hidden;
         }
         
-        /* 상단 입력 영역 */
+        /* 상단 입력 영역 - index.html과 동일하게 */
         .upper-section {
-            flex-shrink: 0;
-            padding: 25px 30px;
-            border-bottom: 2px solid #e5e7eb;
             background: white;
-            position: relative;
-            z-index: 10;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+
+        /* 단계별 가이드를 상단으로 이동 */
+        .step-guide-top {
+            display: flex;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 25px;
+            font-size: 12px;
+            color: #1E3A8A;
+            font-weight: 600;
+            margin-bottom: 20px;
+            justify-content: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .step-number {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #3B82F6, #1E3A8A);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
         }
         
         .input-section {
@@ -124,30 +207,43 @@
             font-weight: 600;
         }
         
-        .input-row {
+        .input-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
             display: flex;
+            gap: 30px;
             align-items: center;
-            gap: 20px;
-            width: 100%;
         }
         
-        .input-container {
-            flex: 1;
-            max-width: 800px;
+        .input-text-area {
+            flex: 2;
+            max-width: 600px;
         }
         
+        .input-buttons-area {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-width: 160px;
+            max-width: 160px;
+            position: relative;
+        }
+
         #claim-input {
             width: 100%;
-            height: 100px;
-            padding: 16px;
+            height: 120px;
             border: 2px solid #e5e7eb;
             border-radius: 12px;
-            font-size: 14px;
+            padding: 16px;
+            font-size: 13px;
             resize: none;
             transition: all 0.3s ease;
             background: white;
             font-family: inherit;
             line-height: 1.6;
+            margin-bottom: 12px;
         }
 
         #claim-input:focus {
@@ -162,12 +258,11 @@
             font-style: normal;
         }
         
-        .button-group {
+        .action-buttons {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            min-width: 180px;
-            flex-shrink: 0;
+            width: 100%;
         }
         
         button {
@@ -689,7 +784,48 @@
         }
         
         /* 반응형 디자인 */
+        @media (max-width: 1024px) {
+            .input-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .input-buttons-area {
+                min-width: auto;
+                max-width: none;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                gap: 12px;
+                justify-content: center;
+            }
+
+            .action-buttons button {
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
         @media (max-width: 768px) {
+            .app-header {
+                padding: 15px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .app-branding {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            .header-controls {
+                justify-content: center;
+            }
+
             .main-wrapper {
                 height: calc(100vh - 15px);
             }
@@ -697,26 +833,24 @@
             .container {
                 flex-direction: column;
             }
-            
-            .input-row {
+
+            .input-content {
                 flex-direction: column;
                 align-items: stretch;
                 gap: 16px;
             }
 
-            .input-container {
+            .input-text-area {
                 max-width: none;
             }
             
-            .button-group {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
+            .action-buttons {
+                flex-direction: column;
                 min-width: auto;
             }
 
-            .button-group button {
-                flex: 1;
+            .action-buttons button {
+                flex: none;
                 min-width: 120px;
             }
             
@@ -738,14 +872,6 @@
                 padding-top: 0;
             }
 
-            .header {
-                padding: 15px 20px;
-            }
-
-            .header h1 {
-                font-size: 22px;
-            }
-
             .upper-section {
                 padding: 20px 15px;
             }
@@ -754,128 +880,140 @@
             .result-section {
                 padding: 20px 15px;
             }
+
+            .step-guide-top {
+                padding: 8px 12px;
+                font-size: 11px;
+                gap: 8px;
+            }
+
+            .step-number {
+                width: 18px;
+                height: 18px;
+                font-size: 9px;
+            }
         }
     </style>
 
     <!-- Firebase 인증 스크립트 -->
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
-        import { 
-            getAuth, 
-            onAuthStateChanged,
-            setPersistence,
-            browserSessionPersistence
-        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
-        import { 
-            getFirestore, 
-            doc, 
-            getDoc 
-        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
+       import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+       import { 
+           getAuth, 
+           onAuthStateChanged,
+           setPersistence,
+           browserSessionPersistence
+       } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+       import { 
+           getFirestore, 
+           doc, 
+           getDoc 
+       } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbDLYn9SRGXjvUh_SFrlUBX4wYBcdln9k",
-            authDomain: "smart-eac10.firebaseapp.com",
-            projectId: "smart-eac10",
-            storageBucket: "smart-eac10.firebasestorage.app",
-            messagingSenderId: "989426802509",
-            appId: "1:989426802509:web:c0c70a856810f8b9ac2104",
-            measurementId: "G-LT29P3YTT2"
-        };
+       const firebaseConfig = {
+           apiKey: "AIzaSyBbDLYn9SRGXjvUh_SFrlUBX4wYBcdln9k",
+           authDomain: "smart-eac10.firebaseapp.com",
+           projectId: "smart-eac10",
+           storageBucket: "smart-eac10.firebasestorage.app",
+           messagingSenderId: "989426802509",
+           appId: "1:989426802509:web:c0c70a856810f8b9ac2104",
+           measurementId: "G-LT29P3YTT2"
+       };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
+       const app = initializeApp(firebaseConfig);
+       const auth = getAuth(app);
+       const db = getFirestore(app);
 
-        setPersistence(auth, browserSessionPersistence)
-          .then(() => {
-            console.log('SMARTPAT 청구항 점검기 세션 설정 완료');
-          })
-          .catch((error) => {
-            console.error('세션 설정 오류:', error);
-          });
+       setPersistence(auth, browserSessionPersistence)
+         .then(() => {
+           console.log('SMARTPAT 청구항 점검기 세션 설정 완료');
+         })
+         .catch((error) => {
+           console.error('세션 설정 오류:', error);
+         });
 
-        function createLoadingOverlay() {
-            const overlay = document.createElement('div');
-            overlay.id = 'auth-loading-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(30, 58, 138, 0.95);
-                backdrop-filter: blur(10px);
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                z-index: 10000;
-                font-family: 'Segoe UI', sans-serif;
-            `;
-            
-            overlay.innerHTML = `
-                <div style="text-align: center; color: white;">
-                    <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;"></div>
-                    <h2 style="color: white; margin-bottom: 12px; font-size: 24px; font-weight: 700;">SMARTPAT</h2>
-                    <p style="color: rgba(255,255,255,0.9); font-size: 16px;">청구항 점검기 인증 확인 중...</p>
-                </div>
-                <style>
-                    @keyframes spin {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                </style>
-            `;
-            
-            document.body.appendChild(overlay);
-        }
+       function createLoadingOverlay() {
+           const overlay = document.createElement('div');
+           overlay.id = 'auth-loading-overlay';
+           overlay.style.cssText = `
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background: rgba(30, 58, 138, 0.95);
+               backdrop-filter: blur(10px);
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               z-index: 10000;
+               font-family: 'Segoe UI', sans-serif;
+           `;
+           
+           overlay.innerHTML = `
+               <div style="text-align: center; color: white;">
+                   <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;"></div>
+                   <h2 style="color: white; margin-bottom: 12px; font-size: 24px; font-weight: 700;">SMARTPAT</h2>
+                   <p style="color: rgba(255,255,255,0.9); font-size: 16px;">청구항 점검기 인증 확인 중...</p>
+               </div>
+               <style>
+                   @keyframes spin {
+                       0% { transform: rotate(0deg); }
+                       100% { transform: rotate(360deg); }
+                   }
+               </style>
+           `;
+           
+           document.body.appendChild(overlay);
+       }
 
-        function removeLoadingOverlay() {
-            const overlay = document.getElementById('auth-loading-overlay');
-            if (overlay) {
-                overlay.remove();
-            }
-        }
+       function removeLoadingOverlay() {
+           const overlay = document.getElementById('auth-loading-overlay');
+           if (overlay) {
+               overlay.remove();
+           }
+       }
 
-        function redirectToLogin() {
-            window.location.href = '/login.html';
-        }
+       function redirectToLogin() {
+           window.location.href = '/login.html';
+       }
 
-        async function checkUserApproval(user) {
-            try {
-                const userDoc = doc(db, 'users', user.uid);
-                const userSnapshot = await getDoc(userDoc);
-                
-                if (userSnapshot.exists()) {
-                    const userData = userSnapshot.data();
-                    return userData.status === 'approved';
-                }
-                return false;
-            } catch (error) {
-                console.error('사용자 승인 상태 확인 오류:', error);
-                return false;
-            }
-        }
+       async function checkUserApproval(user) {
+           try {
+               const userDoc = doc(db, 'users', user.uid);
+               const userSnapshot = await getDoc(userDoc);
+               
+               if (userSnapshot.exists()) {
+                   const userData = userSnapshot.data();
+                   return userData.status === 'approved';
+               }
+               return false;
+           } catch (error) {
+               console.error('사용자 승인 상태 확인 오류:', error);
+               return false;
+           }
+       }
 
-        function showPendingApproval() {
-            document.body.innerHTML = `
-                <div style="
-                    min-height: 100vh;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-                    font-family: 'Segoe UI', sans-serif;
-                    color: white;
-                    text-align: center;
-                    padding: 2rem;
-                ">
-                    <div style="
-                        background: rgba(255, 255, 255, 0.95);
-                        backdrop-filter: blur(20px);
-                        color: #333;
-                  padding: 3rem;
+       function showPendingApproval() {
+           document.body.innerHTML = `
+               <div style="
+                   min-height: 100vh;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: center;
+                   align-items: center;
+                   background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+                   font-family: 'Segoe UI', sans-serif;
+                   color: white;
+                   text-align: center;
+                   padding: 2rem;
+               ">
+                   <div style="
+                       background: rgba(255, 255, 255, 0.95);
+                       backdrop-filter: blur(20px);
+                       color: #333;
+                       padding: 3rem;
                        border-radius: 24px;
                        box-shadow: 0 25px 50px rgba(30, 58, 138, 0.3);
                        max-width: 500px;
@@ -936,35 +1074,67 @@
        } else {
            initializeAuth();
        }
+
+       // 전역 auth 객체 설정 (로그아웃 버튼에서 사용)
+       window.auth = auth;
    </script>
    
 </head>
 <body>
    <div class="app-container">
-       <!-- 상단 헤더 -->
-       <div class="header">
-           <h1>SMARTPAT 청구항 점검기</h1>
-           <p class="platform-subtitle">스마트 보정 플랫폼</p>
-       </div>
+       <!-- 상단 헤더 - index.html과 동일한 구조 -->
+       <header class="app-header">
+           <!-- 브랜딩 영역 -->
+           <div class="app-branding">
+               <h1 class="app-title">SMARTPAT</h1>
+               <p class="app-subtitle">스마트 보정 플랫폼</p>
+           </div>
+           
+           <!-- 헤더 컨트롤 버튼들 -->
+           <div class="header-controls">
+               <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
+           </div>
+       </header>
        
        <div class="main-wrapper">
            <div class="container">
                <div class="content-panel">
                    <!-- 상단 입력 영역 -->
                    <div class="upper-section">
+                       <!-- 단계별 가이드를 상단으로 이동 -->
+                       <div class="step-guide-top">
+                           <div class="step-item">
+                               <div class="step-number">1</div>
+                               <span>파일 업로드</span>
+                           </div>
+                           →
+                           <div class="step-item">
+                               <div class="step-number">2</div>
+                               <span>비교 테이블 생성</span>
+                           </div>
+                           →
+                           <div class="step-item">
+                               <div class="step-number">3</div>
+                               <span>편집 & 다운로드</span>
+                           </div>
+                       </div>
+
                        <div class="input-section">
                            <h2>청구항 입력</h2>
-                           <div class="input-row">
-                               <div class="input-container">
+                           <div class="input-content">
+                               <div class="input-text-area">
                                    <textarea id="claim-input" placeholder="여기에 청구항을 입력하세요. 각 청구항은 [청구항 1], [청구항 2] 형식으로 입력하세요."></textarea>
                                </div>
-                               <div class="button-group">
-                                   <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
-                                   <button id="file-upload-button" class="secondary">📎 파일 업로드</button>
-                                   <button id="clear-button" class="secondary">초기화</button>
-                                   <button id="check-button">청구항 점검</button>
-                                   <button id="save-to-amendment-button" class="secondary">📝 보정서로 저장</button>
-                                   <button id="download-button" class="download-button">💾 다운로드</button>
+                               
+                               <div class="input-buttons-area">
+                                   <div class="action-buttons">
+                                       <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
+                                       <button id="file-upload-button" class="secondary">📎 파일 업로드</button>
+                                       <button id="clear-button" class="secondary">초기화</button>
+                                       <button id="check-button">청구항 점검</button>
+                                       <button id="save-to-amendment-button" class="secondary">📝 보정서로 저장</button>
+                                       <button id="download-button" class="download-button">💾 다운로드</button>
+                                   </div>
                                </div>
                            </div>
                        </div>
@@ -1014,5 +1184,31 @@
    <!-- mammoth 라이브러리 로드 -->
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
    <script src="patent-claim-checker.js"></script>
+
+   <!-- 로그아웃 버튼 기능 -->
+   <script>
+   document.addEventListener('DOMContentLoaded', function() {
+       const logoutBtn = document.getElementById('logoutBtn');
+       
+       // 로그아웃 버튼 기능
+       if (logoutBtn) {
+           logoutBtn.addEventListener('click', function() {
+               if (confirm('로그아웃 하시겠습니까?')) {
+                   if (typeof auth !== 'undefined' && auth) {
+                       auth.signOut().then(() => {
+                           console.log('SMARTPAT 청구항 점검기 로그아웃 완료');
+                           window.location.href = '/login.html';
+                       }).catch((error) => {
+                           console.error('로그아웃 오류:', error);
+                           window.location.href = '/login.html';
+                       });
+                   } else {
+                       window.location.href = '/login.html';
+                   }
+               }
+           });
+       }
+   });
+   </script>
 </body>
 </html>
