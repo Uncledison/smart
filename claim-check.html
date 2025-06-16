@@ -954,6 +954,58 @@
                font-weight: bold;
            }
        }
+
+        /* 접힌 상태에서만 보이는 메인 버튼들 */
+        .collapsed-main-buttons {
+            display: none;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+            background: white;
+        }
+
+        .collapsed-main-buttons.show {
+            display: flex;
+        }
+
+        /* 접힌 상태 버튼들 색상 유지 */
+        #check-button-collapsed {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
+            color: white !important;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+            min-width: 120px;
+        }
+
+        #check-button-collapsed:hover {
+            background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%) !important;
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+        }
+
+        #save-to-amendment-button-collapsed {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            color: white !important;
+            box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
+            min-width: 120px;
+        }
+
+        #save-to-amendment-button-collapsed:hover {
+            background: linear-gradient(135deg, #047857 0%, #065F46 100%) !important;
+            box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4) !important;
+        }
+
+        #download-button-collapsed {
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
+            color: white !important;
+            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
+            min-width: 120px;
+        }
+        
+        #download-button-collapsed:hover {
+            background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
+            box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
+        }
    </style>
 
    <!-- Firebase 인증 스크립트 -->
