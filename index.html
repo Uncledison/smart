@@ -5,79 +5,141 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SMARTPAT - 스마트 보정 플랫폼</title>
     
-  <!-- ✨ 여기에 새로운 메타태그들 추가 ✨ -->
+    <!-- 메타태그 -->
     <meta name="description" content="SMARTPAT - 변리사를 위한 스마트 보정 플랫폼. 보정이력 검증과 청구항 점검.">
     <meta name="keywords" content="SMARTPAT, 스마트보정, 보정서, 청구항점검, 변리사, 특허">
     <meta name="author" content="SMARTPAT">
-
-        <!-- SNS 공유용 오픈그래프 태그 -->
     <meta property="og:title" content="SMARTPAT - 스마트 보정 플랫폼">
     <meta property="og:description" content="변리사를 위한 AI 기반 보정서 작성과 청구항 점검 도구">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://smartpat.co.kr">
-    
-    <!-- 트위터 카드 -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="SMARTPAT - 스마트 보정 플랫폼">
     <meta name="twitter:description" content="변리사를 위한 스마트 보정 도구">
-    
-    <!-- 파비콘 (선택사항) -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-    
     
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Malgun Gothic', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
         body {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
             color: #333;
             height: 100vh;
             overflow: hidden;
             font-size: 13px;
+            position: relative;
+        }
+
+        /* 배경 플로우 화살표 */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 600px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 10 L50 160 M35 145 L50 160 L65 145' stroke='rgba(255,255,255,0.08)' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ctext x='50' y='180' text-anchor='middle' fill='rgba(255,255,255,0.1)' font-size='8' font-family='system-ui'%3E업로드 → 테이블 → 편집%3C/text%3E%3C/svg%3E") no-repeat center;
+            background-size: contain;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
         }
         
         .app-container {
             height: 100vh;
             display: flex;
             flex-direction: column;
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            position: relative;
+            z-index: 10;
         }
         
-        /* 상단 헤더 - 중앙 정렬 */
+        /* 상단 헤더 - 슬림화 */
         .app-header {
-            background: white;
-            border-bottom: 1px solid #e9ecef;
-            padding: 30px;
-            text-align: center;
+            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+            color: white;
+            padding: 18px 30px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-branding {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
         
         .app-title {
             font-size: 28px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            letter-spacing: -0.5px;
         }
         
         .app-subtitle {
-            font-size: 16px;
-            color: #6c757d;
-            font-weight: 500;
-        }
-        
-        .header-toggle {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            background: transparent;
-            border: none;
-            color: #6c757d;
             font-size: 14px;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* 헤더 컨트롤 버튼들 */
+        .header-controls {
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .logout-btn {
+            background: rgba(107, 114, 128, 0.8);
+            border-color: rgba(107, 114, 128, 0.8);
+        }
+
+        .logout-btn:hover {
+            background: rgba(107, 114, 128, 1);
+            border-color: rgba(107, 114, 128, 1);
         }
         
         /* 메인 컨텐츠 */
@@ -88,48 +150,41 @@
             overflow: hidden;
         }
         
-        /* 입력 섹션 레이블 */
-        .input-section-label {
-            text-align: center;
-            padding: 12px 0;
-            font-size: 14px;
-            color: #6c757d;
-            background: #f8f9fa;
-            border-top: 1px solid #e9ecef;
-            font-weight: 500;
-        }
-        
-        /* 입력 영역 - 중앙 정렬 */
+        /* 입력 영역 */
         .input-section {
             background: white;
-            padding: 30px;
-            border-bottom: 1px solid #e9ecef;
+            padding: 25px 30px;
+            border-bottom: 1px solid #e5e7eb;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .input-section.collapsed {
-            padding: 15px 30px;
+            padding: 12px 30px;
         }
         
         .input-content {
-            max-width: 1200px;
+            max-width: 900px;
             margin: 0 auto;
             position: relative;
             display: flex;
-            gap: 20px;
-            align-items: flex-start;
+            gap: 30px;
+            align-items: center;
         }
         
         .input-text-area {
-            flex: 3;
+            flex: 2;
+            max-width: 600px;
         }
         
         .input-buttons-area {
-            flex: 1;
+            flex: 0 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            min-width: 200px;
+            gap: 16px;
+            min-width: 160px;
+            max-width: 160px;
+            position: relative;
         }
         
         .input-content.collapsed {
@@ -139,42 +194,52 @@
         .input-area {
             width: 100%;
             height: 120px;
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 16px;
             font-size: 13px;
             resize: none;
-            transition: border-color 0.2s ease;
+            transition: all 0.3s ease;
             background: white;
             font-family: inherit;
-            line-height: 1.5;
-            margin-bottom: 10px;
+            line-height: 1.6;
+            margin-bottom: 12px;
         }
         
         .input-area:focus {
             outline: none;
-            border-color: #1B2951;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            transform: translateY(-1px);
         }
         
         .input-area::placeholder {
-            color: #9ca3af;
+            color: #9CA3AF;
             font-style: normal;
         }
         
         .file-status {
             text-align: center;
             font-size: 13px;
-            color: #28a745;
-            font-weight: 500;
-            margin-bottom: 15px;
+            color: #059669;
+            font-weight: 600;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border-radius: 8px;
+            border-left: 4px solid #059669;
         }
         
         .file-status.error {
-            color: #dc3545;
+            color: #dc2626;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border-left-color: #dc2626;
         }
         
         .file-status.loading {
-            color: #007bff;
+            color: #2563eb;
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            border-left-color: #2563eb;
         }
         
         .action-buttons {
@@ -184,78 +249,71 @@
             width: 100%;
         }
         
-        .action-buttons .file-btn,
-        .action-buttons .generate-btn {
-            width: 100%;
-            text-align: center;
-            justify-content: center;
-        }
-        
         .file-input {
             display: none;
         }
         
         .file-btn {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            color: #6c757d;
-            border: 1px solid #dee2e6;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .file-btn:hover {
-            background: linear-gradient(135deg, #e9ecef 0%, #d1d5db 100%);
-            border-color: #adb5bd;
-            color: #495057;
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-        }
-        
-        .generate-btn {
-            background: linear-gradient(135deg, #1B2951 0%, #2c3e50 100%);
-            color: white;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #6B7280;
+            border: 2px solid #e5e7eb;
+            padding: 14px 16px;
+            border-radius: 12px;
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(27, 41, 81, 0.2);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        
+        .file-btn:hover {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-color: #cbd5e1;
+            color: #475569;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .generate-btn {
+            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            text-align: center;
         }
         
         .generate-btn:hover {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(27, 41, 81, 0.3);
+            background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
         
         /* 툴바 */
         .toolbar {
-            background: white;
-            border-bottom: 1px solid #e9ecef;
-            padding: 12px 30px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 30px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
         
         .toolbar-left {
-            font-size: 13px;
-            color: #6c757d;
-            flex: 1;
-            text-align: center;
-            margin-right: 20px;
+            display: none;
         }
         
         .toolbar-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
         }
         
         .toolbar-group {
@@ -265,82 +323,117 @@
         }
         
         .toolbar-input {
-            border: 1px solid #dee2e6;
-            border-radius: 4px;
-            padding: 6px 10px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 8px 12px;
             font-size: 13px;
             width: 120px;
             background: white;
+            transition: all 0.3s ease;
         }
         
         .toolbar-input:focus {
             outline: none;
-            border-color: #1B2951;
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .toolbar-btn {
-            background: #f8f9fa;
-            color: #495057;
-            border: 1px solid #dee2e6;
-            padding: 6px 12px;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #475569;
+            border: 1px solid #e2e8f0;
+            padding: 8px 12px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 13px;
+            font-weight: 600;
             white-space: nowrap;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
         
         .toolbar-btn:hover {
-            background: #e9ecef;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
         }
         
         .toolbar-btn.primary {
-            background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: white;
             border: none;
-            box-shadow: 0 1px 3px rgba(156, 163, 175, 0.3);
+            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
         }
         
         .toolbar-btn.primary:hover {
-            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(107, 114, 128, 0.4);
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
         
         .toolbar-btn.success {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
             border: none;
-            box-shadow: 0 1px 3px rgba(108, 117, 125, 0.3);
+            box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
         }
         
         .toolbar-btn.success:hover {
-            background: linear-gradient(135deg, #495057 0%, #343a40 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(73, 80, 87, 0.4);
+            background: linear-gradient(135deg, #047857 0%, #065F46 100%);
+            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+        }
+
+        .toolbar-btn.special {
+            background: linear-gradient(135deg, #7C3AED 0%, #5B21B6 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 3px 12px rgba(124, 58, 237, 0.4);
+            position: relative;
+            overflow: hidden;
+            font-weight: 700;
+        }
+
+        .toolbar-btn.special::before {
+            content: '⭐';
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            font-size: 12px;
+            animation: sparkle 2s infinite;
+        }
+
+        .toolbar-btn.special:hover {
+            background: linear-gradient(135deg, #5B21B6 0%, #4C1D95 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.2); }
         }
         
         .toolbar-btn.warning {
-            background: linear-gradient(135deg, #374151 0%, #1f2937 100%);
+            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
             color: white;
             border: none;
-            box-shadow: 0 1px 3px rgba(55, 65, 81, 0.3);
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.3);
         }
         
         .toolbar-btn.warning:hover {
-            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 6px rgba(31, 41, 55, 0.4);
+            background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.4);
         }
         
         .toolbar-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
         }
         
         .toolbar-separator {
-            color: #dee2e6;
-            margin: 0 5px;
+            color: #cbd5e1;
+            margin: 0 8px;
+            font-size: 14px;
         }
         
         /* 테이블 영역 */
@@ -349,8 +442,9 @@
             overflow: hidden;
             background: white;
             margin: 20px 30px 30px 30px;
-            border: 1px solid #e9ecef;
-            border-radius: 4px;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
         
         .table-container {
@@ -365,47 +459,50 @@
         }
         
         .comparison-table th {
-            background: #f8f9fa;
-            color: #495057;
-            padding: 12px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: #374151;
+            padding: 16px 12px;
             text-align: center;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 2px solid #e5e7eb;
             position: sticky;
             top: 0;
             z-index: 10;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 13px;
         }
         
         .comparison-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #f1f3f4;
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
             vertical-align: top;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         
         .paragraph-num {
             width: 80px;
             text-align: center;
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #6c757d;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            font-weight: 700;
+            color: #6B7280;
             cursor: pointer;
             font-size: 12px;
+            border-right: 1px solid #e5e7eb;
         }
         
         .paragraph-num:hover {
-            background: #e9ecef;
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            color: #374151;
         }
         
         .text-cell {
             width: calc(50% - 40px);
             cursor: pointer;
-            transition: background-color 0.2s ease;
+            transition: all 0.3s ease;
+            padding: 12px 16px;
         }
         
         .text-cell:hover {
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
         }
         
         .text-cell.editing {
@@ -414,111 +511,112 @@
         
         .inline-editor {
             width: 100%;
-            border: 2px solid #1B2951;
-            border-radius: 4px;
-            padding: 10px 12px;
+            border: 2px solid #3B82F6;
+            border-radius: 8px;
+            padding: 12px;
             font-size: 13px;
-            line-height: 1.5;
+            line-height: 1.6;
             resize: vertical;
             min-height: 60px;
             font-family: inherit;
+            background: white;
         }
         
         .inline-editor:focus {
             outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
         
         .edit-buttons {
-            margin-top: 6px;
+            margin-top: 8px;
             text-align: right;
             display: flex;
-            gap: 6px;
+            gap: 8px;
             justify-content: flex-end;
         }
         
         .edit-btn {
-            padding: 4px 8px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 3px;
+            border-radius: 6px;
             font-size: 11px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
         }
         
         .edit-btn.save {
-            background: #28a745;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
             color: white;
+            box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+        }
+
+        .edit-btn.save:hover {
+            background: linear-gradient(135deg, #047857 0%, #065F46 100%);
+            transform: translateY(-1px);
         }
         
         .edit-btn.cancel {
-            background: #6c757d;
+            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
             color: white;
+            box-shadow: 0 2px 4px rgba(107, 114, 128, 0.3);
+        }
+
+        .edit-btn.cancel:hover {
+            background: linear-gradient(135deg, #4B5563 0%, #374151 100%);
+            transform: translateY(-1px);
         }
         
-        /* 하이라이트 */
+        /* 하이라이트 효과 */
         .highlight-change {
-            background: #fff3cd;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             animation: highlight-fade 2s ease-out;
         }
         
         @keyframes highlight-fade {
-            0% { background: #ffeaa7; }
+            0% { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
             100% { background: transparent; }
         }
         
         .highlight-search {
-            background: #fff3cd;
-            color: #856404;
-            padding: 1px 3px;
-            border-radius: 2px;
-            font-weight: 600;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 700;
         }
         
-        .text-difference {
-            background: #f8d7da;
-            color: #721c24;
-        }
-        
-        .text-addition {
-            background: #d4edda;
-            color: #155724;
-        }
-        
-        /* 단어 변경 하이라이트 - 빨간색 폰트 + 노란형광펜 배경 */
         .word-changed {
-            color: #dc3545 !important;
-            font-weight: 600 !important;
-            background: #ffeb3b !important;
-            padding: 2px 4px !important;
-            border-radius: 3px !important;
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #ffeb3b 0%, #fdd835 100%) !important;
+            padding: 3px 6px !important;
+            border-radius: 4px !important;
         }
         
-        /* 조사 변경 하이라이트 */
         .particle-changed {
-            color: #dc3545 !important;
-            font-weight: 600 !important;
-            background: #ffeb3b !important;
-            padding: 2px 4px !important;
-            border-radius: 3px !important;
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #ffeb3b 0%, #fdd835 100%) !important;
+            padding: 3px 6px !important;
+            border-radius: 4px !important;
             text-decoration: underline;
         }
         
-        /* 단어 추가 */
         .word-added {
-            color: #28a745 !important;
-            font-weight: 600 !important;
-            background: #d4edda !important;
-            padding: 2px 4px !important;
-            border-radius: 3px !important;
+            color: #059669 !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%) !important;
+            padding: 3px 6px !important;
+            border-radius: 4px !important;
         }
         
-        /* 단어 삭제 */
         .word-deleted {
-            color: #dc3545 !important;
-            font-weight: 600 !important;
-            background: #f8d7da !important;
-            padding: 2px 4px !important;
-            border-radius: 3px !important;
+            color: #dc2626 !important;
+            font-weight: 700 !important;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%) !important;
+            padding: 3px 6px !important;
+            border-radius: 4px !important;
             text-decoration: line-through;
         }
         
@@ -529,47 +627,123 @@
             align-items: center;
             justify-content: center;
             height: 100%;
-            color: #6c757d;
-            padding: 40px;
+            color: #6B7280;
+            padding: 60px 40px;
+            position: relative;
         }
         
         .empty-icon {
-            font-size: 36px;
-            margin-bottom: 16px;
-            opacity: 0.5;
+            font-size: 48px;
+            margin-bottom: 20px;
+            opacity: 0.7;
+            background: linear-gradient(135deg, #3B82F6, #1E3A8A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .empty-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: #495057;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #374151;
         }
         
         .empty-subtitle {
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
-            max-width: 300px;
-            line-height: 1.4;
+            max-width: 350px;
+            line-height: 1.6;
+            color: #6B7280;
+        }
+
+        /* 단계별 진행 가이드 */
+        .step-guide {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(59, 130, 246, 0.1);
+            border-radius: 25px;
+            font-size: 12px;
+            color: #1E3A8A;
+            font-weight: 600;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .step-number {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #3B82F6, #1E3A8A);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
         }
         
-        /* 반응형 */
+        /* 반응형 디자인 */
         @media (max-width: 1024px) {
             .toolbar {
                 flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
+                gap: 12px;
+                align-items: center;
             }
             
             .toolbar-right {
                 justify-content: center;
                 flex-wrap: wrap;
             }
+
+            .input-content {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .input-buttons-area {
+                min-width: auto;
+                max-width: none;
+            }
+
+            .action-buttons {
+                flex-direction: row;
+                gap: 12px;
+                justify-content: center;
+            }
+
+            .file-btn, .generate-btn {
+                flex: 1;
+                min-width: 0;
+            }
         }
         
         @media (max-width: 768px) {
             .app-header {
-                padding: 20px 15px;
+                padding: 15px;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 12px;
+            }
+
+            .app-branding {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+            }
+
+            .header-controls {
+                justify-content: center;
             }
             
             .input-section {
@@ -577,782 +751,534 @@
             }
             
             .toolbar {
-                padding: 10px 15px;
+                padding: 15px;
             }
             
             .table-section {
                 margin: 15px 15px 20px 15px;
+                border-radius: 12px;
             }
-            
+
             .action-buttons {
                 flex-direction: column;
             }
+
+            .toolbar-right {
+                gap: 12px;
+            }
+
+            .toolbar-group {
+                gap: 6px;
+            }
+
+            .toolbar-input {
+                width: 100px;
+            }
         }
         
-        /* 스크롤바 */
+        /* 커스텀 스크롤바 */
         .table-container::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         
         .table-container::-webkit-scrollbar-track {
-            background: #f1f1f1;
+            background: #f1f5f9;
+            border-radius: 4px;
         }
         
         .table-container::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 3px;
+            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+            border-radius: 4px;
         }
         
         .table-container::-webkit-scrollbar-thumb:hover {
-            background: #a1a1a1;
+            background: linear-gradient(135deg, #94a3b8, #64748b);
         }
 
- /* ✨ 여기에 SMARTPAT 스타일 추가 ✨ */
-        .app-title {
-            font-family: 'Arial', 'Helvetica', sans-serif;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: #1E3A8A;
-            font-size: 28px;
+        /* Firefox 스크롤바 */
+        .table-container {
+            scrollbar-width: thin;
+            scrollbar-color: #cbd5e1 #f1f5f9;
         }
-
-        .app-subtitle {
-            font-size: 16px;
-            color: #6B7280;
-            margin-top: 8px;
-            font-weight: 400;
-        }
-
-        .app-title::before {
-            content: "⚡ ";
-            margin-right: 8px;
-            color: #3B82F6;
-        }
-        
     </style>
-<!-- Firebase 인증 보호 스크립트 - index.html의 </head> 태그 직전에 추가 -->
-<script type="module">
-    // Firebase 설정
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
-    import { 
-        getAuth, 
-        onAuthStateChanged, 
-        setPersistence,
-        browserSessionPersistence  // 이 2줄만 추가
-    } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
-    import { 
-        getFirestore, 
-        doc, 
-        getDoc 
-    } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
 
-    // Firebase 설정
-    const firebaseConfig = {
-        apiKey: "AIzaSyBbDLYn9SRGXjvUh_SFrlUBX4wYBcdln9k",
-        authDomain: "smart-eac10.firebaseapp.com",
-        projectId: "smart-eac10",
-        storageBucket: "smart-eac10.firebasestorage.app",
-        messagingSenderId: "989426802509",
-        appId: "1:989426802509:web:c0c70a856810f8b9ac2104",
-        measurementId: "G-LT29P3YTT2"
-    };
+    <!-- Firebase 인증 보호 스크립트 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
+        import { 
+            getAuth, 
+            onAuthStateChanged, 
+            setPersistence,
+            browserSessionPersistence
+        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js';
+        import { 
+            getFirestore, 
+            doc, 
+            getDoc 
+        } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js';
 
-        // Firebase 초기화
+        const firebaseConfig = {
+            apiKey: "AIzaSyBbDLYn9SRGXjvUh_SFrlUBX4wYBcdln9k",
+            authDomain: "smart-eac10.firebaseapp.com",
+            projectId: "smart-eac10",
+            storageBucket: "smart-eac10.firebasestorage.app",
+            messagingSenderId: "989426802509",
+            appId: "1:989426802509:web:c0c70a856810f8b9ac2104",
+            measurementId: "G-LT29P3YTT2"
+        };
+
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
         
-        // 세션 지속성 설정 - 브라우저 종료 시 로그아웃
         setPersistence(auth, browserSessionPersistence)
           .then(() => {
-            console.log('세션 설정: 브라우저 종료 시 자동 로그아웃');
+            console.log('SMARTPAT 세션 설정 완료');
           })
           .catch((error) => {
             console.error('세션 설정 오류:', error);
           });
         
-        // 로딩 오버레이 생성
-        function createLoadingOverlay() {    
-        const overlay = document.createElement('div');
-        overlay.id = 'auth-loading-overlay';
-        overlay.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 10000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        `;
-        
-        overlay.innerHTML = `
-            <div style="text-align: center;">
-                <div style="width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid #667eea; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                <h2 style="color: #667eea; margin-bottom: 10px;">AI Worker</h2>
-                <p style="color: #666; font-size: 16px;">인증 확인 중...</p>
-            </div>
-            <style>
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
-            </style>
-        `;
-        
-        document.body.appendChild(overlay);
-    }
+       function createLoadingOverlay() {    
+           const overlay = document.createElement('div');
+           overlay.id = 'auth-loading-overlay';
+           overlay.style.cssText = `
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background: rgba(30, 58, 138, 0.95);
+               backdrop-filter: blur(10px);
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               z-index: 10000;
+               font-family: 'Segoe UI', sans-serif;
+           `;
+           
+           overlay.innerHTML = `
+               <div style="text-align: center; color: white;">
+                   <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;"></div>
+                   <h2 style="color: white; margin-bottom: 12px; font-size: 24px; font-weight: 700;">SMARTPAT</h2>
+                   <p style="color: rgba(255,255,255,0.9); font-size: 16px;">인증 확인 중...</p>
+               </div>
+               <style>
+                   @keyframes spin {
+                       0% { transform: rotate(0deg); }
+                       100% { transform: rotate(360deg); }
+                   }
+               </style>
+           `;
+           
+           document.body.appendChild(overlay);
+       }
 
-    // 오버레이 제거
-    function removeLoadingOverlay() {
-        const overlay = document.getElementById('auth-loading-overlay');
-        if (overlay) {
-            overlay.remove();
-        }
-    }
+       function removeLoadingOverlay() {
+           const overlay = document.getElementById('auth-loading-overlay');
+           if (overlay) {
+               overlay.remove();
+           }
+       }
 
-    // 로그인 페이지로 리다이렉트
-    function redirectToLogin() {
-        window.location.href = '/login.html';
-    }
+       function redirectToLogin() {
+           window.location.href = '/login.html';
+       }
 
-    // 사용자 승인 상태 확인
-    async function checkUserApproval(user) {
-        try {
-            const userDoc = doc(db, 'users', user.uid);
-            const userSnapshot = await getDoc(userDoc);
-            
-            if (userSnapshot.exists()) {
-                const userData = userSnapshot.data();
-                return userData.status === 'approved';
-            }
-            return false;
-        } catch (error) {
-            console.error('사용자 승인 상태 확인 오류:', error);
-            return false;
-        }
-    }
+       async function checkUserApproval(user) {
+           try {
+               const userDoc = doc(db, 'users', user.uid);
+               const userSnapshot = await getDoc(userDoc);
+               
+               if (userSnapshot.exists()) {
+                   const userData = userSnapshot.data();
+                   return userData.status === 'approved';
+               }
+               return false;
+           } catch (error) {
+               console.error('사용자 승인 상태 확인 오류:', error);
+               return false;
+           }
+       }
 
-    // 승인 대기 페이지 표시
-    function showPendingApproval() {
-        document.body.innerHTML = `
-            <div style="
-                min-height: 100vh;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                color: white;
-                text-align: center;
-                padding: 2rem;
-            ">
-                <div style="
-                    background: white;
-                    color: #333;
-                    padding: 3rem;
-                    border-radius: 20px;
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-                    max-width: 500px;
-                ">
-                    <h1 style="color: #667eea; margin-bottom: 1rem;">AI Worker</h1>
-                    <h2 style="margin-bottom: 1.5rem;">승인 대기 중</h2>
-                    <p style="margin-bottom: 2rem; line-height: 1.6;">
-                        베타 테스트 신청이 접수되었습니다.<br>
-                        관리자 승인 후 서비스를 이용하실 수 있습니다.<br><br>
-                        승인 완료 시 이메일로 알림을 드릴 예정입니다.
-                    </p>
-                    <button onclick="window.location.href='/login.html'" style="
-                        background: #667eea;
-                        color: white;
-                        border: none;
-                        padding: 12px 24px;
-                        border-radius: 8px;
-                        font-size: 16px;
-                        cursor: pointer;
-                        transition: background 0.3s;
-                    " onmouseover="this.style.background='#5a6fd8'" onmouseout="this.style.background='#667eea'">
-                        다시 로그인
-                    </button>
-                </div>
-            </div>
-        `;
-    }
+       function showPendingApproval() {
+           document.body.innerHTML = `
+               <div style="
+                   min-height: 100vh;
+                   display: flex;
+                   flex-direction: column;
+                   justify-content: center;
+                   align-items: center;
+                   background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+                   font-family: 'Segoe UI', sans-serif;
+                   color: white;
+                   text-align: center;
+                   padding: 2rem;
+               ">
+                   <div style="
+                       background: rgba(255, 255, 255, 0.95);
+                       backdrop-filter: blur(20px);
+                       color: #333;
+                       padding: 3rem;
+                       border-radius: 24px;
+                       box-shadow: 0 25px 50px rgba(30, 58, 138, 0.3);
+                       max-width: 500px;
+                       border: 1px solid rgba(255, 255, 255, 0.2);
+                   ">
+                       <h1 style="color: #1E3A8A; margin-bottom: 1rem; font-size: 28px; font-weight: 700;">SMARTPAT</h1>
+                       <h2 style="margin-bottom: 1.5rem; color: #374151;">승인 대기 중</h2>
+                       <p style="margin-bottom: 2rem; line-height: 1.6; color: #6B7280;">
+                           베타 테스트 신청이 접수되었습니다.<br>
+                           관리자 승인 후 서비스를 이용하실 수 있습니다.<br><br>
+                           승인 완료 시 이메일로 알림을 드릴 예정입니다.
+                       </p>
+                       <button onclick="window.location.href='/login.html'" style="
+                           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+                           color: white;
+                           border: none;
+                           padding: 12px 24px;
+                           border-radius: 12px;
+                           font-size: 16px;
+                           font-weight: 600;
+                           cursor: pointer;
+                           transition: all 0.3s;
+                           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                       " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'" 
+                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
+                           다시 로그인
+                       </button>
+                   </div>
+               </div>
+           `;
+       }
 
-    // 사용자 정보 표시 (선택사항)
-    function addUserInfo(user) {
-        // 페이지 상단에 사용자 정보 추가
-        const userInfoDiv = document.createElement('div');
-        userInfoDiv.style.cssText = `
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        `;
-        
-        userInfoDiv.innerHTML = `
-            <img src="${user.photoURL}" alt="프로필" style="width: 30px; height: 30px; border-radius: 50%;">
-            <span>${user.displayName}</span>
-            <button onclick="firebase.auth().signOut().then(() => window.location.href='/login.html')" 
-                    style="background: #ff6b6b; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
-                로그아웃
-            </button>
-        `;
-        
-        document.body.appendChild(userInfoDiv);
-    }
+       function initializeAuth() {
+           createLoadingOverlay();
+           
+           onAuthStateChanged(auth, async (user) => {
+               if (user) {
+                   console.log('SMARTPAT 로그인된 사용자:', user);
+                   
+                   const isApproved = await checkUserApproval(user);
+                   
+                   if (isApproved) {
+                       console.log('승인된 사용자 - SMARTPAT 서비스 접근 허용');
+                       removeLoadingOverlay();
+                   } else {
+                       console.log('승인되지 않은 사용자');
+                       showPendingApproval();
+                   }
+               } else {
+                   console.log('로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트');
+                   redirectToLogin();
+               }
+           });
+       }
 
-    // 인증 상태 확인
-    function initializeAuth() {
-        // 로딩 오버레이 표시
-        createLoadingOverlay();
-        
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                // 로그인된 사용자
-                console.log('로그인된 사용자:', user);
-                
-                // 승인 상태 확인
-                const isApproved = await checkUserApproval(user);
-                
-                if (isApproved) {
-                    // 승인된 사용자 - 서비스 이용 허용
-                    console.log('승인된 사용자 - 서비스 접근 허용');
-                    removeLoadingOverlay();
-                    // addUserInfo(user); // 사용자 정보 표시 (선택사항)
-                } else {
-                    // 승인되지 않은 사용자
-                    console.log('승인되지 않은 사용자');
-                    showPendingApproval();
-                }
-            } else {
-                // 로그인되지 않은 사용자
-                console.log('로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트');
-                redirectToLogin();
-            }
-        });
-    }
+       if (document.readyState === 'loading') {
+           document.addEventListener('DOMContentLoaded', initializeAuth);
+       } else {
+           initializeAuth();
+       }
 
-    // DOM 로드 완료 후 인증 확인 시작
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initializeAuth);
-    } else {
-        initializeAuth();
-    }
-</script>
-    
+       // 전역 auth 객체 설정 (로그아웃 버튼에서 사용)
+       window.auth = auth;
+   </script>
+   
 </head>
 <body>
+   <div class="app-container">
+       <!-- 상단 헤더 -->
+       <header class="app-header">
+           <!-- 브랜딩 영역 -->
+           <div class="app-branding">
+               <h1 class="app-title">SMARTPAT</h1>
+               <p class="app-subtitle">스마트 보정 플랫폼</p>
+           </div>
+           
+           <!-- 헤더 컨트롤 버튼들 -->
+           <div class="header-controls">
+               <button id="toggleInputBtn" class="header-btn">접기</button>
+               <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
+           </div>
+       </header>
+       
+       <div class="main-content">
+           <!-- 입력 영역 -->
+           <div class="input-section" id="inputSection">
+               <div class="input-content" id="inputContent">
+                   <div class="input-text-area">
+                       <div class="file-status" id="fileStatus"></div>
+                       <textarea class="input-area" id="originalText" 
+                       placeholder="명세서 파일(word, txt)을 업로드하거나 드래그앤 드랍하세요!"></textarea>
+                   </div>
+                   
+                   <div class="input-buttons-area">
+                       <div class="action-buttons">
+                           <input type="file" class="file-input" id="fileInput" accept=".docx,.txt">
+                           <button class="file-btn" id="fileBtn">📎 파일 업로드</button>
+                           <button class="generate-btn" id="generateBtn">비교 테이블 생성</button>
+                       </div>
+                   </div>
+               </div>
+           </div>
+           
+           <!-- 툴바 -->
+           <div class="toolbar">
+               <div class="toolbar-left" id="toolbarMessage">
+                   <!-- 메시지 제거됨 -->
+               </div>
+               
+               <div class="toolbar-right">
+                   <div class="toolbar-group">
+                       <input type="text" class="toolbar-input" id="searchInput" placeholder="찾기">
+                       <button class="toolbar-btn primary" id="findBtn">찾기</button>
+                   </div>
+                   
+                   <span class="toolbar-separator">|</span>
+                   
+                   <div class="toolbar-group">
+                       <input type="text" class="toolbar-input" id="replaceInput" placeholder="바꾸기">
+                       <button class="toolbar-btn success" id="replaceAllBtn">일괄변경</button>
+                   </div>
+                   
+                   <span class="toolbar-separator">|</span>
+                   
+                   <div class="toolbar-group">
+                       <button class="toolbar-btn" id="undoBtn">↶ 실행취소</button>
+                       <button class="toolbar-btn" id="redoBtn">↷ 다시실행</button>
+                   </div>
+                   
+                   <span class="toolbar-separator">|</span>
+                   
+                   <div class="toolbar-group">
+                       <button class="toolbar-btn special" id="claimCheckBtn">⚖️ 청구항 점검</button>
+                       <button class="toolbar-btn warning" id="downloadBtn">💾 다운로드</button>
+                   </div>
+               </div>
+           </div>
+           
+           <!-- 테이블 영역 -->
+           <div class="table-section">
+               <div class="table-container" id="tableContainer">
+                   <div class="empty-state" id="emptyState">
+                       <div class="empty-icon">📋</div>
+                       <div class="empty-title">비교 테이블이 생성되지 않았습니다</div>
+                       
+                       <!-- 단계별 가이드 -->
+                       <div class="step-guide">
+                           <div class="step-item">
+                               <div class="step-number">1</div>
+                               <span>파일 업로드</span>
+                           </div>
+                           →
+                           <div class="step-item">
+                               <div class="step-number">2</div>
+                               <span>비교 테이블 생성</span>
+                           </div>
+                           →
+                           <div class="step-item">
+                               <div class="step-number">3</div>
+                               <span>편집 & 다운로드</span>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
 
-<!-- index.html의 <body> 태그 바로 다음에 추가하세요 -->
+   <!-- mammoth 라이브러리 로드 -->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+   <script src="amendment-checker.js"></script>
 
-<!-- 상단 헤더 버튼 영역 -->
-<div class="header-controls">
-    <div class="header-buttons">
-        <button id="toggleInputBtn" class="header-btn">접기</button>
-        <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
-    </div>
-</div>
+   <!-- 헤더 버튼 기능 -->
+   <script>
+   document.addEventListener('DOMContentLoaded', function() {
+       const toggleInputBtn = document.getElementById('toggleInputBtn');
+       const logoutBtn = document.getElementById('logoutBtn');
+       
+       // 접기/펼치기 버튼 기능
+       if (toggleInputBtn) {
+           toggleInputBtn.addEventListener('click', function() {
+               const inputSection = document.getElementById('inputSection');
+               const inputContent = document.getElementById('inputContent');
+               
+               if (inputContent && inputSection) {
+                   const isCollapsed = inputContent.classList.contains('collapsed');
+                   
+                   if (isCollapsed) {
+                       inputContent.classList.remove('collapsed');
+                       inputSection.classList.remove('collapsed');
+                       toggleInputBtn.textContent = '접기';
+                   } else {
+                       inputContent.classList.add('collapsed');
+                       inputSection.classList.add('collapsed');
+                       toggleInputBtn.textContent = '펼치기';
+                   }
+               }
+           });
+       }
+       
+       // 로그아웃 버튼 기능
+       if (logoutBtn) {
+           logoutBtn.addEventListener('click', function() {
+               if (confirm('로그아웃 하시겠습니까?')) {
+                   if (typeof auth !== 'undefined' && auth) {
+                       auth.signOut().then(() => {
+                           console.log('SMARTPAT 로그아웃 완료');
+                           window.location.href = '/login.html';
+                       }).catch((error) => {
+                           console.error('로그아웃 오류:', error);
+                           window.location.href = '/login.html';
+                       });
+                   } else {
+                       window.location.href = '/login.html';
+                   }
+               }
+           });
+       }
+   });
+   </script>
 
-<!-- 상단 헤더 버튼 스타일 (CSS) -->
-<style>
-.header-controls {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 1000;
-    display: flex;
-    gap: 10px;
-}
+   <!-- 보안 스크립트 -->
+   <script>
+   (function() {
+       'use strict';
+       
+       // 우클릭 방지
+       document.addEventListener('contextmenu', function(e) {
+           e.preventDefault();
+           e.stopPropagation();
+           return false;
+       });
+       
+       // 키보드 단축키 방지
+       document.addEventListener('keydown', function(e) {
+           // F12 방지
+           if (e.key === 'F12' || e.keyCode === 123) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + I (개발자도구) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + J (콘솔) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + Shift + C (요소 검사) 방지
+           if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + U (소스보기) 방지
+           if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+           
+           // Ctrl + S (저장) 방지
+           if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
+               e.preventDefault();
+               e.stopPropagation();
+               return false;
+           }
+       });
+       
+       // 텍스트 선택 방지 (입력 요소 제외)
+       document.addEventListener('selectstart', function(e) {
+           if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+               return true;
+           }
+           e.preventDefault();
+           return false;
+       });
+       
+       // 드래그 방지
+       document.addEventListener('dragstart', function(e) {
+           e.preventDefault();
+           return false;
+       });
+       
+       // 개발자도구 감지
+       let devtools = { opened: false, orientation: null };
+       const threshold = 160;
+       
+       function detectDevTools() {
+           if (window.outerHeight - window.innerHeight > threshold || 
+               window.outerWidth - window.innerWidth > threshold) {
+               if (!devtools.opened) {
+                   devtools.opened = true;
+                   console.clear();
+                   console.log('%cSMARTPAT 개발자도구 사용이 제한되어 있습니다.', 
+                       'color: #1E3A8A; font-size: 20px; font-weight: bold;');
+               }
+           } else {
+               devtools.opened = false;
+           }
+       }
+       
+       setInterval(detectDevTools, 500);
+       
+       // 콘솔 차단
+       console.log = console.error = console.warn = function() { return; };
+       
+       // 디버거 차단
+       setInterval(function() { debugger; }, 1000);
+       
+       // iframe 차단
+       if (window.self !== window.top) {
+           window.top.location = window.self.location;
+       }
 
-.header-buttons {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-}
-
-.header-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.9);
-    color: #333;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(10px);
-}
-
-.header-btn:hover {
-    background: rgba(255, 255, 255, 1);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-1px);
-}
-
-.logout-btn {
-    background: rgba(52, 58, 64, 0.9);
-    color: white;
-}
-
-.logout-btn:hover {
-    background: rgba(52, 58, 64, 1);
-}
-
-/* 스마트 보정서 제목과 버튼들이 같은 줄에 오도록 조정 */
-h1 {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-}
-
-/* 파일 업로드와 비교 테이블 생성 버튼 스타일 개선 */
-#fileBtn, #generateBtn {
-    padding: 8px 16px !important;
-    font-size: 14px !important;
-    min-width: auto !important;
-    width: auto !important;
-    height: auto !important;
-    line-height: 1.4 !important;
-}
-
-/* 입력 영역 우측 버튼들을 텍스트 영역과 세로 정렬 */
-.input-section {
-    position: relative;
-}
-
-.input-section .right-panel {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: stretch;
-    gap: 10px;
-    padding-top: 0;
-}
-
-/* 텍스트 영역과 버튼들의 상단 정렬 */
-.input-content {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-}
-
-.input-content textarea {
-    flex: 1;
-}
-
-.input-content .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 140px;
-    align-self: flex-start;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-    .header-controls {
-        top: 10px;
-        right: 10px;
-    }
-    
-    .header-btn {
-        padding: 6px 12px;
-        font-size: 13px;
-    }
-    
-    h1 {
-        margin: 15px 0;
-        font-size: 1.5rem;
-    }
-}
-</style>
-
-<!-- 상단 헤더 버튼 JavaScript 기능 -->
-<script>
-// 페이지 로드 후 버튼 이벤트 설정
-document.addEventListener('DOMContentLoaded', function() {
-    const toggleInputBtn = document.getElementById('toggleInputBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    
-    // 접기/펼치기 버튼 기능 (스마트 보정서 구조에 맞춤)
-    if (toggleInputBtn) {
-        toggleInputBtn.addEventListener('click', function() {
-            // 기존 접기 버튼과 동일한 기능 실행
-            const existingCollapseBtn = document.getElementById('collapseBtn');
-            const inputSection = document.getElementById('inputSection');
-            const inputContent = document.getElementById('inputContent');
-            
-            if (inputContent && inputSection) {
-                const isCollapsed = inputContent.classList.contains('collapsed');
-                
-                if (isCollapsed) {
-                    // 펼치기
-                    inputContent.classList.remove('collapsed');
-                    inputSection.classList.remove('collapsed');
-                    toggleInputBtn.textContent = '접기';
-                    if (existingCollapseBtn) {
-                        existingCollapseBtn.textContent = '접기';
-                    }
-                } else {
-                    // 접기
-                    inputContent.classList.add('collapsed');
-                    inputSection.classList.add('collapsed');
-                    toggleInputBtn.textContent = '열기';
-                    if (existingCollapseBtn) {
-                        existingCollapseBtn.textContent = '펼치기';
-                    }
-                }
-            } else {
-                // 대체 방법: 기존 접기 버튼 클릭 시뮬레이션
-                if (existingCollapseBtn) {
-                    existingCollapseBtn.click();
-                    // 버튼 텍스트 동기화
-                    setTimeout(() => {
-                        const currentText = existingCollapseBtn.textContent;
-                        if (currentText === '접기') {
-                            toggleInputBtn.textContent = '접기';
-                        } else {
-                            toggleInputBtn.textContent = '열기';
-                        }
-                    }, 100);
-                }
-            }
-        });
-        
-        // 기존 접기 버튼과 동기화
-        const existingCollapseBtn = document.getElementById('collapseBtn');
-        if (existingCollapseBtn) {
-            existingCollapseBtn.addEventListener('click', function() {
-                setTimeout(() => {
-                    const currentText = existingCollapseBtn.textContent;
-                    if (currentText === '접기') {
-                        toggleInputBtn.textContent = '접기';
-                    } else {
-                        toggleInputBtn.textContent = '열기';
-                    }
-                }, 100);
-            });
-        }
-    }
-    
-    // 로그아웃 버튼 기능
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', function() {
-            if (confirm('로그아웃 하시겠습니까?')) {
-                // Firebase 로그아웃
-                if (typeof auth !== 'undefined') {
-                    auth.signOut().then(() => {
-                        console.log('로그아웃 완료');
-                        window.location.href = '/login.html';
-                    }).catch((error) => {
-                        console.error('로그아웃 오류:', error);
-                        // 오류가 있어도 로그인 페이지로 이동
-                        window.location.href = '/login.html';
-                    });
-                } else {
-                    // auth 객체가 없는 경우 바로 로그인 페이지로 이동
-                    window.location.href = '/login.html';
-                }
-            }
-        });
-    }
-});
-</script>
-    
-    <div class="app-container">
-        <!-- 상단 헤더 - 중앙 정렬 -->
-        <header class="app-header">
-            <button class="header-toggle" id="collapseBtn">접기</button>
-            <h1 class="app-title">SMARTPAT</h1>
-            <p class="app-subtitle">스마트 보정 플랫폼</p>
-        </header>
-        
-        <div class="main-content">
-            <!-- 입력 영역 - 좌우 분할 -->
-            <div class="input-section" id="inputSection">
-                <div class="input-content" id="inputContent">
-                  <div class="input-text-area">
-                        <div class="file-status" id="fileStatus"></div>
-                        <textarea class="input-area" id="originalText" 
-                        placeholder="명세서 파일(word, txt)을 업로드하거나 드래그앤 드랍하세요!"></textarea>
-                  </div>
-                    
-                    <div class="input-buttons-area">
-                        <div class="action-buttons">
-                            <input type="file" class="file-input" id="fileInput" accept=".docx,.txt">
-                            <button class="file-btn" id="fileBtn">📎 파일 업로드</button>
-                            <button class="generate-btn" id="generateBtn">비교 테이블 생성</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 최초 명세서 레이블 -->
-                <div class="input-section-label">최초 명세서</div>
-            </div>
-            
-            <!-- 툴바 -->
-            <div class="toolbar">
-                <div class="toolbar-left" id="toolbarMessage">
-                    최초 명세서를 입력하고 '비교 테이블 생성'을 클릭하세요.
-                </div>
-                
-                <div class="toolbar-right">
-                    <div class="toolbar-group">
-                        <input type="text" class="toolbar-input" id="searchInput" placeholder="찾기">
-                        <button class="toolbar-btn primary" id="findBtn">찾기</button>
-                    </div>
-                    
-                    <span class="toolbar-separator">|</span>
-                    
-                    <div class="toolbar-group">
-                        <input type="text" class="toolbar-input" id="replaceInput" placeholder="바꾸기">
-                        <button class="toolbar-btn success" id="replaceAllBtn">일괄변경</button>
-                    </div>
-                    
-                    <span class="toolbar-separator">|</span>
-                    
-                    <div class="toolbar-group">
-                        <button class="toolbar-btn" id="undoBtn">↶ 실행취소</button>
-                        <button class="toolbar-btn" id="redoBtn">↷ 다시실행</button>
-                    </div>
-                    
-                    <span class="toolbar-separator">|</span>
-                    
-                    <div class="toolbar-group">
-                        <button class="toolbar-btn" id="claimCheckBtn">청구항 점검</button>
-                        <button class="toolbar-btn warning" id="downloadBtn">💾 다운로드</button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 테이블 영역 -->
-            <div class="table-section">
-                <div class="table-container" id="tableContainer">
-                    <div class="empty-state" id="emptyState">
-                        <div class="empty-icon">📋</div>
-                        <div class="empty-title">비교 테이블이 생성되지 않았습니다</div>
-                        <div class="empty-subtitle">
-                            상단에서 최초 명세서를 입력하고 '비교 테이블 생성' 버튼을 클릭하세요
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- mammoth 라이브러리 로드 -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
-    <script src="amendment-checker.js"></script>
-
-<!-- index.html의 </body> 태그 직전에 추가할 코드 -->
-
-<script>
-// 개발자도구 및 우클릭 방지 스크립트
-(function() {
-    'use strict';
-    
-    // 1. 우클릭 방지
-    document.addEventListener('contextmenu', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    });
-    
-    // 2. 키보드 단축키 방지
-    document.addEventListener('keydown', function(e) {
-        // F12 방지
-        if (e.key === 'F12' || e.keyCode === 123) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + Shift + I (개발자도구) 방지
-        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + Shift + J (콘솔) 방지
-        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + Shift + C (요소 검사) 방지
-        if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + U (소스보기) 방지
-        if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + S (저장) 방지
-        if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
-            e.preventDefault();
-            e.stopPropagation();
-            return false;
-        }
-        
-        // Ctrl + A (전체선택) 방지 (선택적)
-        // if (e.ctrlKey && (e.key === 'A' || e.keyCode === 65)) {
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     return false;
-        // }
-        
-        // Ctrl + P (인쇄) 방지 (선택적)
-        // if (e.ctrlKey && (e.key === 'P' || e.keyCode === 80)) {
-        //     e.preventDefault();
-        //     e.stopPropagation();
-        //     return false;
-        // }
-    });
-    
-    // 3. 텍스트 선택 방지 (선택적)
-    document.addEventListener('selectstart', function(e) {
-        // 입력 요소는 선택 허용
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-            return true;
-        }
-        e.preventDefault();
-        return false;
-    });
-    
-    // 4. 드래그 방지
-    document.addEventListener('dragstart', function(e) {
-        e.preventDefault();
-        return false;
-    });
-    
-    // 5. 개발자도구 감지 (고급 기능)
-    let devtools = {
-        opened: false,
-        orientation: null
-    };
-    
-    const threshold = 160;
-    
-    function detectDevTools() {
-        if (window.outerHeight - window.innerHeight > threshold || 
-            window.outerWidth - window.innerWidth > threshold) {
-            if (!devtools.opened) {
-                devtools.opened = true;
-                console.clear();
-                console.log('%c개발자도구 사용이 제한되어 있습니다.', 
-                    'color: red; font-size: 20px; font-weight: bold;');
-                // 경고 메시지 표시 (선택적)
-                // alert('개발자도구 사용이 제한되어 있습니다.');
-            }
-        } else {
-            devtools.opened = false;
-        }
-    }
-    
-    // 주기적으로 개발자도구 감지
-    setInterval(detectDevTools, 500);
-    
-    // 6. 콘솔 메시지 감지 및 차단
-    let consoleLog = console.log;
-    let consoleError = console.error;
-    let consoleWarn = console.warn;
-    
-    console.log = function() {
-        // 개발자가 콘솔에 접근하려 할 때 차단
-        return;
-    };
-    
-    console.error = function() {
-        return;
-    };
-    
-    console.warn = function() {
-        return;
-    };
-    
-    // 7. 디버거 차단
-    setInterval(function() {
-        debugger;
-    }, 1000);
-    
-    // 8. 페이지 언로드 시 경고 (선택적)
-    // window.addEventListener('beforeunload', function(e) {
-    //     e.preventDefault();
-    //     e.returnValue = '';
-    //     return '';
-    // });
-    
-    // 9. iframe 내에서 실행되는 것을 방지
-    if (window.self !== window.top) {
-        window.top.location = window.self.location;
-    }
-    
-    // 10. 특정 사이트에서만 동작하도록 제한 (선택적)
-    // if (window.location.hostname !== 'yourdomain.com') {
-    //     document.body.innerHTML = '<h1>허가되지 않은 접근입니다.</h1>';
-    //     return;
-    // }
-    
-})();
-
-// 추가 보안 - CSS로 선택 방지
-const style = document.createElement('style');
-style.textContent = `
-    * {
-        -webkit-user-select: none !important;
-        -moz-user-select: none !important;
-        -ms-user-select: none !important;
-        user-select: none !important;
-    }
-    
-    input, textarea {
-        -webkit-user-select: text !important;
-        -moz-user-select: text !important;
-        -ms-user-select: text !important;
-        user-select: text !important;
-    }
-    
-    /* 인쇄 시 내용 숨김 */
-    @media print {
-        * {
-            display: none !important;
-        }
-        body::before {
-            content: "인쇄가 제한되어 있습니다.";
-            display: block !important;
-            font-size: 24px;
-            text-align: center;
-            margin-top: 50px;
-        }
-    }
-`;
-document.head.appendChild(style);
-</script>
+       // CSS 보안
+       const style = document.createElement('style');
+       style.textContent = `
+           * {
+               -webkit-user-select: none !important;
+               -moz-user-select: none !important;
+               -ms-user-select: none !important;
+               user-select: none !important;
+           }
+           
+           input, textarea {
+               -webkit-user-select: text !important;
+               -moz-user-select: text !important;
+               -ms-user-select: text !important;
+               user-select: text !important;
+           }
+           
+           @media print {
+               * { display: none !important; }
+               body::before {
+                   content: "SMARTPAT 인쇄가 제한되어 있습니다.";
+                   display: block !important;
+                   font-size: 24px;
+                   text-align: center;
+                   margin-top: 50px;
+                   color: #1E3A8A;
+                   font-weight: bold;
+               }
+           }
+       `;
+       document.head.appendChild(style);
+   })();
+   </script>
 </body>
 </html>
+  
