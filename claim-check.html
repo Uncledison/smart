@@ -836,38 +836,40 @@ html {
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
         }
 
-        /* 커스텀 스크롤바 */
-        .category-content::-webkit-scrollbar,
-        .results-right-panel::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        .scrollable-section::-webkit-scrollbar-track,
-        .category-content::-webkit-scrollbar-track,
-        .results-right-panel::-webkit-scrollbar-track {
-            background: #f1f5f9;
-            border-radius: 4px;
-        }
-        
-        .scrollable-section::-webkit-scrollbar-thumb,
-        .category-content::-webkit-scrollbar-thumb,
-        .results-right-panel::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #cbd5e1, #94a3b8);
-            border-radius: 4px;
-        }
-        
-        .scrollable-section::-webkit-scrollbar-thumb:hover,
-        .category-content::-webkit-scrollbar-thumb:hover,
-        .results-right-panel::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #94a3b8, #64748b);
-        }
+   /* 🎨 3가지 영역 커스텀 스크롤바 */
+.category-content::-webkit-scrollbar,
+#claim-display-right::-webkit-scrollbar,
+.scrollable-section::-webkit-scrollbar {
+    width: 8px;
+}
 
-        /* Firefox 스크롤바 */
-        .category-content,
-        .results-right-panel {
-            scrollbar-width: thin;
-            scrollbar-color: #cbd5e1 #f1f5f9;
-        }
+.category-content::-webkit-scrollbar-track,
+#claim-display-right::-webkit-scrollbar-track,
+.scrollable-section::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+.category-content::-webkit-scrollbar-thumb,
+#claim-display-right::-webkit-scrollbar-thumb,
+.scrollable-section::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+    border-radius: 4px;
+}
+
+.category-content::-webkit-scrollbar-thumb:hover,
+#claim-display-right::-webkit-scrollbar-thumb:hover,
+.scrollable-section::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+}
+
+/* Firefox 스크롤바 */
+.category-content,
+#claim-display-right,
+.scrollable-section {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
         
         /* 반응형 디자인 */
         @media (max-width: 1024px) {
