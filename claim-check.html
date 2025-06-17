@@ -293,13 +293,16 @@ html {
            height: 110px;
            border: 2px dashed #94A3B8;
            border-radius: 16px;
-           padding: 20px; 
+           padding: 20px 35px 20px 20px; /* 오른쪽 패딩 늘림 */
            font-size: 14px;
            resize: none;
            background: white;
            font-family: inherit;
            line-height: 1.6;
            transition: all 0.3s ease;
+           overflow-y: auto; /* 추가 */
+           box-sizing: border-box; /* 추가 */
+           scrollbar-gutter: stable; /* 추가 */
        }
 
        #claim-input:focus {
@@ -934,21 +937,29 @@ html {
 
       /* 🎨 텍스트 입력 영역 전용 커스텀 스크롤바 */
 #claim-input::-webkit-scrollbar {
-    width: 8px;
+    width: 12px;
+    background: rgba(248, 250, 252, 0.8);
 }
 
 #claim-input::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
+    background: rgba(241, 245, 249, 0.3);
+    border-radius: 6px;
+    margin: 4px;
 }
 
 #claim-input::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+    background: linear-gradient(135deg, rgba(203, 213, 225, 0.8), rgba(148, 163, 184, 0.8));
     border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 #claim-input::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #94a3b8, #64748b);
+    background: linear-gradient(135deg, rgba(148, 163, 184, 0.9), rgba(100, 116, 139, 0.9));
+}
+
+#claim-input {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(203, 213, 225, 0.8) rgba(241, 245, 249, 0.3);
 }
 
 /* Firefox용 */
