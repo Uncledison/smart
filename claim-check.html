@@ -932,6 +932,31 @@ html {
            scrollbar-color: #cbd5e1 #f1f5f9;
        }
 
+      /* 🎨 텍스트 입력 영역 전용 커스텀 스크롤바 */
+#claim-input::-webkit-scrollbar {
+    width: 8px;
+}
+
+#claim-input::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 4px;
+}
+
+#claim-input::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+    border-radius: 4px;
+}
+
+#claim-input::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #94a3b8, #64748b);
+}
+
+/* Firefox용 */
+#claim-input {
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
        /* 반응형 디자인 */
        @media (max-width: 1024px) {
            .main-workspace {
