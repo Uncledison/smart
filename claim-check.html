@@ -1378,6 +1378,34 @@ html {
    document.addEventListener('DOMContentLoaded', function() {
        const toggleInputBtn = document.getElementById('toggleInputBtn');
        const logoutBtn = document.getElementById('logoutBtn');
+
+    // 🔥 여기에 상단 접기 함수 추가!
+           function collapseUpperSection() {
+               const upperSection = document.getElementById('upperSection');
+               const inputSection = document.getElementById('inputSection');
+               const stepGuide = document.getElementById('stepGuide');
+               const collapsedMainButtons = document.getElementById('collapsedMainButtons');
+               
+               if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+                   // 접기 실행
+                   upperSection.classList.add('collapsed');
+                   inputSection.classList.add('collapsed');
+                   stepGuide.classList.add('collapsed');
+                   collapsedMainButtons.classList.add('show');
+                   toggleInputBtn.textContent = '펼치기';
+               }
+           }
+       
+           // 🔥 청구항 점검 버튼에 접기 기능 추가
+                const checkButton = document.getElementById('check-button');
+                if (checkButton) {
+                    // 기존 이벤트 리스너를 덮어쓰지 않도록 새로운 이벤트 추가
+                    checkButton.addEventListener('click', function() {
+                        // 상단 접기
+                        collapseUpperSection();
+                    }, true); // capture phase에서 실행하여 우선순위 확보
+                }
+
        
        // 접기/펼치기 버튼 기능
        if (toggleInputBtn) {
