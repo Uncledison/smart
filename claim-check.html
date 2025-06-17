@@ -209,48 +209,77 @@ html {
            padding: 12px 30px;
        }
 
-       /* 단계별 가이드를 상단으로 이동 */
-       .step-guide-top {
-           display: flex;
-           gap: 12px;
-           padding: 12px 20px;
-           background: rgba(59, 130, 246, 0.1);
-           border-radius: 25px;
-           font-size: 12px;
-           color: #1E3A8A;
-           font-weight: 600;
-           margin-bottom: 16px;
-           justify-content: center;
-           max-width: 600px;
-           margin-left: auto;
-           margin-right: auto;
+       /* 🔥 통합 워크플로우 카드 스타일 */
+       .workflow-card {
+           background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+           border-radius: 20px;
+           padding: 25px;
+           border: 1px solid #e2e8f0;
+           margin-bottom: 0;
+           box-shadow: 0 4px 20px rgba(0,0,0,0.08);
            transition: all 0.3s ease;
        }
 
-       .step-guide-top.collapsed {
+       .workflow-card.collapsed {
            display: none;
+       }
+
+       .workflow-guide {
+           text-align: center;
+           margin-bottom: 25px;
+       }
+
+       .step-flow {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           gap: 20px;
+           margin-bottom: 12px;
        }
 
        .step-item {
            display: flex;
            align-items: center;
-           gap: 6px;
+           gap: 8px;
+           color: #1E3A8A;
+           font-weight: 500;
+           font-size: 14px;
        }
 
        .step-number {
-           width: 20px;
-           height: 20px;
+           width: 28px;
+           height: 28px;
            background: linear-gradient(135deg, #3B82F6, #1E3A8A);
            color: white;
            border-radius: 50%;
            display: flex;
            align-items: center;
            justify-content: center;
-           font-size: 10px;
+           font-size: 12px;
            font-weight: 700;
        }
-       
+
+       .arrow {
+           color: #94A3B8;
+           font-size: 16px;
+       }
+
+       .guide-subtitle {
+           color: #64748B;
+           font-size: 13px;
+           margin-top: 8px;
+       }
+
+       .main-workspace {
+           display: flex;
+           gap: 25px;
+           align-items: flex-start;
+           max-width: 800px;
+           margin: 0 auto;
+       }
+
        .input-section {
+           flex: 1;
            margin-bottom: 0;
            transition: all 0.3s ease;
        }
@@ -258,71 +287,80 @@ html {
        .input-section.collapsed {
            display: none;
        }
-       
-       .input-section h2 {
-           font-size: 16px;
-           margin-bottom: 12px;
-           color: #1E3A8A;
-           font-weight: 600;
-           margin-left: calc(50% - 380px);
-           max-width: 600px;
-           display: none;
-       }
-       
-       /* 🔥 새로운 레이아웃: 입력창 + 사이드 버튼 */
-       .input-layout {
-           display: flex;
-           gap: 20px;
-           align-items: flex-start;
-           margin-bottom: 16px;
-           justify-content: center;
-           max-width: 1000px;
-           margin: 0 auto 16px auto;
-       }
-       
-       .input-area-container {
-           flex: 1;
-           max-width: 600px;
-       }
 
        #claim-input {
            width: 100%;
-           height: 100px;
-           border: 2px solid #e5e7eb;
-           border-radius: 12px;
-           padding: 16px;
-           font-size: 13px;
+           height: 140px;
+           border: 2px dashed #CBD5E1;
+           border-radius: 16px;
+           padding: 20px;
+           font-size: 14px;
            resize: none;
-           transition: all 0.3s ease;
            background: white;
            font-family: inherit;
            line-height: 1.6;
+           transition: all 0.3s ease;
        }
 
        #claim-input:focus {
            outline: none;
            border-color: #3B82F6;
+           border-style: solid;
            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-           transform: translateY(-1px);
        }
 
        #claim-input::placeholder {
            color: #9CA3AF;
-           font-style: normal;
        }
-       
-       /* 사이드 버튼 그룹 (오른쪽) */
-       .side-buttons {
+
+       .action-panel {
            display: flex;
            flex-direction: column;
-           gap: 8px;
-           min-width: 140px;
+           gap: 12px;
+           min-width: 160px;
            flex-shrink: 0;
        }
 
-       /* 메인 버튼 그룹 (하단 가운데) */
+       .upload-btn {
+           background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+           color: #475569;
+           border: 1px solid #e2e8f0;
+           padding: 12px 20px;
+           border-radius: 12px;
+           font-size: 13px;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           text-align: center;
+       }
+
+       .upload-btn:hover {
+           background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+       }
+
+       .check-btn {
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+           color: white;
+           border: none;
+           padding: 14px 20px;
+           border-radius: 12px;
+           font-size: 14px;
+           font-weight: 500;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+       }
+
+       .check-btn:hover {
+           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+           transform: translateY(-2px);
+           box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+       }
+
+       /* 기존 버튼 스타일은 결과 화면에서만 사용 */
        .main-buttons {
-           display: flex;
+           display: none; /* 첫 페이지에서는 숨김 */
            justify-content: flex-end;
            gap: 12px;
            flex-wrap: wrap;
@@ -360,34 +398,7 @@ html {
            transform: translateY(-2px);
        }
 
-       /* 사이드 버튼 스타일 (파일 업로드, 초기화) */
-       .side-btn {
-           background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-           color: #475569;
-           border: 1px solid #e2e8f0;
-           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-           min-width: 140px;
-       }
-
-       .side-btn:hover {
-           background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-           color: #334155;
-           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-       }
-
-       /* 메인 버튼들 */
-       #check-button {
-           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-           color: white;
-           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-           min-width: 120px;
-       }
-
-       #check-button:hover {
-           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-           box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-       }
-
+       /* 메인 버튼들 (결과 화면에서 사용) */
        #save-to-amendment-button {
            background: linear-gradient(135deg, #059669 0%, #047857 100%);
            color: white;
@@ -499,7 +510,7 @@ html {
        
        .panel-title {
            font-size: 16px;
-           font-weight: 400; /* 600에서 400으로 변경 */
+           font-weight: 400;
            margin-bottom: 20px;
            padding: 16px;
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
@@ -524,7 +535,7 @@ html {
            border-radius: 8px !important;
            backdrop-filter: blur(10px);
            flex: none !important;
-           font-weight: 400; /* Regular 폰트 */
+           font-weight: 400;
        }
 
        .panel-title button:hover {
@@ -542,7 +553,7 @@ html {
        .panel-btn {
            padding: 8px 16px !important;
            font-size: 12px !important;
-           font-weight: 400 !important; /* Regular 폰트 */
+           font-weight: 400 !important;
            border-radius: 8px !important;
            border: none !important;
            cursor: pointer !important;
@@ -552,15 +563,15 @@ html {
        }
 
 .panel-btn#check-button-panel {
-    background: #5B9BD5 !important; /* 소프트 블루 */
+    background: #5B9BD5 !important;
 }
 
 .panel-btn#save-to-amendment-button-panel {
-    background: #70AD47 !important; /* 소프트 그린 */
+    background: #70AD47 !important;
 }
 
 .panel-btn#download-button-panel {
-    background: #E07B39 !important; /* 소프트 오렌지 */
+    background: #E07B39 !important;
 }
 
        .panel-btn:hover {
@@ -597,7 +608,7 @@ html {
            border-radius: 10px;
            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-           font-weight: 400; /* Regular 폰트 */
+           font-weight: 400;
        }
        
        .result-category h3:hover {
@@ -612,7 +623,7 @@ html {
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
            color: white;
            border-color: #1E3A8A;
-           font-weight: 500; /* 선택된 상태에서만 약간 두껍게 */
+           font-weight: 500;
            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
        }
        
@@ -874,223 +885,224 @@ html {
        .edit-btn.recheck {
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
            color: white;
-box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-}
-    .edit-btn.recheck:hover {
-        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    }
-
-    /* 🎨 3가지 영역 커스텀 스크롤바 */
-    .category-content::-webkit-scrollbar,
-    #claim-display-right::-webkit-scrollbar,
-    .claim-display::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    .category-content::-webkit-scrollbar-track,
-    #claim-display-right::-webkit-scrollbar-track,
-    .claim-display::-webkit-scrollbar-track {
-        background: #f1f5f9;
-        border-radius: 4px;
-    }
-    
-    .category-content::-webkit-scrollbar-thumb,
-    #claim-display-right::-webkit-scrollbar-thumb,
-    .claim-display::-webkit-scrollbar-thumb {
-        background: linear-gradient(135deg, #cbd5e1, #94a3b8);
-        border-radius: 4px;
-    }
-    
-    .category-content::-webkit-scrollbar-thumb:hover,
-    #claim-display-right::-webkit-scrollbar-thumb:hover,
-    .claim-display::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(135deg, #94a3b8, #64748b);
-    }
-    
-    /* Firefox 스크롤바 */
-    .category-content,
-    #claim-display-right,
-    .claim-display {
-        scrollbar-width: thin;
-        scrollbar-color: #cbd5e1 #f1f5f9;
-    }
-
-    /* 반응형 디자인 */
-    @media (max-width: 1024px) {
-        .input-layout {
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .side-buttons {
-            flex-direction: row;
-            min-width: auto;
-            justify-content: center;
-        }
-
-        .main-buttons,
-        .collapsed-main-buttons {
-            justify-content: center;
-        }
-    }
-
-    @media (max-width: 768px) {
-        .app-header {
-            padding: 15px;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 12px;
-        }
-
-        .app-branding {
-            flex-direction: column;
-            gap: 6px;
-            text-align: center;
-        }
-
-        .header-controls {
-            justify-content: center;
-        }
-
-        .main-wrapper {
-            height: calc(100vh - 15px);
-        }
-        
-        .container {
-            flex-direction: column;
-        }
-
-        .input-layout {
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .side-buttons {
-            flex-direction: column;
-            gap: 8px;
-            min-width: auto;
-        }
-
-        .main-buttons,
-        .collapsed-main-buttons {
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .main-buttons button,
-        .collapsed-main-buttons button {
-            width: 100%;
-            max-width: 300px;
+           box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
        }
        
-       .results-horizontal-layout {
-           flex-direction: column;
-           height: auto;
+       .edit-btn.recheck:hover {
+           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+       }
+
+       /* 🎨 3가지 영역 커스텀 스크롤바 */
+       .category-content::-webkit-scrollbar,
+       #claim-display-right::-webkit-scrollbar,
+       .claim-display::-webkit-scrollbar {
+           width: 8px;
        }
        
-       .results-left-panel {
-           border-right: none;
-           border-bottom: 2px solid #e5e7eb;
-           padding-right: 0;
-           padding-bottom: 20px;
-           margin-bottom: 20px;
+       .category-content::-webkit-scrollbar-track,
+       #claim-display-right::-webkit-scrollbar-track,
+       .claim-display::-webkit-scrollbar-track {
+           background: #f1f5f9;
+           border-radius: 4px;
        }
        
-       .results-right-panel {
-           padding-left: 0;
-           padding-top: 0;
+       .category-content::-webkit-scrollbar-thumb,
+       #claim-display-right::-webkit-scrollbar-thumb,
+       .claim-display::-webkit-scrollbar-thumb {
+           background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+           border-radius: 4px;
+       }
+       
+       .category-content::-webkit-scrollbar-thumb:hover,
+       #claim-display-right::-webkit-scrollbar-thumb:hover,
+       .claim-display::-webkit-scrollbar-thumb:hover {
+           background: linear-gradient(135deg, #94a3b8, #64748b);
+       }
+       
+       /* Firefox 스크롤바 */
+       .category-content,
+       #claim-display-right,
+       .claim-display {
+           scrollbar-width: thin;
+           scrollbar-color: #cbd5e1 #f1f5f9;
        }
 
-       .upper-section {
-           padding: 15px;
+       /* 반응형 디자인 */
+       @media (max-width: 1024px) {
+           .main-workspace {
+               flex-direction: column;
+               gap: 16px;
+           }
+
+           .action-panel {
+               flex-direction: row;
+               min-width: auto;
+               justify-content: center;
+           }
+
+           .main-buttons,
+           .collapsed-main-buttons {
+               justify-content: center;
+           }
        }
 
-       .claim-display,
-       .result-section {
-           padding: 20px 15px;
+       @media (max-width: 768px) {
+           .app-header {
+               padding: 15px;
+               flex-direction: column;
+               align-items: center;
+               text-align: center;
+               gap: 12px;
+           }
+
+           .app-branding {
+               flex-direction: column;
+               gap: 6px;
+               text-align: center;
+           }
+
+           .header-controls {
+               justify-content: center;
+           }
+
+           .main-wrapper {
+               height: calc(100vh - 15px);
+           }
+           
+           .container {
+               flex-direction: column;
+           }
+
+           .main-workspace {
+               flex-direction: column;
+               gap: 12px;
+           }
+
+           .action-panel {
+               flex-direction: column;
+               gap: 8px;
+               min-width: auto;
+           }
+
+           .main-buttons,
+           .collapsed-main-buttons {
+               flex-direction: column;
+               align-items: center;
+               gap: 8px;
+           }
+
+           .main-buttons button,
+           .collapsed-main-buttons button {
+               width: 100%;
+               max-width: 300px;
+           }
+           
+           .results-horizontal-layout {
+               flex-direction: column;
+               height: auto;
+           }
+           
+           .results-left-panel {
+               border-right: none;
+               border-bottom: 2px solid #e5e7eb;
+               padding-right: 0;
+               padding-bottom: 20px;
+               margin-bottom: 20px;
+           }
+           
+           .results-right-panel {
+               padding-left: 0;
+               padding-top: 0;
+           }
+
+           .upper-section {
+               padding: 15px;
+           }
+
+           .claim-display,
+           .result-section {
+               padding: 20px 15px;
+           }
+
+           .step-flow {
+               padding: 8px 12px;
+               font-size: 11px;
+               gap: 8px;
+           }
+
+           .step-number {
+               width: 18px;
+               height: 18px;
+               font-size: 9px;
+           }
        }
 
-       .step-guide-top {
-           padding: 8px 12px;
-           font-size: 11px;
-           gap: 8px;
+       /* 보안 방지 스타일 */
+       * {
+           -webkit-user-select: none !important;
+           -moz-user-select: none !important;
+           -ms-user-select: none !important;
+           user-select: none !important;
+       }
+       
+       input, textarea {
+           -webkit-user-select: text !important;
+           -moz-user-select: text !important;
+           -ms-user-select: text !important;
+           user-select: text !important;
+       }
+       
+       @media print {
+           * { display: none !important; }
+           body::before {
+               content: "SMARTPAT 인쇄가 제한되어 있습니다.";
+               display: block !important;
+               font-size: 24px;
+               text-align: center;
+               margin-top: 50px;
+               color: #1E3A8A;
+               font-weight: bold;
+           }
        }
 
-       .step-number {
-           width: 18px;
-           height: 18px;
-           font-size: 9px;
+       /* 접힌 상태 버튼들 색상 유지 (사용하지 않지만 CSS 유지) */
+       #check-button-collapsed {
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
+           color: white !important;
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+           min-width: 120px;
        }
-   }
 
-   /* 보안 방지 스타일 */
-   * {
-       -webkit-user-select: none !important;
-       -moz-user-select: none !important;
-       -ms-user-select: none !important;
-       user-select: none !important;
-   }
-   
-   input, textarea {
-       -webkit-user-select: text !important;
-       -moz-user-select: text !important;
-       -ms-user-select: text !important;
-       user-select: text !important;
-   }
-   
-   @media print {
-       * { display: none !important; }
-       body::before {
-           content: "SMARTPAT 인쇄가 제한되어 있습니다.";
-           display: block !important;
-           font-size: 24px;
-           text-align: center;
-           margin-top: 50px;
-           color: #1E3A8A;
-           font-weight: bold;
+       #check-button-collapsed:hover {
+           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%) !important;
+           box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
        }
-   }
 
-    /* 접힌 상태 버튼들 색상 유지 (사용하지 않지만 CSS 유지) */
-    #check-button-collapsed {
-        background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
-        color: white !important;
-        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-        min-width: 120px;
-    }
+       #save-to-amendment-button-collapsed {
+           background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+           color: white !important;
+           box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
+           min-width: 120px;
+       }
 
-    #check-button-collapsed:hover {
-        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%) !important;
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
-    }
+       #save-to-amendment-button-collapsed:hover {
+           background: linear-gradient(135deg, #047857 0%, #065F46 100%) !important;
+           box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4) !important;
+       }
 
-    #save-to-amendment-button-collapsed {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-        color: white !important;
-        box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
-        min-width: 120px;
-    }
-
-    #save-to-amendment-button-collapsed:hover {
-        background: linear-gradient(135deg, #047857 0%, #065F46 100%) !important;
-        box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4) !important;
-    }
-
-    #download-button-collapsed {
-        background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
-        color: white !important;
-        box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
-        min-width: 120px;
-    }
-    
-    #download-button-collapsed:hover {
-        background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
-        box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
-    }
+       #download-button-collapsed {
+           background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
+           color: white !important;
+           box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
+           min-width: 120px;
+       }
+       
+       #download-button-collapsed:hover {
+           background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
+           box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
+       }
    </style>
    <!-- Firebase 인증 스크립트 -->
    <script type="module">
@@ -1282,93 +1294,97 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
                <h1 class="app-title">SMARTPAT</h1>
                <p class="app-subtitle">청구항 점검기</p>
            </div>
-       <div class="header-controls">
-           <button id="toggleInputBtn" class="header-btn">접기</button>
-           <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
-       </div>
-   </header>
-   
-   <div class="main-wrapper">
-       <div class="container">
-           <div class="content-panel">
-               <div class="upper-section" id="upperSection">
-                   <div class="step-guide-top" id="stepGuide">
-                       <div class="step-item">
-                           <div class="step-number">1</div>
-                           <span>파일 업로드</span>
-                       </div>
-                       →
-                       <div class="step-item">
-                           <div class="step-number">2</div>
-                           <span>청구항 점검</span>
-                       </div>
-                       →
-                       <div class="step-item">
-                           <div class="step-number">3</div>
-                           <span>수정 & 다운로드</span>
-                       </div>
-                   </div>
-
-                   <div class="input-section" id="inputSection">
-                       <h2>청구항 입력</h2>
-                       
-                       <div class="input-layout">
-                           <div class="input-area-container">
-                               <textarea id="claim-input" placeholder="여기에 청구항을 입력하세요. 각 청구항은 [청구항 1], [청구항 2] 형식으로 입력하세요."></textarea>
-                           </div>
-                           
-                           <div class="side-buttons">
-                               <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
-                               <button id="file-upload-button" class="side-btn">📎 파일 업로드</button>
-                               <button id="clear-button" class="side-btn">초기화</button>
-                           </div>
-                       </div>
-                       
-                       <div class="main-buttons">
-                           <button id="check-button">청구항 점검</button>
-                           <button id="save-to-amendment-button">📝 보정서로 저장</button>
-                           <button id="download-button" class="download-button">💾 다운로드</button>
-                       </div>
-                   </div>
-               </div>
-
-               <div class="collapsed-main-buttons" id="collapsedMainButtons">
-                   <button id="check-button-collapsed">청구항 점검</button>
-                   <button id="save-to-amendment-button-collapsed">📝 보정서로 저장</button>
-                   <button id="download-button-collapsed" class="download-button">💾 다운로드</button>
-               </div>
-               
-               <div class="scrollable-section">
-                   <div class="claim-display" id="claim-display">
-                   </div>
-                   
-                   <div class="result-section" id="result-section" style="display: none;">
-                       <h2>점검 결과</h2>
-                       
-                       <div class="results-horizontal-layout">
-                           <div class="results-left-panel">
-                               <div class="panel-title">
-                                   <span>📋 점검 결과 카테고리</span>
-                                   <button id="show-all-claims-top" class="secondary">전체 청구항 보기</button>
-                               </div>
-                               <div class="category-content" id="result-categories">
-                               </div>
-                           </div>
-                           
-                           <div class="results-right-panel">
-                               <div class="panel-title">
-                                   <span>📄 청구항별 오류 표시</span>
-                                   <div class="panel-buttons collapsed-only" id="panelButtons" style="display: none;">
-                                       <button id="check-button-panel" class="panel-btn">청구항 점검</button>
-                                       <button id="save-to-amendment-button-panel" class="panel-btn">📝 보정서로 저장</button>
-                                       <button id="download-button-panel" class="panel-btn download-button">💾 다운로드</button>
+           <div class="header-controls">
+               <button id="toggleInputBtn" class="header-btn">접기</button>
+               <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
+           </div>
+       </header>
+       
+       <div class="main-wrapper">
+           <div class="container">
+               <div class="content-panel">
+                   <div class="upper-section" id="upperSection">
+                       <!-- 🔥 통합 워크플로우 카드 -->
+                       <div class="workflow-card" id="workflowCard">
+                           <div class="workflow-guide">
+                               <div class="step-flow">
+                                   <div class="step-item">
+                                       <div class="step-number">1</div>
+                                       <span>파일 업로드</span>
+                                   </div>
+                                   <div class="arrow">→</div>
+                                   <div class="step-item">
+                                       <div class="step-number">2</div>
+                                       <span>청구항 점검</span>
+                                   </div>
+                                   <div class="arrow">→</div>
+                                   <div class="step-item">
+                                       <div class="step-number">3</div>
+                                       <span>수정 & 다운로드</span>
                                    </div>
                                </div>
-                               <div id="claim-display-right">
-                                   <p style="color: #6B7280; font-style: italic; text-align: center; margin-top: 50px; line-height: 1.6;">
-                                       왼쪽에서 점검 카테고리를 클릭하시면<br>
-                                       해당 오류가 있는 청구항들이 여기에 표시됩니다.
-                                   </p>
+                               <div class="guide-subtitle">청구항을 입력하거나 파일을 업로드한 후 점검을 시작하세요</div>
+                           </div>
+                           
+                           <div class="main-workspace">
+                               <div class="input-section">
+                                   <textarea id="claim-input" placeholder="여기에 청구항을 입력하세요. 각 청구항은 [청구항 1], [청구항 2] 형식으로 입력하거나, 파일을 드래그 앤 드롭하세요."></textarea>
+                               </div>
+                               
+                               <div class="action-panel">
+                                   <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
+                                   <button id="file-upload-button" class="upload-btn">📎 파일 업로드</button>
+                                   <button id="check-button" class="check-btn">🔍 청구항 점검</button>
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- 기존 버튼들 (결과 화면에서 사용) -->
+                       <div class="main-buttons">
+                           <button id="save-to-amendment-button">📝 보정서로 저장</button>
+                           <button id="download-button" class="download-button">💾 다운로드</button>
+                           <button id="clear-button" class="side-btn">초기화</button>
+                       </div>
+                   </div>
+
+                   <div class="collapsed-main-buttons" id="collapsedMainButtons">
+                       <button id="check-button-collapsed">청구항 점검</button>
+                       <button id="save-to-amendment-button-collapsed">📝 보정서로 저장</button>
+                       <button id="download-button-collapsed" class="download-button">💾 다운로드</button>
+                   </div>
+                   
+                   <div class="scrollable-section">
+                       <div class="claim-display" id="claim-display">
+                       </div>
+                       
+                       <div class="result-section" id="result-section" style="display: none;">
+                           <h2>점검 결과</h2>
+                           
+                           <div class="results-horizontal-layout">
+                               <div class="results-left-panel">
+                                   <div class="panel-title">
+                                       <span>📋 점검 결과 카테고리</span>
+                                       <button id="show-all-claims-top" class="secondary">전체 청구항 보기</button>
+                                   </div>
+                                   <div class="category-content" id="result-categories">
+                                   </div>
+                               </div>
+                               
+                               <div class="results-right-panel">
+                                   <div class="panel-title">
+                                       <span>📄 청구항별 오류 표시</span>
+                                       <div class="panel-buttons collapsed-only" id="panelButtons" style="display: none;">
+                                           <button id="check-button-panel" class="panel-btn">청구항 점검</button>
+                                           <button id="save-to-amendment-button-panel" class="panel-btn">📝 보정서로 저장</button>
+                                           <button id="download-button-panel" class="panel-btn download-button">💾 다운로드</button>
+                                       </div>
+                                   </div>
+                                   <div id="claim-display-right">
+                                       <p style="color: #6B7280; font-style: italic; text-align: center; margin-top: 50px; line-height: 1.6;">
+                                           왼쪽에서 점검 카테고리를 클릭하시면<br>
+                                           해당 오류가 있는 청구항들이 여기에 표시됩니다.
+                                       </p>
+                                   </div>
                                </div>
                            </div>
                        </div>
@@ -1376,7 +1392,6 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
                </div>
            </div>
        </div>
-   </div>
    </div>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
    <script src="patent-claim-checker.js"></script>
@@ -1387,13 +1402,11 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
 
        function collapseUpperSection() {
            const upperSection = document.getElementById('upperSection');
-           const inputSection = document.getElementById('inputSection');
-           const stepGuide = document.getElementById('stepGuide');
+           const workflowCard = document.getElementById('workflowCard');
            
-           if (upperSection && inputSection && stepGuide) {
+           if (upperSection && workflowCard) {
                upperSection.classList.add('collapsed');
-               inputSection.classList.add('collapsed');
-               stepGuide.classList.add('collapsed');
+               workflowCard.classList.add('collapsed');
                toggleInputBtn.textContent = '펼치기';
                togglePanelButtons(true);
            }
@@ -1469,22 +1482,19 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
    if (toggleInputBtn) {
        toggleInputBtn.addEventListener('click', function() {
            const upperSection = document.getElementById('upperSection');
-           const inputSection = document.getElementById('inputSection');
-           const stepGuide = document.getElementById('stepGuide');
+           const workflowCard = document.getElementById('workflowCard');
            
-           if (upperSection && inputSection && stepGuide) {
+           if (upperSection && workflowCard) {
                const isCollapsed = upperSection.classList.contains('collapsed');
                
                if (isCollapsed) {
                    upperSection.classList.remove('collapsed');
-                   inputSection.classList.remove('collapsed');
-                   stepGuide.classList.remove('collapsed');
+                   workflowCard.classList.remove('collapsed');
                    toggleInputBtn.textContent = '접기';
                    togglePanelButtons(false);
                } else {
                    upperSection.classList.add('collapsed');
-                   inputSection.classList.add('collapsed');
-                   stepGuide.classList.add('collapsed');
+                   workflowCard.classList.add('collapsed');
                    toggleInputBtn.textContent = '펼치기';
                    togglePanelButtons(true);
                }
@@ -1530,35 +1540,32 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
 const showAllClaimsTopBtn = document.getElementById('show-all-claims-top');
 if (showAllClaimsTopBtn) {
     showAllClaimsTopBtn.addEventListener('click', function() {
-        console.log('상단 전체 청구항 보기 버튼 클릭됨'); // 디버깅용
+        console.log('상단 전체 청구항 보기 버튼 클릭됨');
         
-        // 방법 1: 하단의 실제 작동하는 버튼 찾기
         const bottomShowAllBtn = document.querySelector('#result-categories .show-all-button');
         if (bottomShowAllBtn) {
-            console.log('하단 버튼 발견, 클릭 실행'); // 디버깅용
+            console.log('하단 버튼 발견, 클릭 실행');
             bottomShowAllBtn.click();
             return;
         }
         
-        // 방법 2: 다른 셀렉터로 찾기
         const allShowAllBtns = document.querySelectorAll('button');
         for (let btn of allShowAllBtns) {
             if (btn.textContent.includes('전체 청구항 보기') && btn !== showAllClaimsTopBtn) {
-                console.log('대체 버튼 발견, 클릭 실행'); // 디버깅용
+                console.log('대체 버튼 발견, 클릭 실행');
                 btn.click();
                 return;
             }
         }
         
-        // 방법 3: patent-claim-checker.js의 함수 직접 호출
         if (typeof window.displayAllClaims === 'function') {
-            console.log('displayAllClaims 함수 실행'); // 디버깅용
+            console.log('displayAllClaims 함수 실행');
             window.displayAllClaims();
         } else if (typeof window.showAllClaims === 'function') {
-            console.log('showAllClaims 함수 실행'); // 디버깅용
+            console.log('showAllClaims 함수 실행');
             window.showAllClaims();
         } else {
-            console.log('전체 청구항 표시 함수를 찾을 수 없음'); // 디버깅용
+            console.log('전체 청구항 표시 함수를 찾을 수 없음');
         }
     });
 }
@@ -1690,8 +1697,8 @@ if (showAllClaimsTopBtn) {
        
        if (!isAllowed) {
            e.preventDefault();
-}
-}, { passive: false });
-</script>
+       }
+   }, { passive: false });
+   </script>
 </body>
 </html>
