@@ -1349,7 +1349,7 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
                            <div class="results-left-panel">
                                <div class="panel-title">
                                    <span>📋 점검 결과 카테고리</span>
-                                   <button class="secondary">전체 청구항 보기</button>
+                                   <button id="show-all-claims-top" class="secondary">전체 청구항 보기</button>
                                </div>
                                <div class="category-content" id="result-categories">
                                </div>
@@ -1525,7 +1525,45 @@ box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
            });
        }
    });
-   
+
+// 🔥 상단 '전체 청구항 보기' 버튼 이벤트 연결
+const showAllClaimsTopBtn = document.getElementById('show-all-claims-top');
+if (showAllClaimsTopBtn) {
+    showAllClaimsTopBtn.addEventListener('click', function() {
+        console.log('상단 전체 청구항 보기 버튼 클릭됨'); // 디버깅용
+        
+        // 방법 1: 하단의 실제 작동하는 버튼 찾기
+        const bottomShowAllBtn = document.querySelector('#result-categories .show-all-button');
+        if (bottomShowAllBtn) {
+            console.log('하단 버튼 발견, 클릭 실행'); // 디버깅용
+            bottomShowAllBtn.click();
+            return;
+        }
+        
+        // 방법 2: 다른 셀렉터로 찾기
+        const allShowAllBtns = document.querySelectorAll('button');
+        for (let btn of allShowAllBtns) {
+            if (btn.textContent.includes('전체 청구항 보기') && btn !== showAllClaimsTopBtn) {
+                console.log('대체 버튼 발견, 클릭 실행'); // 디버깅용
+                btn.click();
+                return;
+            }
+        }
+        
+        // 방법 3: patent-claim-checker.js의 함수 직접 호출
+        if (typeof window.displayAllClaims === 'function') {
+            console.log('displayAllClaims 함수 실행'); // 디버깅용
+            window.displayAllClaims();
+        } else if (typeof window.showAllClaims === 'function') {
+            console.log('showAllClaims 함수 실행'); // 디버깅용
+            window.showAllClaims();
+        } else {
+            console.log('전체 청구항 표시 함수를 찾을 수 없음'); // 디버깅용
+        }
+    });
+}
+
+      
    if (logoutBtn) {
        logoutBtn.addEventListener('click', function() {
            if (confirm('로그아웃 하시겠습니까?')) {
