@@ -271,11 +271,14 @@ html {
             gap: 20px;
             align-items: flex-start;
             margin-bottom: 16px;
+            justify-content: center;  /* ← 이 줄 추가 */
+            max-width: 1000px;       /* ← 이 줄 추가 */
+            margin: 0 auto 16px auto; /* ← 이 줄 수정 */
         }
         
         .input-area-container {
             flex: 1;
-            max-width: 800px;
+            max-width: 600px;
         }
 
         #claim-input {
@@ -310,6 +313,7 @@ html {
             flex-direction: column;
             gap: 8px;
             min-width: 140px;
+            flex-shrink: 0;  /* ← 이 줄 추가 */
         }
 
         /* 메인 버튼 그룹 (하단 가운데) */
