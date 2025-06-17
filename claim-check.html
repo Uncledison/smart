@@ -1443,25 +1443,39 @@ html {
                 }
             }
             
-      // 🔥 청구항 점검 버튼에 접기 기능 추가
-const checkButton = document.getElementById('check-button');
-if (checkButton) {
-    // 기존 이벤트는 유지하고, 추가 기능만 덧붙임
-    checkButton.addEventListener('click', function() {
-        // 1. 즉시 로딩 오버레이 표시
-        createCheckingOverlay();
-        
-        // 2. 매우 짧은 딜레이 후 상단 접기
-        setTimeout(() => {
-            collapseUpperSection();
-        }, 100);
-        
-        // 3. 점검 완료 예상 시간 후 로딩 제거
-        setTimeout(() => {
-            removeCheckingOverlay();
-        }, 4000); // 4초로 늘림
-    }); // capture 옵션 제거
-}
+         // 🔥 청구항 점검 버튼에 접기 기능 추가
+        const checkButton = document.getElementById('check-button');
+        if (checkButton) {
+            // 기존 이벤트 리스너 완전 제거
+            const newButton = checkButton.cloneNode(true);
+            checkButton.parentNode.replaceChild(newButton, checkButton);
+            
+            // 새로운 이벤트만 등록
+            newButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                
+                // 1. 즉시 로딩 오버레이 표시
+                createCheckingOverlay();
+                
+                // 2. 상단 접기
+                setTimeout(() => {
+                    collapseUpperSection();
+                }, 50);
+                
+                // 3. 기존 점검 로직 실행
+                setTimeout(() => {
+                    if (typeof checkClaims === 'function') {
+                        checkClaims();
+                    }
+                }, 200);
+                
+                // 4. 로딩 제거
+                setTimeout(() => {
+                    removeCheckingOverlay();
+                }, 4000);
+            });
+        }
        
        
        // 접기/펼치기 버튼 기능
