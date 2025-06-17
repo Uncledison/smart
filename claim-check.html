@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMARTPAT 청구항 점검기</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
-            color: #333;
-            height: 100vh;
-            overflow: hidden !important;  /* ← !important 추가 */
-            font-size: 13px;
-            position: relative;
-        }
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>SMARTPAT 청구항 점검기</title>
+   <style>
+       * {
+           box-sizing: border-box;
+           margin: 0;
+           padding: 0;
+           font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+       }
+       
+       body {
+           background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 50%, #60A5FA 100%);
+           color: #333;
+           height: 100vh;
+           overflow: hidden !important;
+           font-size: 13px;
+           position: relative;
+       }
 
-        /* 🔥 전체 페이지 스크롤바만 숨김 (내부 커스텀 스크롤바는 유지) */
+       /* 🔥 전체 페이지 스크롤바만 숨김 (내부 커스텀 스크롤바는 유지) */
 body::-webkit-scrollbar,
 html::-webkit-scrollbar,
 .app-container::-webkit-scrollbar,
@@ -29,7 +29,7 @@ html::-webkit-scrollbar,
 .container::-webkit-scrollbar,
 .content-panel::-webkit-scrollbar,
 .scrollable-section::-webkit-scrollbar {
-    display: none !important;
+   display: none !important;
 }
 
 body, html,
@@ -38,1039 +38,1071 @@ body, html,
 .container,
 .content-panel,
 .scrollable-section {
-    scrollbar-width: none !important; /* Firefox */
-    -ms-overflow-style: none !important; /* IE and Edge */
+   scrollbar-width: none !important; /* Firefox */
+   -ms-overflow-style: none !important; /* IE and Edge */
 }
-    /* 🔥 여기에 바로 아래 코드를 추가하세요! */
+
 /* 전체 페이지 스크롤 완전 차단 */
 html {
-    overflow: hidden !important;
+   overflow: hidden !important;
 }
 
 .app-container,
 .main-wrapper,
 .container,
 .content-panel {
-    overflow: hidden !important;
+   overflow: hidden !important;
 }
 
 /* 스크롤 가능한 영역만 예외 처리 */
 .scrollable-section {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
+   overflow-y: auto !important;
+   overflow-x: hidden !important;
 }
 
 .category-content,
 .results-right-panel {
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-}    
-        /* 배경 플로우 화살표 */
-        body::before {
-            content: '';
-            position: absolute;
-            top: 15%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 300px;
-            height: 600px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 10 L50 160 M35 145 L50 160 L65 145' stroke='rgba(255,255,255,0.08)' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ctext x='50' y='180' text-anchor='middle' fill='rgba(255,255,255,0.1)' font-size='8' font-family='system-ui'%3E업로드 → 테이블 → 편집%3C/text%3E%3C/svg%3E") no-repeat center;
-            background-size: contain;
-            z-index: 2;
-            pointer-events: none;
-        }
+   overflow-y: auto !important;
+   overflow-x: hidden !important;
+}
+       
+       /* 배경 플로우 화살표 */
+       body::before {
+           content: '';
+           position: absolute;
+           top: 15%;
+           left: 50%;
+           transform: translateX(-50%);
+           width: 300px;
+           height: 600px;
+           background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'%3E%3Cpath d='M50 10 L50 160 M35 145 L50 160 L65 145' stroke='rgba(255,255,255,0.08)' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Ctext x='50' y='180' text-anchor='middle' fill='rgba(255,255,255,0.1)' font-size='8' font-family='system-ui'%3E업로드 → 테이블 → 편집%3C/text%3E%3C/svg%3E") no-repeat center;
+           background-size: contain;
+           z-index: 2;
+           pointer-events: none;
+       }
 
-        body::after {
-            content: '';
-            position: absolute;
-            bottom: -30%;
-            left: -10%;
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
-            border-radius: 50%;
-            z-index: 1;
-        }
-        
-        .app-container {
-            height: 100vh;
-            display: flex;
+       body::after {
+           content: '';
+           position: absolute;
+           bottom: -30%;
+           left: -10%;
+           width: 500px;
+           height: 500px;
+           background: radial-gradient(circle, rgba(255,255,255,0.04) 0%, transparent 70%);
+           border-radius: 50%;
+           z-index: 1;
+       }
+       
+       .app-container {
+           height: 100vh;
+           display: flex;
+           flex-direction: column;
+           background: rgba(255, 255, 255, 0.95);
+           backdrop-filter: blur(20px);
+           position: relative;
+           z-index: 10;
+       }
+
+       /* 상단 헤더 - index.html과 동일하게 */
+       .app-header {
+           background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+           color: white;
+           padding: 18px 30px;
+           position: relative;
+           box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
+           display: flex;
+           align-items: center;
+           justify-content: space-between;
+       }
+
+       .app-branding {
+           display: flex;
+           align-items: center;
+           gap: 16px;
+       }
+       
+       .app-title {
+           font-size: 28px;
+           font-weight: 700;
+           color: white;
+           margin: 0;
+           letter-spacing: -0.5px;
+       }
+       
+       .app-subtitle {
+           font-size: 14px;
+           color: rgba(255, 255, 255, 0.85);
+           font-weight: 500;
+           margin: 0;
+       }
+
+       /* 헤더 컨트롤 버튼들 */
+       .header-controls {
+           display: flex;
+           gap: 12px;
+           z-index: 100;
+       }
+
+       .header-btn {
+           padding: 8px 16px;
+           border: none;
+           border-radius: 8px;
+           font-size: 13px;
+           font-weight: 400;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           background: rgba(255, 255, 255, 0.2);
+           color: white;
+           backdrop-filter: blur(10px);
+           border: 1px solid rgba(255, 255, 255, 0.3);
+       }
+
+       .header-btn:hover {
+           background: rgba(255, 255, 255, 0.3);
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+       }
+
+       .logout-btn {
+           background: rgba(107, 114, 128, 0.8);
+           border-color: rgba(107, 114, 128, 0.8);
+       }
+
+       .logout-btn:hover {
+           background: rgba(107, 114, 128, 1);
+           border-color: rgba(107, 114, 128, 1);
+       }
+       
+       .main-wrapper {
+           display: flex;
+           flex-direction: column;
+           flex: 1;
+           overflow: hidden;
+       }
+       
+       .container {
+           display: flex;
+           flex: 1;
+           background: white;
+           margin: 0;
+           overflow: hidden;
+       }
+       
+       .content-panel {
+           flex: 1;
+           display: flex;
+           flex-direction: column;
+           overflow: hidden;
+       }
+       
+       /* 상단 입력 영역 - 접기/펼치기 기능 추가 */
+       .upper-section {
+           background: white;
+           padding: 20px 30px;
+           border-bottom: 1px solid #e5e7eb;
+           transition: all 0.3s ease;
+           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+           flex-shrink: 0;
+       }
+
+       .upper-section.collapsed {
+           padding: 12px 30px;
+       }
+
+       /* 단계별 가이드를 상단으로 이동 */
+       .step-guide-top {
+           display: flex;
+           gap: 12px;
+           padding: 12px 20px;
+           background: rgba(59, 130, 246, 0.1);
+           border-radius: 25px;
+           font-size: 12px;
+           color: #1E3A8A;
+           font-weight: 600;
+           margin-bottom: 16px;
+           justify-content: center;
+           max-width: 600px;
+           margin-left: auto;
+           margin-right: auto;
+           transition: all 0.3s ease;
+       }
+
+       .step-guide-top.collapsed {
+           display: none;
+       }
+
+       .step-item {
+           display: flex;
+           align-items: center;
+           gap: 6px;
+       }
+
+       .step-number {
+           width: 20px;
+           height: 20px;
+           background: linear-gradient(135deg, #3B82F6, #1E3A8A);
+           color: white;
+           border-radius: 50%;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+           font-size: 10px;
+           font-weight: 700;
+       }
+       
+       .input-section {
+           margin-bottom: 0;
+           transition: all 0.3s ease;
+       }
+
+       .input-section.collapsed {
+           display: none;
+       }
+       
+       .input-section h2 {
+           font-size: 16px;
+           margin-bottom: 12px;
+           color: #1E3A8A;
+           font-weight: 600;
+           margin-left: calc(50% - 380px);
+           max-width: 600px;
+           display: none;
+       }
+       
+       /* 🔥 새로운 레이아웃: 입력창 + 사이드 버튼 */
+       .input-layout {
+           display: flex;
+           gap: 20px;
+           align-items: flex-start;
+           margin-bottom: 16px;
+           justify-content: center;
+           max-width: 1000px;
+           margin: 0 auto 16px auto;
+       }
+       
+       .input-area-container {
+           flex: 1;
+           max-width: 600px;
+       }
+
+       #claim-input {
+           width: 100%;
+           height: 100px;
+           border: 2px solid #e5e7eb;
+           border-radius: 12px;
+           padding: 16px;
+           font-size: 13px;
+           resize: none;
+           transition: all 0.3s ease;
+           background: white;
+           font-family: inherit;
+           line-height: 1.6;
+       }
+
+       #claim-input:focus {
+           outline: none;
+           border-color: #3B82F6;
+           box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+           transform: translateY(-1px);
+       }
+
+       #claim-input::placeholder {
+           color: #9CA3AF;
+           font-style: normal;
+       }
+       
+       /* 사이드 버튼 그룹 (오른쪽) */
+       .side-buttons {
+           display: flex;
+           flex-direction: column;
+           gap: 8px;
+           min-width: 140px;
+           flex-shrink: 0;
+       }
+
+       /* 메인 버튼 그룹 (하단 가운데) */
+       .main-buttons {
+           display: flex;
+           justify-content: flex-end;
+           gap: 12px;
+           flex-wrap: wrap;
+           padding-right: 15px;
+       }
+
+       /* 접힌 상태에서만 보이는 메인 버튼들 */
+       .collapsed-main-buttons {
+           display: none;
+           justify-content: flex-end;
+           gap: 12px;
+           flex-wrap: wrap;
+           padding: 16px 15px 16px 0;
+           border-bottom: 1px solid #e5e7eb;
+           background: white;
+       }
+
+       .collapsed-main-buttons.show {
+           display: flex;
+       }
+       
+       button {
+           padding: 10px 16px;
+           border: none;
+           border-radius: 10px;
+           cursor: pointer;
+           font-size: 13px;
+           font-weight: 400;
+           transition: all 0.3s ease;
+           white-space: nowrap;
+           text-align: center;
+       }
+
+       button:hover {
+           transform: translateY(-2px);
+       }
+
+       /* 사이드 버튼 스타일 (파일 업로드, 초기화) */
+       .side-btn {
+           background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+           color: #475569;
+           border: 1px solid #e2e8f0;
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+           min-width: 140px;
+       }
+
+       .side-btn:hover {
+           background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+           color: #334155;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+       }
+
+       /* 메인 버튼들 */
+       #check-button {
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+           color: white;
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+           min-width: 120px;
+       }
+
+       #check-button:hover {
+           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+           box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+       }
+
+       #save-to-amendment-button {
+           background: linear-gradient(135deg, #059669 0%, #047857 100%);
+           color: white;
+           box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3);
+           min-width: 120px;
+       }
+
+       #save-to-amendment-button:hover {
+           background: linear-gradient(135deg, #047857 0%, #065F46 100%);
+           box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4);
+       }
+
+       .download-button {
+           background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+           color: white;
+           box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3);
+           min-width: 120px;
+       }
+       
+       .download-button:hover {
+           background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
+           box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4);
+       }
+       
+       /* 스크롤 영역 */
+       .scrollable-section {
+           flex: 1;
+           overflow-y: auto;
+           background: white;
+           transition: all 0.3s ease;
+           min-height: 0;
+       }
+       
+       .claim-display {
+           padding: 25px 30px;
+       }
+       
+       .claim-item {
+           margin-bottom: 20px;
+           padding: 20px;
+           border: 1px solid #e5e7eb;
+           border-radius: 12px;
+           background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+           transition: all 0.3s ease;
+       }
+
+       .claim-item:hover {
+           box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+           transform: translateY(-2px);
+       }
+       
+       .claim-item h3 {
+           font-size: 16px;
+           margin-bottom: 12px;
+           color: #1E3A8A;
+           padding-bottom: 8px;
+           border-bottom: 2px solid #e5e7eb;
+           font-weight: 600;
+       }
+       
+       .claim-content {
+           line-height: 1.6;
+           font-size: 14px;
+           color: #374151;
+       }
+       
+       .result-section {
+           padding: 25px 30px;
+       }
+       
+       .result-section h2 {
+           display: none;
+       }
+       
+       /* 수평 레이아웃 */
+       .results-horizontal-layout {
+           display: flex;
+           gap: 25px;
+           height: calc(100vh - 240px);
+           min-height: 400px;
+       }
+
+       /* 접힌 상태일 때 높이 조정 */
+       .upper-section.collapsed ~ .scrollable-section .results-horizontal-layout {
+           height: calc(100vh - 180px);
+       }
+       
+       .results-left-panel {
+           flex: 0 0 45%;
+           border-right: 2px solid #e5e7eb;
+           padding-right: 20px;
+           overflow-y: hidden;
+           display: flex;
+           flex-direction: column;
+           height: 100%;
+       }
+       
+        .results-right-panel {
+           flex: 1;
+           padding-left: 20px;
+           padding-right: 15px;
+           padding-bottom: 20px;
+           overflow-y: hidden !important;
+           overflow-x: hidden !important;
+           display: flex;
+           flex-direction: column;
+       }
+       
+       .panel-title {
+           font-size: 16px;
+           font-weight: 600;
+           margin-bottom: 20px;
+           padding: 16px;
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+           color: white;
+           border-radius: 12px;
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+           flex-shrink: 0;
+           position: sticky;
+           top: 0;
+           z-index: 1;
+           display: flex;
+           justify-content: space-between;
+           align-items: center;
+       }
+
+       .panel-title button {
+           background: rgba(255, 255, 255, 0.2) !important;
+           color: white !important;
+           border: 1px solid rgba(255, 255, 255, 0.3) !important;
+           padding: 6px 12px !important;
+           font-size: 11px !important;
+           border-radius: 8px !important;
+           backdrop-filter: blur(10px);
+           flex: none !important;
+       }
+
+       .panel-title button:hover {
+           background: rgba(255, 255, 255, 0.3) !important;
+           transform: translateY(-1px) !important;
+       }
+
+       /* 🔥 패널 배너 내 버튼들 */
+       .panel-buttons {
+           display: flex;
+           gap: 8px;
+           flex-wrap: wrap;
+       }
+
+       .panel-btn {
+           padding: 6px 12px !important;
+           font-size: 11px !important;
+           border-radius: 8px !important;
+           backdrop-filter: blur(10px);
+           flex: none !important;
+           min-width: 80px;
+       }
+
+       .panel-btn#check-button-panel {
+           background: rgba(59, 130, 246, 0.2) !important;
+           color: white !important;
+           border: 1px solid rgba(59, 130, 246, 0.3) !important;
+       }
+
+       .panel-btn#save-to-amendment-button-panel {
+           background: rgba(5, 150, 105, 0.2) !important;
+           color: white !important;
+           border: 1px solid rgba(5, 150, 105, 0.3) !important;
+       }
+
+       .panel-btn#download-button-panel {
+           background: rgba(217, 119, 6, 0.2) !important;
+           color: white !important;
+           border: 1px solid rgba(217, 119, 6, 0.3) !important;
+       }
+
+       /* 오른쪽 패널 내부 스크롤 영역 */
+       #claim-display-right {
+           flex: 1;
+           overflow-y: auto !important;
+           overflow-x: hidden !important;
+           padding-right: 8px;
+       }
+       
+       .category-content {
+           flex: 1;
+           overflow-y: auto;
+           padding-right: 8px;
+       }
+       
+       .result-category {
+           margin-bottom: 16px;
+       }
+       
+       .result-category h3 {
+           font-size: 15px;
+           margin-bottom: 12px;
+           color: #374151;
+           padding: 12px 16px;
+           border: 1px solid #e5e7eb;
+           cursor: pointer;
+           transition: all 0.3s ease;
+           border-radius: 10px;
+           background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+       }
+       
+       .result-category h3:hover {
+           background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+           color: #1E3A8A;
+           border-color: #3B82F6;
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+       }
+       
+       .result-category h3.selected {
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+           color: white;
+           border-color: #1E3A8A;
+           font-weight: 600;
+           box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
+       }
+       
+       .result-table {
+           width: 100%;
+           border-collapse: collapse;
+           margin-top: 15px;
+           margin-bottom: 25px;
+           table-layout: fixed;
+           border-radius: 12px;
+           overflow: hidden;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+       }
+
+       .result-table th, .result-table td {
+           border: 1px solid #e5e7eb;
+           padding: 12px;
+           text-align: left;
+           font-size: 14px;
+       }
+
+       .result-table th:nth-child(1), 
+       .result-table td:nth-child(1) {
+           width: 15%;
+       }
+
+       .result-table th:nth-child(2), 
+       .result-table td:nth-child(2) {
+           width: 55%;
+       }
+
+       .result-table th:nth-child(3), 
+       .result-table td:nth-child(3) {
+           width: 30%;
+       }
+       
+       .result-table th {
+           background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+           color: #374151;
+           font-weight: 600;
+       }
+       
+       /* 하이라이트 스타일 개선 */
+       .highlight-cite {
+           color: #3B82F6;
+           font-weight: 600;
+           background: rgba(59, 130, 246, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .highlight-error {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+           text-decoration: underline;
+       }
+       
+       .highlight-warning {
+           background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+           padding: 2px 6px;
+           border-radius: 4px;
+           color: #92400e;
+       }
+       
+       .highlight-above-valid {
+           color: #059669;
+           font-weight: 600;
+           background: rgba(5, 150, 105, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+           cursor: pointer;
+       }
+       
+       .highlight-above-invalid {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+           cursor: pointer;
+           text-decoration: underline;
+       }
+       
+       .highlight-above-is {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+           cursor: pointer;
+           text-decoration: underline;
+       }
+       
+       .highlight-original-term {
+           background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+           font-weight: 600;
+           padding: 2px 6px;
+           border-radius: 4px;
+           color: #065F46;
+       }
+       
+       .citation-error {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .unclear-expression {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .multiple-citation-error {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .inconsistent-last-word {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .alternative-word-error {
+           color: #dc2626;
+           font-weight: 600;
+           background: rgba(220, 38, 38, 0.1);
+           padding: 2px 4px;
+           border-radius: 4px;
+       }
+       
+       .show-all-button {
+           display: none;
+       }
+       
+       /* 툴팁 개선 */
+       .tooltip {
+           position: relative;
+           display: inline-block;
+       }
+
+       .tooltip .tooltiptext {
+           visibility: hidden;
+           width: 320px;
+           background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
+           color: #fff;
+           text-align: left;
+           border-radius: 10px;
+           padding: 12px;
+           position: absolute;
+           z-index: 1000;
+           bottom: 125%;
+           left: 50%;
+           margin-left: -160px;
+           opacity: 0;
+           transition: all 0.3s ease;
+           font-size: 12px;
+           line-height: 1.5;
+           box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+           backdrop-filter: blur(10px);
+       }
+
+       .tooltip .tooltiptext::after {
+           content: "";
+           position: absolute;
+           top: 100%;
+           left: 50%;
+           margin-left: -8px;
+           border-width: 8px;
+           border-style: solid;
+           border-color: #374151 transparent transparent transparent;
+       }
+       
+       .tooltip:hover .tooltiptext {
+           visibility: visible;
+           opacity: 1;
+           transform: translateY(-5px);
+       }
+
+       /* 편집 모드 스타일 개선 */
+       .claim-content.editing {
+           padding: 0;
+       }
+       
+       .inline-editor {
+           width: 100%;
+           border: 2px solid #3B82F6;
+           border-radius: 10px;
+           padding: 16px;
+           font-size: 14px;
+           line-height: 1.6;
+           resize: vertical;
+           min-height: 120px;
+           font-family: inherit;
+           background: white;
+           transition: all 0.3s ease;
+       }
+       
+       .inline-editor:focus {
+           outline: none;
+           box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+       }
+       
+       .edit-buttons {
+           margin-top: 12px;
+           text-align: right;
+           display: flex;
+           gap: 10px;
+           justify-content: flex-end;
+       }
+       
+       .edit-btn {
+           padding: 8px 16px;
+           border: none;
+           border-radius: 8px;
+           font-size: 12px;
+           font-weight: 500;
+           cursor: pointer;
+           transition: all 0.3s ease;
+       }
+       
+       .edit-btn.save {
+           background: linear-gradient(135deg, #059669 0%, #047857 100%);
+           color: white;
+           box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
+       }
+       
+       .edit-btn.save:hover {
+           background: linear-gradient(135deg, #047857 0%, #065F46 100%);
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
+       }
+       
+       .edit-btn.cancel {
+           background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+           color: white;
+           box-shadow: 0 2px 6px rgba(107, 114, 128, 0.3);
+       }
+       
+       .edit-btn.cancel:hover {
+           background: linear-gradient(135deg, #4B5563 0%, #374151 100%);
+           transform: translateY(-1px);
+           box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
+       }
+
+       .edit-btn.recheck {
+           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+           color: white;
+           box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+       }
+
+       .edit-btn.recheck:hover {
+           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+transform: translateY(-1px);
+box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+    /* 🎨 3가지 영역 커스텀 스크롤바 */
+    .category-content::-webkit-scrollbar,
+    #claim-display-right::-webkit-scrollbar,
+    .claim-display::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .category-content::-webkit-scrollbar-track,
+    #claim-display-right::-webkit-scrollbar-track,
+    .claim-display::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 4px;
+    }
+    
+    .category-content::-webkit-scrollbar-thumb,
+    #claim-display-right::-webkit-scrollbar-thumb,
+    .claim-display::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+        border-radius: 4px;
+    }
+    
+    .category-content::-webkit-scrollbar-thumb:hover,
+    #claim-display-right::-webkit-scrollbar-thumb:hover,
+    .claim-display::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #94a3b8, #64748b);
+    }
+    
+    /* Firefox 스크롤바 */
+    .category-content,
+    #claim-display-right,
+    .claim-display {
+        scrollbar-width: thin;
+        scrollbar-color: #cbd5e1 #f1f5f9;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 1024px) {
+        .input-layout {
             flex-direction: column;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            position: relative;
-            z-index: 10;
+            gap: 16px;
         }
 
-        /* 상단 헤더 - index.html과 동일하게 */
+        .side-buttons {
+            flex-direction: row;
+            min-width: auto;
+            justify-content: center;
+        }
+
+        .main-buttons,
+        .collapsed-main-buttons {
+            justify-content: center;
+        }
+    }
+
+    @media (max-width: 768px) {
         .app-header {
-            background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-            color: white;
-            padding: 18px 30px;
-            position: relative;
-            box-shadow: 0 4px 20px rgba(30, 58, 138, 0.2);
-            display: flex;
+            padding: 15px;
+            flex-direction: column;
             align-items: center;
-            justify-content: space-between;
+            text-align: center;
+            gap: 12px;
         }
 
         .app-branding {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
-        
-        .app-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            margin: 0;
-            letter-spacing: -0.5px;
-        }
-        
-        .app-subtitle {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.85);
-            font-weight: 500;
-            margin: 0;
-        }
-
-        /* 헤더 컨트롤 버튼들 */
-        .header-controls {
-            display: flex;
-            gap: 12px;
-            z-index: 100;
-        }
-
-        .header-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 400;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .header-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .logout-btn {
-            background: rgba(107, 114, 128, 0.8);
-            border-color: rgba(107, 114, 128, 0.8);
-        }
-
-        .logout-btn:hover {
-            background: rgba(107, 114, 128, 1);
-            border-color: rgba(107, 114, 128, 1);
-        }
-        
-        .main-wrapper {
-            display: flex;
             flex-direction: column;
-            flex: 1;
-            overflow: hidden;
-        }
-        
-        .container {
-            display: flex;
-            flex: 1;
-            background: white;
-            margin: 0;
-            overflow: hidden;
-        }
-        
-        .content-panel {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-        
-        /* 상단 입력 영역 - 접기/펼치기 기능 추가 */
-        .upper-section {
-            background: white;
-            padding: 20px 30px;
-            border-bottom: 1px solid #e5e7eb;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            flex-shrink: 0;
-        }
-
-        .upper-section.collapsed {
-            padding: 12px 30px;
-        }
-
-        /* 단계별 가이드를 상단으로 이동 */
-        .step-guide-top {
-            display: flex;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(59, 130, 246, 0.1);
-            border-radius: 25px;
-            font-size: 12px;
-            color: #1E3A8A;
-            font-weight: 600;
-            margin-bottom: 16px;
-            justify-content: center;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            transition: all 0.3s ease;
-        }
-
-        .step-guide-top.collapsed {
-            display: none;
-        }
-
-        .step-item {
-            display: flex;
-            align-items: center;
             gap: 6px;
-        }
-
-        .step-number {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #3B82F6, #1E3A8A);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: 700;
-        }
-        
-        .input-section {
-            margin-bottom: 0;
-            transition: all 0.3s ease;
-        }
-
-        .input-section.collapsed {
-            display: none;
-        }
-        
-        .input-section h2 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #1E3A8A;
-            font-weight: 600;
-            margin-left: calc(50% - 380px);  /* ← 이 줄 추가 (입력박스 시작점과 맞춤) */
-            max-width: 600px;                /* ← 이 줄 추가 */
-            display: none;
-        }
-        
-        /* 🔥 새로운 레이아웃: 입력창 + 사이드 버튼 */
-        .input-layout {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-            margin-bottom: 16px;
-            justify-content: center;  /* ← 이 줄 추가 */
-            max-width: 1000px;       /* ← 이 줄 추가 */
-            margin: 0 auto 16px auto; /* ← 이 줄 수정 */
-        }
-        
-        .input-area-container {
-            flex: 1;
-            max-width: 600px;
-        }
-
-        #claim-input {
-            width: 100%;
-            height: 100px;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 16px;
-            font-size: 13px;
-            resize: none;
-            transition: all 0.3s ease;
-            background: white;
-            font-family: inherit;
-            line-height: 1.6;
-        }
-
-        #claim-input:focus {
-            outline: none;
-            border-color: #3B82F6;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-            transform: translateY(-1px);
-        }
-
-        #claim-input::placeholder {
-            color: #9CA3AF;
-            font-style: normal;
-        }
-        
-        /* 사이드 버튼 그룹 (오른쪽) */
-        .side-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            min-width: 140px;
-            flex-shrink: 0;  /* ← 이 줄 추가 */
-        }
-
-        /* 메인 버튼 그룹 (하단 가운데) */
-        .main-buttons {
-            display: flex;
-            justify-content: flex-end;  /* ← center에서 flex-end로 변경 */
-            gap: 12px;
-            flex-wrap: wrap;
-            padding-right: 15px;  /* ← 오른쪽 여백 추가 */
-        }
-
-        /* 접힌 상태에서만 보이는 메인 버튼들 */
-        .collapsed-main-buttons {
-            display: none;
-            justify-content: flex-end;  /* ← center에서 flex-end로 변경 */
-            gap: 12px;
-            flex-wrap: wrap;
-            padding: 16px 15px 16px 0;  /* ← 오른쪽 패딩 추가 */
-            border-bottom: 1px solid #e5e7eb;
-            background: white;
-        }
-
-        .collapsed-main-buttons.show {
-            display: flex;
-        }
-        
-        button {
-            padding: 10px 16px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 400;
-            transition: all 0.3s ease;
-            white-space: nowrap;
             text-align: center;
         }
 
-        button:hover {
-            transform: translateY(-2px);
+        .header-controls {
+            justify-content: center;
         }
 
-        /* 사이드 버튼 스타일 (파일 업로드, 초기화) */
-        .side-btn {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #475569;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-            min-width: 140px;
-        }
-
-        .side-btn:hover {
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            color: #334155;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        /* 메인 버튼들 */
-        #check-button {
-            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-            color: white;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-            min-width: 120px;
-        }
-
-        #check-button:hover {
-            background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
-        }
-
-        #save-to-amendment-button {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3);
-            min-width: 120px;
-        }
-
-        #save-to-amendment-button:hover {
-            background: linear-gradient(135deg, #047857 0%, #065F46 100%);
-            box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4);
-        }
-
-        .download-button {
-            background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
-            color: white;
-            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3);
-            min-width: 120px;
+        .main-wrapper {
+            height: calc(100vh - 15px);
         }
         
-        .download-button:hover {
-            background: linear-gradient(135deg, #B45309 0%, #92400E 100%);
-            box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4);
-        }
-        
-        /* 스크롤 영역 */
-        .scrollable-section {
-            flex: 1;
-            overflow-y: auto;
-            background: white;
-            transition: all 0.3s ease;
-            min-height: 0;
-        }
-        
-        .claim-display {
-            padding: 25px 30px;
-        }
-        
-        .claim-item {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .claim-item:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .claim-item h3 {
-            font-size: 16px;
-            margin-bottom: 12px;
-            color: #1E3A8A;
-            padding-bottom: 8px;
-            border-bottom: 2px solid #e5e7eb;
-            font-weight: 600;
-        }
-        
-        .claim-content {
-            line-height: 1.6;
-            font-size: 14px;
-            color: #374151;
-        }
-        
-        .result-section {
-            padding: 25px 30px;
-        }
-        
-        .result-section h2 {
-            display: none;
-        }
-        
-        /* 수평 레이아웃 */
-        .results-horizontal-layout {
-            display: flex;
-            gap: 25px;
-            height: calc(100vh - 240px);
-            min-height: 400px;
-        }
-
-        /* 접힌 상태일 때 높이 조정 */
-        .upper-section.collapsed ~ .scrollable-section .results-horizontal-layout {
-            height: calc(100vh - 180px);
-        }
-        
-        .results-left-panel {
-            flex: 0 0 45%;
-            border-right: 2px solid #e5e7eb;
-            padding-right: 20px;
-            overflow-y: hidden;
-            display: flex;
+        .container {
             flex-direction: column;
-            height: 100%;
-        }
-        
-         .results-right-panel {
-            flex: 1;
-            padding-left: 20px;
-            padding-right: 15px;  /* ← 원래대로 복구 */
-            padding-bottom: 20px;
-            overflow-y: hidden !important;  /* ← auto에서 hidden으로 변경 */
-            overflow-x: hidden !important;
-            display: flex;  /* ← 추가 */
-            flex-direction: column;  /* ← 추가 */
-        }
-        
-        .panel-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            padding: 16px;
-            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
-            flex-shrink: 0;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
-        .panel-title button {
-            background: rgba(255, 255, 255, 0.2) !important;
-            color: white !important;
-            border: 1px solid rgba(255, 255, 255, 0.3) !important;
-            padding: 6px 12px !important;
-            font-size: 11px !important;
-            border-radius: 8px !important;
-            backdrop-filter: blur(10px);
-            flex: none !important;
-        }
-
-        .panel-title button:hover {
-            background: rgba(255, 255, 255, 0.3) !important;
-            transform: translateY(-1px) !important;
-        }
-
-            /* 오른쪽 패널 내부 스크롤 영역 */
-            #claim-display-right {
-                flex: 1;
-                overflow-y: auto !important;
-                overflow-x: hidden !important;
-                padding-right: 8px;  /* 스크롤바와 내용 간격 */
-            }
-        
-        .category-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-        
-        .result-category {
-            margin-bottom: 16px;
-        }
-        
-        .result-category h3 {
-            font-size: 15px;
-            margin-bottom: 12px;
-            color: #374151;
-            padding: 12px 16px;
-            border: 1px solid #e5e7eb;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .result-category h3:hover {
-            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-            color: #1E3A8A;
-            border-color: #3B82F6;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-        }
-        
-        .result-category h3.selected {
-            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-            color: white;
-            border-color: #1E3A8A;
-            font-weight: 600;
-            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
-        }
-        
-        .result-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            margin-bottom: 25px;
-            table-layout: fixed;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-        }
-
-        .result-table th, .result-table td {
-            border: 1px solid #e5e7eb;
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .result-table th:nth-child(1), 
-        .result-table td:nth-child(1) {
-            width: 15%;
-        }
-
-        .result-table th:nth-child(2), 
-        .result-table td:nth-child(2) {
-            width: 55%;
-        }
-
-        .result-table th:nth-child(3), 
-        .result-table td:nth-child(3) {
-            width: 30%;
-        }
-        
-        .result-table th {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            color: #374151;
-            font-weight: 600;
-        }
-        
-        /* 하이라이트 스타일 개선 */
-        .highlight-cite {
-            color: #3B82F6;
-            font-weight: 600;
-            background: rgba(59, 130, 246, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .highlight-error {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-            text-decoration: underline;
-        }
-        
-        .highlight-warning {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #92400e;
-        }
-        
-        .highlight-above-valid {
-            color: #059669;
-            font-weight: 600;
-            background: rgba(5, 150, 105, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        .highlight-above-invalid {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        
-        .highlight-above-is {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        
-        .highlight-original-term {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            color: #065F46;
-        }
-        
-        .citation-error {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .unclear-expression {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .multiple-citation-error {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .inconsistent-last-word {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .alternative-word-error {
-            color: #dc2626;
-            font-weight: 600;
-            background: rgba(220, 38, 38, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-        
-        .show-all-button {
-            display: none;
-        }
-        
-        /* 툴팁 개선 */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 320px;
-            background: linear-gradient(135deg, #1F2937 0%, #374151 100%);
-            color: #fff;
-            text-align: left;
-            border-radius: 10px;
-            padding: 12px;
-            position: absolute;
-            z-index: 1000;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -160px;
-            opacity: 0;
-            transition: all 0.3s ease;
-            font-size: 12px;
-            line-height: 1.5;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-        }
-
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -8px;
-            border-width: 8px;
-            border-style: solid;
-            border-color: #374151 transparent transparent transparent;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(-5px);
-        }
-
-        /* 편집 모드 스타일 개선 */
-        .claim-content.editing {
-            padding: 0;
-        }
-        
-        .inline-editor {
-            width: 100%;
-            border: 2px solid #3B82F6;
-            border-radius: 10px;
-            padding: 16px;
-            font-size: 14px;
-            line-height: 1.6;
-            resize: vertical;
-            min-height: 120px;
-            font-family: inherit;
-            background: white;
-            transition: all 0.3s ease;
-        }
-        
-        .inline-editor:focus {
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-        
-        .edit-buttons {
-            margin-top: 12px;
-            text-align: right;
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-        
-        .edit-btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 8px;
-            font-size: 12px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .edit-btn.save {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: white;
-            box-shadow: 0 2px 6px rgba(5, 150, 105, 0.3);
-        }
-        
-        .edit-btn.save:hover {
-            background: linear-gradient(135deg, #047857 0%, #065F46 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(5, 150, 105, 0.4);
-        }
-        
-        .edit-btn.cancel {
-            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
-            color: white;
-            box-shadow: 0 2px 6px rgba(107, 114, 128, 0.3);
-        }
-        
-        .edit-btn.cancel:hover {
-            background: linear-gradient(135deg, #4B5563 0%, #374151 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(107, 114, 128, 0.4);
-        }
-
-        .edit-btn.recheck {
-            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-            color: white;
-            box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-        }
-
-        .edit-btn.recheck:hover {
-            background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-        }
-
-             /* 🎨 3가지 영역 커스텀 스크롤바 */
-            .category-content::-webkit-scrollbar,
-            #claim-display-right::-webkit-scrollbar,
-            .claim-display::-webkit-scrollbar {  /* ← .claim-display로 변경 */
-                width: 8px;
-            }
-            
-            .category-content::-webkit-scrollbar-track,
-            #claim-display-right::-webkit-scrollbar-track,
-            .claim-display::-webkit-scrollbar-track {  /* ← .claim-display로 변경 */
-                background: #f1f5f9;
-                border-radius: 4px;
-            }
-            
-            .category-content::-webkit-scrollbar-thumb,
-            #claim-display-right::-webkit-scrollbar-thumb,
-            .claim-display::-webkit-scrollbar-thumb {  /* ← .claim-display로 변경 */
-                background: linear-gradient(135deg, #cbd5e1, #94a3b8);
-                border-radius: 4px;
-            }
-            
-            .category-content::-webkit-scrollbar-thumb:hover,
-            #claim-display-right::-webkit-scrollbar-thumb:hover,
-            .claim-display::-webkit-scrollbar-thumb:hover {  /* ← .claim-display로 변경 */
-                background: linear-gradient(135deg, #94a3b8, #64748b);
-            }
-            
-            /* Firefox 스크롤바 */
-            .category-content,
-            #claim-display-right,
-            .claim-display {  /* ← .claim-display로 변경 */
-                scrollbar-width: thin;
-                scrollbar-color: #cbd5e1 #f1f5f9;
-            }
-        /* 반응형 디자인 */
-        @media (max-width: 1024px) {
-            .input-layout {
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .side-buttons {
-                flex-direction: row;
-                min-width: auto;
-                justify-content: center;
-            }
-
-            .main-buttons,
-            .collapsed-main-buttons {
-                justify-content: center;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .app-header {
-                padding: 15px;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                gap: 12px;
-            }
-
-            .app-branding {
-                flex-direction: column;
-                gap: 6px;
-                text-align: center;
-            }
-
-            .header-controls {
-                justify-content: center;
-            }
-
-            .main-wrapper {
-                height: calc(100vh - 15px);
-            }
-            
-            .container {
-                flex-direction: column;
-            }
-
-            .input-layout {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .side-buttons {
-                flex-direction: column;
-                gap: 8px;
-                min-width: auto;
-            }
-
-            .main-buttons,
-            .collapsed-main-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 8px;
-            }
-
-            .main-buttons button,
-            .collapsed-main-buttons button {
-                width: 100%;
-                max-width: 300px;
-           }
-           
-           .results-horizontal-layout {
-               flex-direction: column;
-               height: auto;
-           }
-           
-           .results-left-panel {
-               border-right: none;
-               border-bottom: 2px solid #e5e7eb;
-               padding-right: 0;
-               padding-bottom: 20px;
-               margin-bottom: 20px;
-           }
-           
-           .results-right-panel {
-               padding-left: 0;
-               padding-top: 0;
-           }
-
-           .upper-section {
-               padding: 15px;
-           }
-
-           .claim-display,
-           .result-section {
-               padding: 20px 15px;
-           }
-
-           .step-guide-top {
-               padding: 8px 12px;
-               font-size: 11px;
-               gap: 8px;
-           }
-
-           .step-number {
-               width: 18px;
-               height: 18px;
-               font-size: 9px;
-           }
-       }
-
-       /* 보안 방지 스타일 */
-       * {
-           -webkit-user-select: none !important;
-           -moz-user-select: none !important;
-           -ms-user-select: none !important;
-           user-select: none !important;
-       }
-       
-       input, textarea {
-           -webkit-user-select: text !important;
-           -moz-user-select: text !important;
-           -ms-user-select: text !important;
-           user-select: text !important;
-       }
-       
-       @media print {
-           * { display: none !important; }
-           body::before {
-               content: "SMARTPAT 인쇄가 제한되어 있습니다.";
-               display: block !important;
-               font-size: 24px;
-               text-align: center;
-               margin-top: 50px;
-               color: #1E3A8A;
-               font-weight: bold;
-           }
-       }
-
-        /* 접힌 상태에서만 보이는 메인 버튼들 */
-        .collapsed-main-buttons {
-            display: none;
-           justify-content: flex-end;  /* ← center에서 flex-end로 변경 */
+        .input-layout {
+            flex-direction: column;
             gap: 12px;
-            flex-wrap: wrap;
-           padding: 16px 15px 16px 0;  /* ← 오른쪽 패딩 추가 */
-            border-bottom: 1px solid #e5e7eb;
-            background: white;
         }
 
-        .collapsed-main-buttons.show {
-            display: flex;
+        .side-buttons {
+            flex-direction: column;
+            gap: 8px;
+            min-width: auto;
         }
 
-        /* 접힌 상태 버튼들 색상 유지 */
-        #check-button-collapsed {
-            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
-            color: white !important;
-            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
-            min-width: 120px;
+        .main-buttons,
+        .collapsed-main-buttons {
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
         }
 
-        #check-button-collapsed:hover {
-            background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%) !important;
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
-        }
+        .main-buttons button,
+        .collapsed-main-buttons button {
+            width: 100%;
+            max-width: 300px;
+       }
+       
+       .results-horizontal-layout {
+           flex-direction: column;
+           height: auto;
+       }
+       
+       .results-left-panel {
+           border-right: none;
+           border-bottom: 2px solid #e5e7eb;
+           padding-right: 0;
+           padding-bottom: 20px;
+           margin-bottom: 20px;
+       }
+       
+       .results-right-panel {
+           padding-left: 0;
+           padding-top: 0;
+       }
 
-        #save-to-amendment-button-collapsed {
-            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-            color: white !important;
-            box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
-            min-width: 120px;
-        }
+       .upper-section {
+           padding: 15px;
+       }
 
-        #save-to-amendment-button-collapsed:hover {
-            background: linear-gradient(135deg, #047857 0%, #065F46 100%) !important;
-            box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4) !important;
-        }
+       .claim-display,
+       .result-section {
+           padding: 20px 15px;
+       }
 
-        #download-button-collapsed {
-            background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
-            color: white !important;
-            box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
-            min-width: 120px;
-        }
-        
-        #download-button-collapsed:hover {
-            background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
-            box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
-        }
-        
+       .step-guide-top {
+           padding: 8px 12px;
+           font-size: 11px;
+           gap: 8px;
+       }
 
+       .step-number {
+           width: 18px;
+           height: 18px;
+           font-size: 9px;
+       }
+   }
+
+   /* 보안 방지 스타일 */
+   * {
+       -webkit-user-select: none !important;
+       -moz-user-select: none !important;
+       -ms-user-select: none !important;
+       user-select: none !important;
+   }
+   
+   input, textarea {
+       -webkit-user-select: text !important;
+       -moz-user-select: text !important;
+       -ms-user-select: text !important;
+       user-select: text !important;
+   }
+   
+   @media print {
+       * { display: none !important; }
+       body::before {
+           content: "SMARTPAT 인쇄가 제한되어 있습니다.";
+           display: block !important;
+           font-size: 24px;
+           text-align: center;
+           margin-top: 50px;
+           color: #1E3A8A;
+           font-weight: bold;
+       }
+   }
+
+    /* 접힌 상태에서만 보이는 메인 버튼들 */
+    .collapsed-main-buttons {
+        display: none;
+        justify-content: flex-end;
+        gap: 12px;
+        flex-wrap: wrap;
+        padding: 16px 15px 16px 0;
+        border-bottom: 1px solid #e5e7eb;
+        background: white;
+    }
+
+    .collapsed-main-buttons.show {
+        display: flex;
+    }
+
+    /* 접힌 상태 버튼들 색상 유지 */
+    #check-button-collapsed {
+        background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
+        color: white !important;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+        min-width: 120px;
+    }
+
+    #check-button-collapsed:hover {
+        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%) !important;
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4) !important;
+    }
+
+    #save-to-amendment-button-collapsed {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+        color: white !important;
+        box-shadow: 0 3px 10px rgba(5, 150, 105, 0.3) !important;
+        min-width: 120px;
+    }
+
+    #save-to-amendment-button-collapsed:hover {
+        background: linear-gradient(135deg, #047857 0%, #065F46 100%) !important;
+        box-shadow: 0 5px 16px rgba(5, 150, 105, 0.4) !important;
+    }
+
+    #download-button-collapsed {
+        background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
+        color: white !important;
+        box-shadow: 0 3px 10px rgba(217, 119, 6, 0.3) !important;
+        min-width: 120px;
+    }
+    
+    #download-button-collapsed:hover {
+        background: linear-gradient(135deg, #B45309 0%, #92400E 100%) !important;
+        box-shadow: 0 5px 16px rgba(217, 119, 6, 0.4) !important;
+    }
    </style>
-
    <!-- Firebase 인증 스크립트 -->
    <script type="module">
        import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js';
@@ -1139,228 +1171,215 @@ html {
                        100% { transform: rotate(360deg); }
                    }
                </style>
-           `;
+       `;
+       
+       document.body.appendChild(overlay);
+   }
+
+   function removeLoadingOverlay() {
+       const overlay = document.getElementById('auth-loading-overlay');
+       if (overlay) {
+           overlay.remove();
+       }
+   }
+
+   function redirectToLogin() {
+       window.location.href = '/login.html';
+   }
+
+   async function checkUserApproval(user) {
+       try {
+           const userDoc = doc(db, 'users', user.uid);
+           const userSnapshot = await getDoc(userDoc);
            
-           document.body.appendChild(overlay);
-       }
-
-       function removeLoadingOverlay() {
-           const overlay = document.getElementById('auth-loading-overlay');
-           if (overlay) {
-               overlay.remove();
+           if (userSnapshot.exists()) {
+               const userData = userSnapshot.data();
+               return userData.status === 'approved';
            }
+           return false;
+       } catch (error) {
+           console.error('사용자 승인 상태 확인 오류:', error);
+           return false;
        }
+   }
 
-       function redirectToLogin() {
-           window.location.href = '/login.html';
-       }
-
-       async function checkUserApproval(user) {
-           try {
-               const userDoc = doc(db, 'users', user.uid);
-               const userSnapshot = await getDoc(userDoc);
-               
-               if (userSnapshot.exists()) {
-                   const userData = userSnapshot.data();
-                   return userData.status === 'approved';
-               }
-               return false;
-           } catch (error) {
-               console.error('사용자 승인 상태 확인 오류:', error);
-               return false;
-           }
-       }
-
-       function showPendingApproval() {
-           document.body.innerHTML = `
+   function showPendingApproval() {
+       document.body.innerHTML = `
+           <div style="
+               min-height: 100vh;
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
+               font-family: 'Segoe UI', sans-serif;
+               color: white;
+               text-align: center;
+               padding: 2rem;
+           ">
                <div style="
-                   min-height: 100vh;
-                   display: flex;
-                   flex-direction: column;
-                   justify-content: center;
-                   align-items: center;
-                   background: linear-gradient(135deg, #1E3A8A 0%, #3B82F6 100%);
-                   font-family: 'Segoe UI', sans-serif;
-                   color: white;
-                   text-align: center;
-                   padding: 2rem;
+                   background: rgba(255, 255, 255, 0.95);
+                   backdrop-filter: blur(20px);
+                   color: #333;
+                   padding: 3rem;
+                   border-radius: 24px;
+                   box-shadow: 0 25px 50px rgba(30, 58, 138, 0.3);
+                   max-width: 500px;
+                   border: 1px solid rgba(255, 255, 255, 0.2);
                ">
-                   <div style="
-                       background: rgba(255, 255, 255, 0.95);
-                       backdrop-filter: blur(20px);
-                       color: #333;
-                       padding: 3rem;
-                       border-radius: 24px;
-                       box-shadow: 0 25px 50px rgba(30, 58, 138, 0.3);
-                       max-width: 500px;
-                       border: 1px solid rgba(255, 255, 255, 0.2);
-                   ">
-                       <h1 style="color: #1E3A8A; margin-bottom: 1rem; font-size: 28px; font-weight: 700;">SMARTPAT</h1>
-                       <h2 style="margin-bottom: 1.5rem; color: #374151;">승인 대기 중</h2>
-                       <p style="margin-bottom: 2rem; line-height: 1.6; color: #6B7280;">
-                           베타 테스트 신청이 접수되었습니다.<br>
-                           관리자 승인 후 청구항 점검기를 이용하실 수 있습니다.<br><br>
-                           승인 완료 시 이메일로 알림을 드릴 예정입니다.
-                       </p>
-                       <button onclick="window.location.href='/login.html'" style="
-                           background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
-                           color: white;
-                           border: none;
-                           padding: 12px 24px;
-                           border-radius: 12px;
-                           font-size: 16px;
-                           font-weight: 600;
-                           cursor: pointer;
-                           transition: all 0.3s;
-                           box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-                       " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'" 
-                          onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
-                           로그인 페이지로
-                       </button>
-                   </div>
+                   <h1 style="color: #1E3A8A; margin-bottom: 1rem; font-size: 28px; font-weight: 700;">SMARTPAT</h1>
+                   <h2 style="margin-bottom: 1.5rem; color: #374151;">승인 대기 중</h2>
+                   <p style="margin-bottom: 2rem; line-height: 1.6; color: #6B7280;">
+                       베타 테스트 신청이 접수되었습니다.<br>
+                       관리자 승인 후 청구항 점검기를 이용하실 수 있습니다.<br><br>
+                       승인 완료 시 이메일로 알림을 드릴 예정입니다.
+                   </p>
+                   <button onclick="window.location.href='/login.html'" style="
+                       background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
+                       color: white;
+                       border: none;
+                       padding: 12px 24px;
+                       border-radius: 12px;
+                       font-size: 16px;
+                       font-weight: 600;
+                       cursor: pointer;
+                       transition: all 0.3s;
+                       box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+                   " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(59, 130, 246, 0.4)'" 
+                      onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.3)'">
+                       로그인 페이지로
+                   </button>
                </div>
-           `;
-       }
+           </div>
+       `;
+   }
 
-       function initializeAuth() {
-           createLoadingOverlay();
-           
-           onAuthStateChanged(auth, async (user) => {
-               if (user) {
-                   console.log('SMARTPAT 청구항 점검기 로그인된 사용자:', user);
-                   
-                   const isApproved = await checkUserApproval(user);
-                   
-                   if (isApproved) {
-                       console.log('승인된 사용자 - SMARTPAT 청구항 점검기 접근 허용');
-                       removeLoadingOverlay();
-                   } else {
-                       console.log('승인되지 않은 사용자');
-                       showPendingApproval();
-                   }
+   function initializeAuth() {
+       createLoadingOverlay();
+       
+       onAuthStateChanged(auth, async (user) => {
+           if (user) {
+               console.log('SMARTPAT 청구항 점검기 로그인된 사용자:', user);
+               
+               const isApproved = await checkUserApproval(user);
+               
+               if (isApproved) {
+                   console.log('승인된 사용자 - SMARTPAT 청구항 점검기 접근 허용');
+                   removeLoadingOverlay();
                } else {
-                   console.log('로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트');
-                   redirectToLogin();
+                   console.log('승인되지 않은 사용자');
+                   showPendingApproval();
                }
-           });
-       }
+           } else {
+               console.log('로그인되지 않은 사용자 - 로그인 페이지로 리다이렉트');
+               redirectToLogin();
+           }
+       });
+   }
 
-       if (document.readyState === 'loading') {
-           document.addEventListener('DOMContentLoaded', initializeAuth);
-       } else {
-           initializeAuth();
-       }
+   if (document.readyState === 'loading') {
+       document.addEventListener('DOMContentLoaded', initializeAuth);
+   } else {
+       initializeAuth();
+   }
 
-       // 전역 auth 객체 설정 (로그아웃 버튼에서 사용)
-       window.auth = auth;
+   window.auth = auth;
    </script>
-   
 </head>
 <body>
    <div class="app-container">
-       <!-- 상단 헤더 - index.html과 동일한 구조 -->
        <header class="app-header">
-           <!-- 브랜딩 영역 -->
            <div class="app-branding">
                <h1 class="app-title">SMARTPAT</h1>
-               <p class="app-subtitle">청구항 점검기</p>
+               <p class="app-subtitle">스마트 보정 플랫폼</p>
            </div>
-           
-           <!-- 헤더 컨트롤 버튼들 -->
-           <div class="header-controls">
-               <button id="toggleInputBtn" class="header-btn">접기</button>
-               <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
-           </div>
-       </header>
-       
-       <div class="main-wrapper">
-           <div class="container">
-               <div class="content-panel">
-                   <!-- 상단 입력 영역 - 접기/펼치기 기능 추가 -->
-                   <div class="upper-section" id="upperSection">
-                       <!-- 단계별 가이드를 상단으로 이동 -->
-                       <div class="step-guide-top" id="stepGuide">
-                           <div class="step-item">
-                               <div class="step-number">1</div>
-                               <span>파일 업로드</span>
-                           </div>
-                           →
-                           <div class="step-item">
-                               <div class="step-number">2</div>
-                               <span>비교 테이블 생성</span>
-                           </div>
-                           →
-                           <div class="step-item">
-                               <div class="step-number">3</div>
-                               <span>편집 & 다운로드</span>
-                           </div>
+       <div class="header-controls">
+           <button id="toggleInputBtn" class="header-btn">접기</button>
+           <button id="logoutBtn" class="header-btn logout-btn">로그아웃</button>
+       </div>
+   </header>
+   
+   <div class="main-wrapper">
+       <div class="container">
+           <div class="content-panel">
+               <div class="upper-section" id="upperSection">
+                   <div class="step-guide-top" id="stepGuide">
+                       <div class="step-item">
+                           <div class="step-number">1</div>
+                           <span>파일 업로드</span>
                        </div>
-
-                       <div class="input-section" id="inputSection">
-                           <h2>청구항 입력</h2>
-                           
-                           <!-- 🔥 새로운 레이아웃: 입력창 + 사이드 버튼 -->
-                           <div class="input-layout">
-                               <div class="input-area-container">
-                                   <textarea id="claim-input" placeholder="여기에 청구항을 입력하세요. 각 청구항은 [청구항 1], [청구항 2] 형식으로 입력하세요."></textarea>
-                               </div>
-                               
-                               <!-- 오른쪽 사이드 버튼들 -->
-                               <div class="side-buttons">
-                                   <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
-                                   <button id="file-upload-button" class="side-btn">📎 파일 업로드</button>
-                                   <button id="clear-button" class="side-btn">초기화</button>
-                               </div>
-                           </div>
-                           
-                           <!-- 하단 메인 버튼들 (가운데 정렬) -->
-                           <div class="main-buttons">
-                               <button id="check-button">청구항 점검</button>
-                               <button id="save-to-amendment-button">📝 보정서로 저장</button>
-                               <button id="download-button" class="download-button">💾 다운로드</button>
-                           </div>
+                       →
+                       <div class="step-item">
+                           <div class="step-number">2</div>
+                           <span>비교 테이블 생성</span>
+                       </div>
+                       →
+                       <div class="step-item">
+                           <div class="step-number">3</div>
+                           <span>편집 & 다운로드</span>
                        </div>
                    </div>
 
-                   <!-- 접힌 상태에서만 보이는 메인 버튼들 -->
-                   <div class="collapsed-main-buttons" id="collapsedMainButtons">
-                       <button id="check-button-collapsed">청구항 점검</button>
-                       <button id="save-to-amendment-button-collapsed">📝 보정서로 저장</button>
-                       <button id="download-button-collapsed" class="download-button">💾 다운로드</button>
-                   </div>
-                   
-                   <!-- 스크롤 가능한 영역 -->
-                   <div class="scrollable-section">
-                       <div class="claim-display" id="claim-display">
-                           <!-- 청구항이 여기에 동적으로 표시됩니다 -->
+                   <div class="input-section" id="inputSection">
+                       <h2>청구항 입력</h2>
+                       
+                       <div class="input-layout">
+                           <div class="input-area-container">
+                               <textarea id="claim-input" placeholder="여기에 청구항을 입력하세요. 각 청구항은 [청구항 1], [청구항 2] 형식으로 입력하세요."></textarea>
+                           </div>
+                           
+                           <div class="side-buttons">
+                               <input type="file" id="file-input" accept=".txt,.docx" style="display: none;">
+                               <button id="file-upload-button" class="side-btn">📎 파일 업로드</button>
+                               <button id="clear-button" class="side-btn">초기화</button>
+                           </div>
                        </div>
                        
-                       <div class="result-section" id="result-section" style="display: none;">
-                           <h2>점검 결과</h2>
+                       <div class="main-buttons">
+                           <button id="check-button">청구항 점검</button>
+                           <button id="save-to-amendment-button">📝 보정서로 저장</button>
+                           <button id="download-button" class="download-button">💾 다운로드</button>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="collapsed-main-buttons" id="collapsedMainButtons">
+                   <button id="check-button-collapsed">청구항 점검</button>
+                   <button id="save-to-amendment-button-collapsed">📝 보정서로 저장</button>
+                   <button id="download-button-collapsed" class="download-button">💾 다운로드</button>
+               </div>
+               
+               <div class="scrollable-section">
+                   <div class="claim-display" id="claim-display">
+                   </div>
+                   
+                   <div class="result-section" id="result-section" style="display: none;">
+                       <h2>점검 결과</h2>
+                       
+                       <div class="results-horizontal-layout">
+                           <div class="results-left-panel">
+                               <div class="panel-title">
+                                   <span>📋 점검 결과 카테고리</span>
+                                   <button class="secondary">전체 청구항 보기</button>
+                               </div>
+                               <div class="category-content" id="result-categories">
+                               </div>
+                           </div>
                            
-                           <!-- 수평 레이아웃 컨테이너 -->
-                           <div class="results-horizontal-layout">
-                               <!-- 왼쪽 패널: 점검 결과 카테고리 -->
-                               <div class="results-left-panel">
-                                   <div class="panel-title">
-                                       <span>📋 점검 결과 카테고리</span>
-                                       <button class="secondary">전체 청구항 보기</button>
-                                   </div>
-                                   <div class="category-content" id="result-categories">
-                                       <!-- 카테고리별 결과가 여기에 동적으로 추가됩니다 -->
+                           <div class="results-right-panel">
+                               <div class="panel-title">
+                                   <span>📄 청구항별 오류 표시</span>
+                                   <div class="panel-buttons collapsed-only" id="panelButtons" style="display: none;">
+                                       <button id="check-button-panel" class="panel-btn">청구항 점검</button>
+                                       <button id="save-to-amendment-button-panel" class="panel-btn">📝 보정서로 저장</button>
+                                       <button id="download-button-panel" class="panel-btn download-button">💾 다운로드</button>
                                    </div>
                                </div>
-                               
-                               <!-- 오른쪽 패널: 청구항별 오류 표시 -->
-                               <div class="results-right-panel">
-                                   <div class="panel-title">📄 청구항별 오류 표시</div>
-                                   <div id="claim-display-right">
-                                       <!-- 선택된 카테고리의 청구항들이 여기에 표시됩니다 -->
-                                       <p style="color: #6B7280; font-style: italic; text-align: center; margin-top: 50px; line-height: 1.6;">
-                                           왼쪽에서 점검 카테고리를 클릭하시면<br>
-                                           해당 오류가 있는 청구항들이 여기에 표시됩니다.
-                                       </p>
-                                   </div>
+                               <div id="claim-display-right">
+                                   <p style="color: #6B7280; font-style: italic; text-align: center; margin-top: 50px; line-height: 1.6;">
+                                       왼쪽에서 점검 카테고리를 클릭하시면<br>
+                                       해당 오류가 있는 청구항들이 여기에 표시됩니다.
+                                   </p>
                                </div>
                            </div>
                        </div>
@@ -1369,222 +1388,220 @@ html {
            </div>
        </div>
    </div>
-   
-   <!-- mammoth 라이브러리 로드 -->
+   </div>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
    <script src="patent-claim-checker.js"></script>
-
-   <!-- 접기/펼치기 및 로그아웃 버튼 기능 -->
    <script>
    document.addEventListener('DOMContentLoaded', function() {
        const toggleInputBtn = document.getElementById('toggleInputBtn');
        const logoutBtn = document.getElementById('logoutBtn');
 
-    // 🔥 여기에 상단 접기 함수 추가!
-           function collapseUpperSection() {
-               const upperSection = document.getElementById('upperSection');
-               const inputSection = document.getElementById('inputSection');
-               const stepGuide = document.getElementById('stepGuide');
-               const collapsedMainButtons = document.getElementById('collapsedMainButtons');
+       function collapseUpperSection() {
+           const upperSection = document.getElementById('upperSection');
+           const inputSection = document.getElementById('inputSection');
+           const stepGuide = document.getElementById('stepGuide');
+           const collapsedMainButtons = document.getElementById('collapsedMainButtons');
+           
+           if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+               upperSection.classList.add('collapsed');
+               inputSection.classList.add('collapsed');
+               stepGuide.classList.add('collapsed');
+               collapsedMainButtons.classList.add('show');
+               toggleInputBtn.textContent = '펼치기';
+               togglePanelButtons(true);
+           }
+       }
+       
+       function createCheckingOverlay() {
+           removeCheckingOverlay();
+           
+           const overlay = document.createElement('div');
+           overlay.id = 'checking-overlay';
+           overlay.style.cssText = `
+               position: fixed;
+               top: 0;
+               left: 0;
+               width: 100%;
+               height: 100%;
+               background: rgba(30, 58, 138, 0.9);
+               backdrop-filter: blur(10px);
+               display: flex;
+               flex-direction: column;
+               justify-content: center;
+               align-items: center;
+               z-index: 10000;
+               font-family: 'Segoe UI', sans-serif;
+           `;
+           
+           overlay.innerHTML = `
+               <div style="text-align: center; color: white;">
+                   <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;"></div>
+                   <h2 style="color: white; margin-bottom: 12px; font-size: 24px; font-weight: 700;">청구항 점검 중...</h2>
+                   <p style="color: rgba(255,255,255,0.9); font-size: 16px;">잠시만 기다려주세요</p>
+               </div>
+               <style>
+                   @keyframes spin {
+                       0% { transform: rotate(0deg); }
+                       100% { transform: rotate(360deg); }
+                   }
+               </style>
+       `;
+       
+       document.body.appendChild(overlay);
+   }
+   
+   function removeCheckingOverlay() {
+       const overlay = document.getElementById('checking-overlay');
+       if (overlay) {
+           overlay.remove();
+       }
+   }
+   
+   function togglePanelButtons(isCollapsed) {
+       const panelButtons = document.getElementById('panelButtons');
+       if (panelButtons) {
+           panelButtons.style.display = isCollapsed ? 'flex' : 'none';
+       }
+   }
+   
+   const checkButton = document.getElementById('check-button');
+   if (checkButton) {
+       checkButton.addEventListener('click', function(e) {
+           createCheckingOverlay();
+           
+           setTimeout(() => {
+               collapseUpperSection();
+           }, 10);
+           
+           setTimeout(() => {
+               removeCheckingOverlay();
+           }, 4000);
+       }, true);
+   }
+   
+   if (toggleInputBtn) {
+       toggleInputBtn.addEventListener('click', function() {
+           const upperSection = document.getElementById('upperSection');
+           const inputSection = document.getElementById('inputSection');
+           const stepGuide = document.getElementById('stepGuide');
+           const collapsedMainButtons = document.getElementById('collapsedMainButtons');
+           
+           if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+               const isCollapsed = upperSection.classList.contains('collapsed');
                
-               if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
-                   // 접기 실행
+               if (isCollapsed) {
+                   upperSection.classList.remove('collapsed');
+                   inputSection.classList.remove('collapsed');
+                   stepGuide.classList.remove('collapsed');
+                   collapsedMainButtons.classList.remove('show');
+                   toggleInputBtn.textContent = '접기';
+                   togglePanelButtons(false);
+               } else {
                    upperSection.classList.add('collapsed');
                    inputSection.classList.add('collapsed');
                    stepGuide.classList.add('collapsed');
                    collapsedMainButtons.classList.add('show');
                    toggleInputBtn.textContent = '펼치기';
+                   togglePanelButtons(true);
                }
-           }
-       
-            // 🔥 로딩 오버레이 함수들 추가
-            function createCheckingOverlay() {
-                // 기존 오버레이가 있으면 제거
-                removeCheckingOverlay();
-                
-                const overlay = document.createElement('div');
-                overlay.id = 'checking-overlay';
-                overlay.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background: rgba(30, 58, 138, 0.9);
-                    backdrop-filter: blur(10px);
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    z-index: 10000;
-                    font-family: 'Segoe UI', sans-serif;
-                `;
-                
-                overlay.innerHTML = `
-                    <div style="text-align: center; color: white;">
-                        <div style="width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px;"></div>
-                        <h2 style="color: white; margin-bottom: 12px; font-size: 24px; font-weight: 700;">청구항 점검 중...</h2>
-                        <p style="color: rgba(255,255,255,0.9); font-size: 16px;">잠시만 기다려주세요</p>
-                    </div>
-                    <style>
-                        @keyframes spin {
-                            0% { transform: rotate(0deg); }
-                            100% { transform: rotate(360deg); }
-                        }
-                    </style>
-                `;
-                
-                document.body.appendChild(overlay);
-            }
-            
-            function removeCheckingOverlay() {
-                const overlay = document.getElementById('checking-overlay');
-                if (overlay) {
-                    overlay.remove();
-                }
-            }
-            
-     // 🔥 청구항 점검 버튼에 접기 기능 추가
-const checkButton = document.getElementById('check-button');
-if (checkButton) {
-    // 기존 이벤트를 우선 실행하는 방식으로 변경
-    checkButton.addEventListener('click', function(e) {
-        // 1. 즉시 로딩 오버레이 표시 (가장 먼저)
-        createCheckingOverlay();
-        
-        // 2. 극히 짧은 딜레이 후 상단 접기
-        setTimeout(() => {
-            collapseUpperSection();
-        }, 10); // 매우 짧은 딜레이
-        
-        // 3. 로딩 제거 (점검 완료 후)
-        setTimeout(() => {
-            removeCheckingOverlay();
-        }, 4000);
-    }, true); // capture phase에서 가장 먼저 실행
-}
-       
-       
-       // 접기/펼치기 버튼 기능
-       if (toggleInputBtn) {
-           toggleInputBtn.addEventListener('click', function() {
-               const upperSection = document.getElementById('upperSection');
-               const inputSection = document.getElementById('inputSection');
-               const stepGuide = document.getElementById('stepGuide');
-               const collapsedMainButtons = document.getElementById('collapsedMainButtons');
-               
-               if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
-                   const isCollapsed = upperSection.classList.contains('collapsed');
-                   
-                   if (isCollapsed) {
-                       // 펼치기
-                       upperSection.classList.remove('collapsed');
-                       inputSection.classList.remove('collapsed');
-                       stepGuide.classList.remove('collapsed');
-                       collapsedMainButtons.classList.remove('show');
-                       toggleInputBtn.textContent = '접기';
-                   } else {
-                       // 접기
-                       upperSection.classList.add('collapsed');
-                       inputSection.classList.add('collapsed');
-                       stepGuide.classList.add('collapsed');
-                       collapsedMainButtons.classList.add('show');
-                       toggleInputBtn.textContent = '펼치기';
-                   }
-               }
-           });
-       }
-
-       // 접힌 상태 버튼들과 원본 버튼들 동기화
-       const syncButtons = [
-           ['check-button', 'check-button-collapsed'],
-           ['save-to-amendment-button', 'save-to-amendment-button-collapsed'],
-           ['download-button', 'download-button-collapsed']
-       ];
-
-       syncButtons.forEach(([originalId, collapsedId]) => {
-           const originalBtn = document.getElementById(originalId);
-           const collapsedBtn = document.getElementById(collapsedId);
-           
-           if (originalBtn && collapsedBtn) {
-               // 접힌 버튼 클릭 시 원본 버튼 클릭 이벤트 발생
-               collapsedBtn.addEventListener('click', function() {
-                   originalBtn.click();
-               });
            }
        });
+   }
+
+   const syncButtons = [
+       ['check-button', 'check-button-collapsed'],
+       ['save-to-amendment-button', 'save-to-amendment-button-collapsed'],
+       ['download-button', 'download-button-collapsed']
+   ];
+
+   syncButtons.forEach(([originalId, collapsedId]) => {
+       const originalBtn = document.getElementById(originalId);
+       const collapsedBtn = document.getElementById(collapsedId);
        
-       // 로그아웃 버튼 기능
-       if (logoutBtn) {
-           logoutBtn.addEventListener('click', function() {
-               if (confirm('로그아웃 하시겠습니까?')) {
-                   if (typeof auth !== 'undefined' && auth) {
-                       auth.signOut().then(() => {
-                           console.log('SMARTPAT 청구항 점검기 로그아웃 완료');
-                           window.location.href = '/login.html';
-                       }).catch((error) => {
-                           console.error('로그아웃 오류:', error);
-                           window.location.href = '/login.html';
-                       });
-                   } else {
-                       window.location.href = '/login.html';
-                   }
-               }
+       if (originalBtn && collapsedBtn) {
+           collapsedBtn.addEventListener('click', function() {
+               originalBtn.click();
            });
        }
    });
-   </script>
 
-   <!-- 보안 스크립트 -->
+   const panelButtons = [
+       ['check-button', 'check-button-panel'],
+       ['save-to-amendment-button', 'save-to-amendment-button-panel'],
+       ['download-button', 'download-button-panel']
+   ];
+
+   panelButtons.forEach(([originalId, panelId]) => {
+       const originalBtn = document.getElementById(originalId);
+       const panelBtn = document.getElementById(panelId);
+       
+       if (originalBtn && panelBtn) {
+           panelBtn.addEventListener('click', function() {
+               originalBtn.click();
+           });
+       }
+   });
+   
+   if (logoutBtn) {
+       logoutBtn.addEventListener('click', function() {
+           if (confirm('로그아웃 하시겠습니까?')) {
+               if (typeof auth !== 'undefined' && auth) {
+                   auth.signOut().then(() => {
+                       console.log('SMARTPAT 청구항 점검기 로그아웃 완료');
+                       window.location.href = '/login.html';
+                   }).catch((error) => {
+                       console.error('로그아웃 오류:', error);
+                       window.location.href = '/login.html';
+                   });
+               } else {
+                   window.location.href = '/login.html';
+               }
+           }
+       });
+   }
+});
+</script>
    <script>
    (function() {
        'use strict';
        
-       // 우클릭 방지
        document.addEventListener('contextmenu', function(e) {
            e.preventDefault();
            e.stopPropagation();
            return false;
        });
        
-       // 키보드 단축키 방지
        document.addEventListener('keydown', function(e) {
-           // F12 방지
            if (e.key === 'F12' || e.keyCode === 123) {
                e.preventDefault();
                e.stopPropagation();
                return false;
            }
            
-           // Ctrl + Shift + I (개발자도구) 방지
            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
                e.preventDefault();
                e.stopPropagation();
                return false;
            }
            
-           // Ctrl + Shift + J (콘솔) 방지
            if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
                e.preventDefault();
                e.stopPropagation();
                return false;
            }
            
-           // Ctrl + Shift + C (요소 검사) 방지
            if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
                e.preventDefault();
                e.stopPropagation();
                return false;
            }
            
-           // Ctrl + U (소스보기) 방지
            if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
                e.preventDefault();
                e.stopPropagation();
                return false;
            }
            
-           // Ctrl + S (저장) 방지
            if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
                e.preventDefault();
                e.stopPropagation();
@@ -1592,7 +1609,6 @@ if (checkButton) {
            }
        });
        
-       // 텍스트 선택 방지 (입력 요소 제외)
        document.addEventListener('selectstart', function(e) {
            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                return true;
@@ -1601,13 +1617,11 @@ if (checkButton) {
            return false;
        });
        
-       // 드래그 방지
        document.addEventListener('dragstart', function(e) {
            e.preventDefault();
            return false;
        });
        
-       // 개발자도구 감지
        let devtools = { opened: false, orientation: null };
        const threshold = 160;
        
@@ -1627,43 +1641,34 @@ if (checkButton) {
        
        setInterval(detectDevTools, 500);
        
-       // 콘솔 차단
        console.log = console.error = console.warn = function() { return; };
        
-       // 디버거 차단
        setInterval(function() { debugger; }, 1000);
-       
-       // iframe 차단
        if (window.self !== window.top) {
-           window.top.location = window.self.location;
-       }
-   })();
-   </script>
-<script>
-// 전체 페이지 스크롤 방지
-document.addEventListener('wheel', function(e) {
-    // 특정 영역에서만 스크롤 허용
-    const allowedElements = [
-        '.category-content',
-        '.results-right-panel',
-        '.scrollable-section'
-    ];
-    
-    let isAllowed = false;
-    for (let selector of allowedElements) {
-        if (e.target.closest(selector)) {
-            isAllowed = true;
-            break;
-        }
-    }
-    
-    // 허용된 영역이 아니면 스크롤 차단
-    if (!isAllowed) {
-        e.preventDefault();
-    }
-}, { passive: false });
+window.top.location = window.self.location;
+}
+})();
 </script>
-
-    
+   <script>
+   document.addEventListener('wheel', function(e) {
+       const allowedElements = [
+           '.category-content',
+           '.results-right-panel',
+           '.scrollable-section'
+       ];
+       
+       let isAllowed = false;
+       for (let selector of allowedElements) {
+           if (e.target.closest(selector)) {
+               isAllowed = true;
+               break;
+           }
+       }
+       
+       if (!isAllowed) {
+           e.preventDefault();
+       }
+   }, { passive: false });
+   </script>
 </body>
 </html>
