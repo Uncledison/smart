@@ -898,14 +898,13 @@ html {
        .category-content::-webkit-scrollbar,
        #claim-display-right::-webkit-scrollbar,
        .claim-display::-webkit-scrollbar {
-       #claim-input::-webkit-scrollbar { /* ← 이 줄 추가 */
-           width: 8px;
+              width: 8px;
        }
        
        .category-content::-webkit-scrollbar-track,
        #claim-display-right::-webkit-scrollbar-track,
        .claim-display::-webkit-scrollbar-track {
-       #claim-input::-webkit-scrollbar-track { /* ← 이 줄 추가 */
+    
            background: #f1f5f9;
            border-radius: 4px;
        }
@@ -913,23 +912,22 @@ html {
        .category-content::-webkit-scrollbar-thumb,
        #claim-display-right::-webkit-scrollbar-thumb,
        .claim-display::-webkit-scrollbar-thumb {
-       #claim-input::-webkit-scrollbar-thumb { /* ← 이 줄 추가 */
-           background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+                background: linear-gradient(135deg, #cbd5e1, #94a3b8);
            border-radius: 4px;
        }
        
        .category-content::-webkit-scrollbar-thumb:hover,
        #claim-display-right::-webkit-scrollbar-thumb:hover,
        .claim-display::-webkit-scrollbar-thumb:hover {
-       #claim-input::-webkit-scrollbar-thumb:hover { /* ← 이 줄 추가 */
+   
            background: linear-gradient(135deg, #94a3b8, #64748b);
        }
        
        /* Firefox 스크롤바 */
        .category-content,
        #claim-display-right,
-       .claim-display,
-       #claim-input { /* ← 이 줄 추가 */
+       .claim-display
+        { 
            scrollbar-width: thin;
            scrollbar-color: #cbd5e1 #f1f5f9;
        }
