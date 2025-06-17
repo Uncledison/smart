@@ -322,18 +322,19 @@ html {
         /* 메인 버튼 그룹 (하단 가운데) */
         .main-buttons {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;  /* ← center에서 flex-end로 변경 */
             gap: 12px;
             flex-wrap: wrap;
+            padding-right: 20px;  /* ← 오른쪽 여백 추가 */
         }
 
         /* 접힌 상태에서만 보이는 메인 버튼들 */
         .collapsed-main-buttons {
             display: none;
-            justify-content: center;
+            justify-content: flex-end;  /* ← center에서 flex-end로 변경 */
             gap: 12px;
             flex-wrap: wrap;
-            padding: 16px 0;
+            padding: 16px 20px 16px 0;  /* ← 오른쪽 패딩 추가 */
             border-bottom: 1px solid #e5e7eb;
             background: white;
         }
