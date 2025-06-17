@@ -1446,19 +1446,24 @@ html {
             // 🔥 청구항 점검 버튼에 접기 기능 추가
             const checkButton = document.getElementById('check-button');
             if (checkButton) {
-                checkButton.addEventListener('click', function() {
-                    // 1. 로딩 오버레이 생성 및 표시
+                   checkButton.addEventListener('click', function(e) {
+                    // 기존 이벤트 완전 차단
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    
+                    // 1. 즉시 로딩 오버레이 표시
                     createCheckingOverlay();
                     
                     // 2. 상단 접기
-                    collapseUpperSection();
+                    setTimeout(() => {
+                        collapseUpperSection();
+                    }, 50);
                     
-                    // 3. 잠시 후 로딩 메시지 제거 (점검 완료 후)
+                    // 3. 로딩 제거
                     setTimeout(() => {
                         removeCheckingOverlay();
-                    }, 3000); // 3초 후 로딩 제거 (필요시 조정)
+                    }, 3000);
                 }, true);
-            }
 
        
        
