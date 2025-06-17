@@ -329,7 +329,7 @@ html {
            padding-right: 15px;
        }
 
-       /* 접힌 상태에서만 보이는 메인 버튼들 */
+       /* 접힌 상태에서만 보이는 메인 버튼들 - 완전히 숨김 */
        .collapsed-main-buttons {
            display: none;
            justify-content: flex-end;
@@ -341,7 +341,7 @@ html {
        }
 
        .collapsed-main-buttons.show {
-           display: flex;
+           display: none;
        }
        
        button {
@@ -499,7 +499,7 @@ html {
        
        .panel-title {
            font-size: 16px;
-           font-weight: 600;
+           font-weight: 400; /* 600에서 400으로 변경 */
            margin-bottom: 20px;
            padding: 16px;
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
@@ -524,6 +524,7 @@ html {
            border-radius: 8px !important;
            backdrop-filter: blur(10px);
            flex: none !important;
+           font-weight: 400; /* Regular 폰트 */
        }
 
        .panel-title button:hover {
@@ -531,7 +532,7 @@ html {
            transform: translateY(-1px) !important;
        }
 
-       /* 🔥 패널 배너 내 버튼들 */
+       /* 🔥 iOS 스타일 패널 버튼들 */
        .panel-buttons {
            display: flex;
            gap: 8px;
@@ -539,30 +540,32 @@ html {
        }
 
        .panel-btn {
-           padding: 6px 12px !important;
-           font-size: 11px !important;
+           padding: 8px 16px !important;
+           font-size: 12px !important;
+           font-weight: 400 !important; /* Regular 폰트 */
            border-radius: 8px !important;
-           backdrop-filter: blur(10px);
-           flex: none !important;
-           min-width: 80px;
+           border: none !important;
+           cursor: pointer !important;
+           transition: all 0.3s ease !important;
+           color: white !important;
+           min-width: 90px;
        }
 
        .panel-btn#check-button-panel {
-           background: rgba(59, 130, 246, 0.2) !important;
-           color: white !important;
-           border: 1px solid rgba(59, 130, 246, 0.3) !important;
+           background: #007AFF !important; /* iOS Blue */
        }
 
        .panel-btn#save-to-amendment-button-panel {
-           background: rgba(5, 150, 105, 0.2) !important;
-           color: white !important;
-           border: 1px solid rgba(5, 150, 105, 0.3) !important;
+           background: #34C759 !important; /* iOS Green */
        }
 
        .panel-btn#download-button-panel {
-           background: rgba(217, 119, 6, 0.2) !important;
-           color: white !important;
-           border: 1px solid rgba(217, 119, 6, 0.3) !important;
+           background: #FF9500 !important; /* iOS Orange */
+       }
+
+       .panel-btn:hover {
+           transform: translateY(-2px) !important;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
        }
 
        /* 오른쪽 패널 내부 스크롤 영역 */
@@ -594,6 +597,7 @@ html {
            border-radius: 10px;
            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+           font-weight: 400; /* Regular 폰트 */
        }
        
        .result-category h3:hover {
@@ -608,7 +612,7 @@ html {
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
            color: white;
            border-color: #1E3A8A;
-           font-weight: 600;
+           font-weight: 500; /* 선택된 상태에서만 약간 두껍게 */
            box-shadow: 0 4px 16px rgba(59, 130, 246, 0.3);
        }
        
@@ -870,14 +874,14 @@ html {
        .edit-btn.recheck {
            background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%);
            color: white;
-           box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
-       }
-
-       .edit-btn.recheck:hover {
-           background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
-transform: translateY(-1px);
-box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
 }
+    .edit-btn.recheck:hover {
+        background: linear-gradient(135deg, #1E3A8A 0%, #1E40AF 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
     /* 🎨 3가지 영역 커스텀 스크롤바 */
     .category-content::-webkit-scrollbar,
     #claim-display-right::-webkit-scrollbar,
@@ -1051,22 +1055,7 @@ box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
        }
    }
 
-    /* 접힌 상태에서만 보이는 메인 버튼들 */
-    .collapsed-main-buttons {
-        display: none;
-       justify-content: flex-end;
-        gap: 12px;
-        flex-wrap: wrap;
-       padding: 16px 15px 16px 0;
-        border-bottom: 1px solid #e5e7eb;
-        background: white;
-    }
-
-    .collapsed-main-buttons.show {
-        display: flex;
-    }
-
-    /* 접힌 상태 버튼들 색상 유지 */
+    /* 접힌 상태 버튼들 색상 유지 (사용하지 않지만 CSS 유지) */
     #check-button-collapsed {
         background: linear-gradient(135deg, #3B82F6 0%, #1E3A8A 100%) !important;
         color: white !important;
@@ -1400,13 +1389,11 @@ box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
            const upperSection = document.getElementById('upperSection');
            const inputSection = document.getElementById('inputSection');
            const stepGuide = document.getElementById('stepGuide');
-           const collapsedMainButtons = document.getElementById('collapsedMainButtons');
            
-           if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+           if (upperSection && inputSection && stepGuide) {
                upperSection.classList.add('collapsed');
                inputSection.classList.add('collapsed');
                stepGuide.classList.add('collapsed');
-               collapsedMainButtons.classList.add('show');
                toggleInputBtn.textContent = '펼치기';
                togglePanelButtons(true);
            }
@@ -1484,23 +1471,20 @@ box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
            const upperSection = document.getElementById('upperSection');
            const inputSection = document.getElementById('inputSection');
            const stepGuide = document.getElementById('stepGuide');
-           const collapsedMainButtons = document.getElementById('collapsedMainButtons');
            
-           if (upperSection && inputSection && stepGuide && collapsedMainButtons) {
+           if (upperSection && inputSection && stepGuide) {
                const isCollapsed = upperSection.classList.contains('collapsed');
                
                if (isCollapsed) {
                    upperSection.classList.remove('collapsed');
                    inputSection.classList.remove('collapsed');
                    stepGuide.classList.remove('collapsed');
-                   collapsedMainButtons.classList.remove('show');
                    toggleInputBtn.textContent = '접기';
                    togglePanelButtons(false);
                } else {
                    upperSection.classList.add('collapsed');
                    inputSection.classList.add('collapsed');
                    stepGuide.classList.add('collapsed');
-                   collapsedMainButtons.classList.add('show');
                    toggleInputBtn.textContent = '펼치기';
                    togglePanelButtons(true);
                }
@@ -1645,11 +1629,11 @@ box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
        
        setInterval(function() { debugger; }, 1000);
        
-       if (window.self!== window.top) {
-window.top.location = window.self.location;
-}
-})();
-</script>
+       if (window.self !== window.top) {
+           window.top.location = window.self.location;
+       }
+   })();
+   </script>
    <script>
    document.addEventListener('wheel', function(e) {
        const allowedElements = [
@@ -1668,8 +1652,8 @@ window.top.location = window.self.location;
        
        if (!isAllowed) {
            e.preventDefault();
-       }
-   }, { passive: false });
-   </script>
+}
+}, { passive: false });
+</script>
 </body>
 </html>
