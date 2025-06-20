@@ -503,5 +503,143 @@
             }
         });
     </script>
+
+<!-- 보안 스크립트 -->
+<script>
+(function() {
+    'use strict';
+    
+    // 우클릭 방지
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    });
+    
+    // 키보드 단축키 방지
+    document.addEventListener('keydown', function(e) {
+        // F12 방지
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        // Ctrl + Shift + I (개발자도구) 방지
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.keyCode === 73)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        // Ctrl + Shift + J (콘솔) 방지
+        if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.keyCode === 74)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        // Ctrl + Shift + C (요소 검사) 방지
+        if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.keyCode === 67)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        // Ctrl + U (소스보기) 방지
+        if (e.ctrlKey && (e.key === 'U' || e.keyCode === 85)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        // Ctrl + S (저장) 방지
+        if (e.ctrlKey && (e.key === 'S' || e.keyCode === 83)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    });
+    
+    // 텍스트 선택 방지 (입력 요소 제외)
+    document.addEventListener('selectstart', function(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+            return true;
+        }
+        e.preventDefault();
+        return false;
+    });
+    
+    // 드래그 방지
+    document.addEventListener('dragstart', function(e) {
+        e.preventDefault();
+        return false;
+    });
+    
+    // 개발자도구 감지
+    let devtools = { opened: false, orientation: null };
+    const threshold = 160;
+    
+    function detectDevTools() {
+        if (window.outerHeight - window.innerHeight > threshold || 
+            window.outerWidth - window.innerWidth > threshold) {
+            if (!devtools.opened) {
+                devtools.opened = true;
+                console.clear();
+                console.log('%cSMARTPAT 개발자도구 사용이 제한되어 있습니다.', 
+                    'color: #1E3A8A; font-size: 20px; font-weight: bold;');
+            }
+        } else {
+            devtools.opened = false;
+        }
+    }
+    
+    setInterval(detectDevTools, 500);
+    
+    // 콘솔 차단
+    console.log = console.error = console.warn = function() { return; };
+    
+    // 디버거 차단
+    setInterval(function() { debugger; }, 1000);
+    
+    // iframe 차단
+    if (window.self !== window.top) {
+        window.top.location = window.self.location;
+    }
+
+    // CSS 보안
+    const style = document.createElement('style');
+    style.textContent = `
+        * {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+        
+        input, textarea {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+        
+        @media print {
+            * { display: none !important; }
+            body::before {
+                content: "SMARTPAT 인쇄가 제한되어 있습니다.";
+                display: block !important;
+                font-size: 24px;
+                text-align: center;
+                margin-top: 50px;
+                color: #1E3A8A;
+                font-weight: bold;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+</script>
 </body>
 </html>
+
